@@ -1,4 +1,4 @@
 islandcx.js
 ===========
 
-Experiment with creating a game state manager with JavaScript
+An experiment into creating a game state manager with JavaScript
