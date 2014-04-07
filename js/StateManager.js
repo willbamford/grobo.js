@@ -8,27 +8,11 @@
 
     StateManager.prototype = {
 
-        // change: function (state) {
-        //     if (!_.contains(this.currentStates, state)) {
-        //         icx.info('Changing state: ' + state);
-
-
-
-        //     } else {
-        //         icx.info('Not changing state: ' + state);
-        //     }
-        // },
-        pop: function () {
-            var state = null;
-            if (!this.isEmpty()) {
-                state = this.currentStates.pop();
-                return state;
-            }
-            return null;
-        },
-        push: function (state) {
-            if (!_.contains(this.currentStates, state)) {
-                this.currentStates.push(state);
+        change: function (state) {
+            var previous;
+            if (state && !this.contains(state)) {
+                previous = this.pop();
+                this.push(state);
             }
         },
         peek: function () {
@@ -37,9 +21,28 @@
             }
             return null;
         },
-
+        push: function (state) {
+            if (!this.contains(state)) {
+                this.currentStates.push(state);
+            }
+            return this;
+        },
+        pop: function () {
+            var state = null;
+            if (!this.isEmpty()) {
+                state = this.currentStates.pop();
+                return state;
+            }
+            return null;
+        },
+        contains: function (state) {
+            return _.contains(this.currentStates, state);
+        },
+        size: function () {
+            return this.currentStates.length;
+        },
         isEmpty: function () {
-            return this.currentStates.length > 0;
+            return this.size() === 0;
         }
     };
 
