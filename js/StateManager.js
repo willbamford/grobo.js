@@ -8,23 +8,38 @@
 
     StateManager.prototype = {
 
-        change: function (state) {
-            if (!_.contains(this.currentStates, state)) {
-                icx.info('Changing state: ' + state);
+        // change: function (state) {
+        //     if (!_.contains(this.currentStates, state)) {
+        //         icx.info('Changing state: ' + state);
 
 
 
-            } else {
-                icx.info('Not changing state: ' + state);
-            }
-        },
+        //     } else {
+        //         icx.info('Not changing state: ' + state);
+        //     }
+        // },
         pop: function () {
-            return {};
+            var state = null;
+            if (!this.isEmpty()) {
+                state = this.currentStates.pop();
+                return state;
+            }
+            return null;
         },
         push: function (state) {
+            if (!_.contains(this.currentStates, state)) {
+                this.currentStates.push(state);
+            }
         },
         peek: function () {
-            return {};
+            if (!this.isEmpty()) {
+                return _.last(this.currentStates);
+            }
+            return null;
+        },
+
+        isEmpty: function () {
+            return this.currentStates.length > 0;
         }
     };
 
