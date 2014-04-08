@@ -1,21 +1,39 @@
-describe('State Manager', function () {
+describe('State manager', function () {
     
     var stateManager,
         states = {
-            a: ['state A'],
-            b: ['state B'],
-            c: ['state C']
+            a: createStubPopupState(),
+            b: createStubPopupState(),
+            c: createStubPopupState()
         };
+
+    function createStubPopupState() {
+        return createStubState(icx.StateManager.modality.POPUP);
+    };
+
+    function createStubExclusiveState() {
+        return createStubState(icx.StateManager.modality.EXCLUSIVE);
+    };
+
+    function createStubState(modality) {
+        return {
+            modality: modality,
+            entered: function () {},
+            exiting: function () {},
+            obscured: function () {},
+            revealed: function () {}
+        };
+    };
 
     beforeEach(function () {
         stateManager = new icx.StateManager();
     });
 
-    it ('should have no state initially', function () {
+    it ('should contain no active states initially', function () {
         expect(stateManager.isEmpty()).toBeTruthy();
     });
 
-    it('peek should return top state', function () {
+    it('should return top state on peek', function () {
         expect(stateManager.peek()).toBeNull();
         stateManager.push(states.a);
         expect(stateManager.peek()).toEqual(states.a);
@@ -27,6 +45,45 @@ describe('State Manager', function () {
 
         beforeEach(function () {
             stateManager.push(states.a);
+        });
+
+        it('should invoke "entered" on pushed state', function () {
+            var state = createStubPopupState();
+            spyOn(state, 'entered');
+            stateManager.push(state);
+            expect(state.entered).toHaveBeenCalled();
+        });
+
+        it('should invoke "obscured" on hidden states', function () {
+
+            /*
+             *    Pushing X [EXCLUSIVE] onto...
+             * 
+             *    | D [POPUP]     | obscure
+             *    | C [POPUP]     | obscure
+             *    | B [EXCLUSIVE] | obscure
+             *    | A [POPUP]     | already obscured by above
+             *    -----------------
+             */
+
+            var stateA = createStubPopupState(),
+                stateB = createStubExclusiveState(),
+                stateC = createStubPopupState(),
+                stateD = createStubPopupState(),
+                stateX = createStubExclusiveState();
+
+            stateManager.push(stateA).push(stateB).push(stateC).push(stateD);
+
+            spyOn(stateA, 'obscured');
+            spyOn(stateB, 'obscured');
+            spyOn(stateC, 'obscured');
+            spyOn(stateD, 'obscured');
+
+            stateManager.push(stateX);
+            expect(stateA.obscured).not.toHaveBeenCalled();
+            expect(stateB.obscured).toHaveBeenCalled();
+            expect(stateC.obscured).toHaveBeenCalled();
+            expect(stateD.obscured).toHaveBeenCalled();
         });
 
         it('should increase stack size', function () {
@@ -55,7 +112,7 @@ describe('State Manager', function () {
 
     describe('pop', function () {
 
-        it('should return null if the stack if empty', function () {
+        it('should return null if the stack is empty', function () {
             expect(stateManager.pop()).toBeNull();
         });
 
@@ -66,6 +123,62 @@ describe('State Manager', function () {
             expect(stateManager.pop()).toEqual(states.a);
             expect(stateManager.peek()).toBeNull();
             expect(stateManager.isEmpty()).toBeTruthy();
+        });
+
+        it('should invoke "exiting" on popped state', function () {
+            var state = createStubExclusiveState();
+            stateManager.push(state);
+            spyOn(state, 'exiting');
+            stateManager.pop(state);
+            expect(state.exiting).toHaveBeenCalled();
+        });
+
+        it('should invoke "revealed" on unhidden states', function () {
+
+            /*
+             *    | D [EXCLUSIVE] | Pop
+             *    | C [POPUP]     | revealed
+             *    | B [EXCLUSIVE] | revealed
+             *    | A [POPUP]     | not revealed, obscured by above
+             *    -----------------
+             */
+
+            var stateA = createStubPopupState(),
+                stateB = createStubExclusiveState(),
+                stateC = createStubPopupState(),
+                stateD = createStubExclusiveState();
+
+            stateManager.push(stateA).push(stateB).push(stateC).push(stateD);
+
+            spyOn(stateA, 'revealed'); // Not
+            spyOn(stateB, 'revealed');
+            spyOn(stateC, 'revealed');
+            spyOn(stateD, 'revealed'); // Not
+
+            stateManager.pop();
+            expect(stateA.revealed).not.toHaveBeenCalled();
+            expect(stateB.revealed).toHaveBeenCalled();
+            expect(stateC.revealed).toHaveBeenCalled();
+            expect(stateD.revealed).not.toHaveBeenCalled();
+        });
+
+        it('should not invoke "revealed" if popped state is a popup', function () {
+
+            /*
+             *    | B [POPUP]     | Pop
+             *    | A [EXCLUSIVE] | already revealed
+             *    -----------------
+             */
+
+            var stateA = createStubExclusiveState(),
+                stateB = createStubPopupState();
+
+            stateManager.push(stateA).push(stateB);
+
+            spyOn(stateA, 'revealed'); // Not
+
+            stateManager.pop();
+            expect(stateA.revealed).not.toHaveBeenCalled();
         });
     });
 

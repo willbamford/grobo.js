@@ -4,7 +4,7 @@
 
     MenuState.prototype = {
         entered: function () {
-
+            
         },
         leaving: function () {
 
