@@ -32,7 +32,7 @@
                     state;
                 while (--i >= 0) {
                     state = this.activeStates[i];
-                    this._stateObscured(state);
+                    stateObscured(state);
                     if (state.modality === StateManager.modality.EXCLUSIVE)
                         break;
                 }
@@ -40,7 +40,7 @@
                 this.activeStates.push(enterState);
 
                 // Entered
-                this._stateEntered(enterState);
+                stateEntered(enterState);
             }
             return this;
         },
@@ -50,7 +50,7 @@
 
                 // Exiting
                 exitState = this.activeStates.pop();
-                this._stateExiting(exitState);
+                stateExiting(exitState);
 
                 // Revealed
                 if (exitState.modality === StateManager.modality.EXCLUSIVE) {
@@ -58,7 +58,7 @@
                         state;
                     while (--i >= 0) {
                         state = this.activeStates[i];
-                        this._stateRevealed(state);
+                        stateRevealed(state);
                         if (state.modality === StateManager.modality.EXCLUSIVE)
                             break;
                     }
@@ -76,30 +76,32 @@
         },
         isEmpty: function () {
             return this.size() === 0;
-        },
-
-        _stateEntered: function (state) {
-            if (typeof(state.entered) === 'function') {
-                state.entered();
-            }
-        },
-        _stateExiting: function (state) {
-            if (typeof(state.exiting) === 'function') {
-                state.exiting();
-            }
-        },
-        _stateRevealed: function (state) {
-            if (typeof(state.revealed) === 'function') {
-                state.revealed();
-            }
-        },
-        _stateObscured: function (state) {
-            if (typeof(state.obscured) === 'function') {
-                state.obscured();
-            }
-        },
-
+        }
     };
+
+    function stateEntered(state) {
+        if (typeof(state.entered) === 'function') {
+            state.entered();
+        }
+    }
+
+    function stateExiting(state) {
+        if (typeof(state.exiting) === 'function') {
+            state.exiting();
+        }
+    }
+
+    function stateRevealed(state) {
+        if (typeof(state.revealed) === 'function') {
+            state.revealed();
+        }
+    }
+    
+    function stateObscured(state) {
+        if (typeof(state.obscured) === 'function') {
+            state.obscured();
+        }
+    }
 
     icx.StateManager = StateManager;
 
