@@ -1,18 +1,17 @@
-require(['state-manager'], function (StateManager) {
-});
+require(
+    [   'state-factory',
+        'state-manager',
+        'engine'
+    ],
+    function (StateFactory, StateManager, Engine) {
+        var stateFactory = new StateFactory(),
+            stateManager = new StateManager(),
+            engine = new Engine(stateManager),
+            menuState = stateFactory.getMenu(),
+            gameState = stateFactory.getGame();
 
-/*
-(function () {
-    
-    var stateFactory = new icx.StateFactory(),
-        stateManager = new icx.StateManager(),
-        engine = new icx.Engine(stateManager),
-        menuState = stateFactory.getMenu(),
-        gameState = stateFactory.getGame();
-
-    stateManager.change(menuState);
-    engine.start();
-    window.setTimeout(function () { engine.stop(); }, 2000);
-
-} ());
-*/
+        stateManager.change(menuState);
+        engine.start();
+        window.setTimeout(function () { engine.stop(); }, 2000);
+    }
+);

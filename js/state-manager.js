@@ -11,12 +11,39 @@ define([], function () {
 
     StateManager.prototype = {
 
-        onTick: function (delta) {
-            // Update
-            // Draw
+        tick: function (delta) {
+
+            var i = this.stateStack.length,
+                state,
+                statesToUpdateAndDraw = [];
+            while (--i >= 0) {
+                state = this.stateStack[i];
+                statesToUpdateAndDraw.push(state);
+                if (state.modality === StateManager.modality.EXCLUSIVE)
+                    break;
+            }
+
+            this.updateStates(statesToUpdateAndDraw, delta);
+            this.drawStates(statesToUpdateAndDraw, delta);
         },
 
-        onInput: function (events) {
+        updateStates: function (states, delta) {
+            var i = states.length;
+            while (--i >= 0) {
+                state = states[i];
+                state.update(delta);
+            }
+        },
+
+        drawStates: function (states, delta) {
+            var i = states.length;
+            while (--i >= 0) {
+                state = states[i];
+                state.draw(delta);
+            }
+        },
+
+        handleInput: function (events) {
             // Input
         },
 
@@ -41,7 +68,7 @@ define([], function () {
                     state;
                 while (--i >= 0) {
                     state = this.stateStack[i];
-                    stateObscured(state);
+                    state.obscured();
                     if (state.modality === StateManager.modality.EXCLUSIVE)
                         break;
                 }
@@ -49,7 +76,7 @@ define([], function () {
                 this.stateStack.push(enterState);
 
                 // Entered
-                stateEntered(enterState);
+                enterState.entered();
             }
             return this;
         },
@@ -59,7 +86,7 @@ define([], function () {
 
                 // Exiting
                 exitState = this.stateStack.pop();
-                stateExiting(exitState);
+                exitState.exiting();
 
                 // Revealed
                 if (exitState.modality === StateManager.modality.EXCLUSIVE) {
@@ -67,7 +94,7 @@ define([], function () {
                         state;
                     while (--i >= 0) {
                         state = this.stateStack[i];
-                        stateRevealed(state);
+                        state.revealed();
                         if (state.modality === StateManager.modality.EXCLUSIVE)
                             break;
                     }
@@ -87,30 +114,6 @@ define([], function () {
             return this.size() === 0;
         }
     };
-
-    function stateEntered(state) {
-        if (typeof(state.entered) === 'function') {
-            state.entered();
-        }
-    }
-
-    function stateExiting(state) {
-        if (typeof(state.exiting) === 'function') {
-            state.exiting();
-        }
-    }
-
-    function stateRevealed(state) {
-        if (typeof(state.revealed) === 'function') {
-            state.revealed();
-        }
-    }
-    
-    function stateObscured(state) {
-        if (typeof(state.obscured) === 'function') {
-            state.obscured();
-        }
-    }
 
     return StateManager;
 });

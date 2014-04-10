@@ -20,10 +20,15 @@
     </script>
     <script src="../vendor/require.js"></script>
     <script>
-        require(['tests/spec/state-manager-spec'], function () {
-            var env = jasmine.getEnv();
-            env.execute();
-        });
+        require(
+            [
+                'tests/spec/state-manager-spec'
+            ],
+            function () {
+                var env = jasmine.getEnv();
+                env.execute();
+            }
+        );
     </script>
 
 </head>

@@ -23,7 +23,9 @@ define(['state-manager'], function (StateManager) {
                 entered: function () {},
                 exiting: function () {},
                 obscured: function () {},
-                revealed: function () {}
+                revealed: function () {},
+                update: function () {},
+                draw: function () {}
             };
         };
 
@@ -196,6 +198,46 @@ define(['state-manager'], function (StateManager) {
                 stateManager.change(states.c);
                 expect(stateManager.size()).toEqual(2);
                 expect(stateManager.peek()).toEqual(states.c);
+            });
+        });
+
+        describe('tick', function () {
+
+            beforeEach(function () {
+
+                /*
+                 *    | D [POPUP]     | update and draw third
+                 *    | C [POPUP]     | update and draw second
+                 *    | B [EXCLUSIVE] | update and draw first
+                 *    | A [POPUP]     |
+                 *    -----------------
+                 */
+
+                var self = this,
+                    stateA = createStubPopupState(),
+                    stateB = createStubExclusiveState(),
+                    stateC = createStubPopupState(),
+                    stateD = createStubPopupState();
+
+                this.callTrace = '';
+
+                stateA.update = function (delta) { self.callTrace += '[U-A:' + delta + ']'; };
+                stateB.update = function (delta) { self.callTrace += '[U-B:' + delta + ']'; };
+                stateC.update = function (delta) { self.callTrace += '[U-C:' + delta + ']'; };
+                stateD.update = function (delta) { self.callTrace += '[U-D:' + delta + ']'; };
+
+                stateA.draw = function (delta) { self.callTrace += '[D-A:' + delta + ']'; };
+                stateB.draw = function (delta) { self.callTrace += '[D-B:' + delta + ']'; };
+                stateC.draw = function (delta) { self.callTrace += '[D-C:' + delta + ']'; };
+                stateD.draw = function (delta) { self.callTrace += '[D-D:' + delta + ']'; };
+
+                stateManager.push(stateA).push(stateB).push(stateC).push(stateD);
+            });
+
+            it('should call update and draw on states in order', function () {
+                var delta = 5;
+                stateManager.tick(delta);
+                expect(this.callTrace).toEqual('[U-B:5][U-C:5][U-D:5][D-B:5][D-C:5][D-D:5]');
             });
         });
     });

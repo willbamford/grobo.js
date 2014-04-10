@@ -1,4 +1,4 @@
-(function (icx) {
+define(['states/game', 'states/menu'], function (GameState, MenuState) {
 
     var StateFactory = function () {
         this.states = {};
@@ -8,19 +8,18 @@
 
         getGame: function () {
             if (!this.states.game) {
-                this.states.game = new icx.states.Game();
+                this.states.game = new GameState();
             }
             return this.states.game;
         },
 
         getMenu: function () {
             if (!this.states.menu) {
-                this.states.menu = new icx.states.Menu();
+                this.states.menu = new MenuState();
             }
             return this.states.menu;
         }
     };
 
-    icx.StateFactory = StateFactory;
-
-} (window.icx));
+    return StateFactory;
+});

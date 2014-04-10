@@ -1,4 +1,4 @@
-(function (icx) {
+define([], function () {
 
     var MenuState = function () {};
 
@@ -17,6 +17,5 @@
         }
     };
 
-    icx.states.Menu = MenuState;
-
-} (window.icx));
+    return MenuState;
+});

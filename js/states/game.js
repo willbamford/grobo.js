@@ -1,4 +1,4 @@
-(function (icx) {
+define([], function () {
 
     var GameState = function () {};
 
@@ -17,6 +17,5 @@
         }
     };
 
-    icx.states.Game = GameState;
-
-} (window.icx));
+    return GameState;
+});

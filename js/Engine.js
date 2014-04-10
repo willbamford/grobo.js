@@ -1,4 +1,4 @@
-(function (icx) {
+define([], function () {
 
     var Engine = function (stateManager) {
         this.stateManager = stateManager;
@@ -30,6 +30,5 @@
         }
     };
 
-    icx.Engine = Engine;
-
-} (window.icx));
+    return Engine;
+});
