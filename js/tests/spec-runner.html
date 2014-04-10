@@ -11,14 +11,20 @@
     <script type="text/javascript" src="lib/jasmine-2.0.0/jasmine-html.js"></script>
     <script type="text/javascript" src="lib/jasmine-2.0.0/boot.js"></script>
 
-    <!-- Source files -->
     <script src="../vendor/underscore-min.js"></script>
-    <script>window.icx = {}</script>
-    <script src="../logger.js"></script>
-    <script src="../StateManager.js"></script>
 
-    <!-- Spec files -->
-    <script type="text/javascript" src="spec/StateManagerSpec.js"></script>
+    <script>
+        var require = {
+            baseUrl: '../'
+        };
+    </script>
+    <script src="../vendor/require.js"></script>
+    <script>
+        require(['tests/spec/state-manager-spec'], function () {
+            var env = jasmine.getEnv();
+            env.execute();
+        });
+    </script>
 
 </head>
 

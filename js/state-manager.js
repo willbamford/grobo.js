@@ -1,7 +1,7 @@
-(function (icx) {
+define([], function () {
 
     var StateManager = function () {
-        this.activeStates = [];
+        this.stateStack = [];
     };
 
     StateManager.modality = {
@@ -10,6 +10,15 @@
     },
 
     StateManager.prototype = {
+
+        onTick: function (delta) {
+            // Update
+            // Draw
+        },
+
+        onInput: function (events) {
+            // Input
+        },
 
         change: function (state) {
             var previous;
@@ -20,7 +29,7 @@
         },
         peek: function () {
             if (!this.isEmpty()) {
-                return _.last(this.activeStates);
+                return _.last(this.stateStack);
             }
             return null;
         },
@@ -28,16 +37,16 @@
             if (!this.contains(enterState)) {
 
                 // Obscuring
-                var i = this.activeStates.length,
+                var i = this.stateStack.length,
                     state;
                 while (--i >= 0) {
-                    state = this.activeStates[i];
+                    state = this.stateStack[i];
                     stateObscured(state);
                     if (state.modality === StateManager.modality.EXCLUSIVE)
                         break;
                 }
 
-                this.activeStates.push(enterState);
+                this.stateStack.push(enterState);
 
                 // Entered
                 stateEntered(enterState);
@@ -49,15 +58,15 @@
             if (!this.isEmpty()) {
 
                 // Exiting
-                exitState = this.activeStates.pop();
+                exitState = this.stateStack.pop();
                 stateExiting(exitState);
 
                 // Revealed
                 if (exitState.modality === StateManager.modality.EXCLUSIVE) {
-                    var i = this.activeStates.length,
+                    var i = this.stateStack.length,
                         state;
                     while (--i >= 0) {
-                        state = this.activeStates[i];
+                        state = this.stateStack[i];
                         stateRevealed(state);
                         if (state.modality === StateManager.modality.EXCLUSIVE)
                             break;
@@ -69,10 +78,10 @@
             return null;
         },
         contains: function (state) {
-            return _.contains(this.activeStates, state);
+            return _.contains(this.stateStack, state);
         },
         size: function () {
-            return this.activeStates.length;
+            return this.stateStack.length;
         },
         isEmpty: function () {
             return this.size() === 0;
@@ -103,6 +112,5 @@
         }
     }
 
-    icx.StateManager = StateManager;
-
-} (window.icx));
+    return StateManager;
+});

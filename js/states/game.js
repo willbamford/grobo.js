@@ -1,8 +1,8 @@
 (function (icx) {
 
-    var MenuState = function () {};
+    var GameState = function () {};
 
-    MenuState.prototype = {
+    GameState.prototype = {
         entered: function () {
             
         },
@@ -16,5 +16,7 @@
 
         }
     };
+
+    icx.states.Game = GameState;
 
 } (window.icx));
