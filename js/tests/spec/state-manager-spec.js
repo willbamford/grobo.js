@@ -1,4 +1,4 @@
-define(['state-manager'], function (StateManager) { 
+define(['state-manager', 'state-modality'], function (StateManager, stateModality) { 
 
     describe('State manager', function () {
         
@@ -10,11 +10,11 @@ define(['state-manager'], function (StateManager) {
             };
 
         function createStubPopupState() {
-            return createStubState(StateManager.modality.POPUP);
+            return createStubState(stateModality.POPUP);
         };
 
         function createStubExclusiveState() {
-            return createStubState(StateManager.modality.EXCLUSIVE);
+            return createStubState(stateModality.EXCLUSIVE);
         };
 
         function createStubState(modality) {

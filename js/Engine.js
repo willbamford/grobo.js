@@ -5,6 +5,7 @@ define([], function () {
         this.tickCount = 0;
         this.requestId = null;
         this.isRunning = false;
+        this.lastTime = null;
     };
 
     Engine.prototype = {
@@ -24,9 +25,16 @@ define([], function () {
         },
 
         tick: function () {
+            var currentTime = new Date(),
+                delta = 0;
             this.tickCount += 1;
+            if (this.lastTime) {
+                delta = currentTime - this.lastTime;
+            }
+            this.stateManager.tick(delta);
+            this.lastTime = currentTime;
+            
             this.requestId = window.requestAnimationFrame(this.tick.bind(this));
-            this.stateManager.tick();
         }
     };
 

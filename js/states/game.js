@@ -1,19 +1,28 @@
-define([], function () {
+define(['state-modality'], function (stateModality) {
 
-    var GameState = function () {};
+    var GameState = function (config) {
+        this.canvas = config.canvas;
+    };
 
     GameState.prototype = {
+        modality: stateModality.EXCLUSIVE,
         entered: function () {
             
         },
-        leaving: function () {
+        exiting: function () {
 
         },
-        obscuring: function () {
+        obscured: function () {
 
         },
         revealed: function () {
 
+        },
+        update: function (delta) {
+
+        },
+        draw: function (delta) {
+            this.canvas.fill('blue');
         }
     };
 

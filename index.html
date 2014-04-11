@@ -2,48 +2,20 @@
 <html>
     <head>
         <title>islandcx.js: game state machine in JS</title>
-
         <style>
-            .arcade {
+            .canvas {
                 background: black;
             }
         </style>
-
     </head>
     <body>
         <h1>islandcx.js</h1>
-
-        <canvas id="arcade" class="arcade" width="320" height="320">
+        <canvas id="canvas" class="canvas" width="320" height="320">
             Sorry, your browser does not support HTML5 canvas.
         </canvas>
-
         <ul id="logger"></ul>
-
         <script src="js/vendor/underscore-min.js"></script>
         <script src="js/vendor/animation-frame-shim.js"></script>
         <script data-main="js/main" src="js/vendor/require.js"></script>
-
-        <!--
-        <script>
-            window.icx = { states: {} };
-        </script>
-        <script src="js/logger.js"></script>
-        <script src="js/states/Game.js"></script>
-        <script src="js/states/Menu.js"></script>
-        <script src="js/StateFactory.js"></script>
-        <script src="js/StateManager.js"></script>
-        <script src="js/Engine.js"></script>
-        <script src="js/main.js"></script>
-        
-        <script>
-
-            // var ctx = document.getElementById('arcade').getContext('2d');
-            // ctx.fillStyle = 'red';
-            // ctx.fillRect(50, 50, 50, 50);
-
-            // window.ctx = ctx;
-
-        </script>
-        -->
     </body>
 </html>

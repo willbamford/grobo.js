@@ -1,13 +1,8 @@
-define([], function () {
+define(['state-modality'], function (stateModality) {
 
     var StateManager = function () {
         this.stateStack = [];
     };
-
-    StateManager.modality = {
-        POPUP: 0,
-        EXCLUSIVE: 1
-    },
 
     StateManager.prototype = {
 
@@ -19,7 +14,7 @@ define([], function () {
             while (--i >= 0) {
                 state = this.stateStack[i];
                 statesToUpdateAndDraw.push(state);
-                if (state.modality === StateManager.modality.EXCLUSIVE)
+                if (state.modality === stateModality.EXCLUSIVE)
                     break;
             }
 
@@ -69,7 +64,7 @@ define([], function () {
                 while (--i >= 0) {
                     state = this.stateStack[i];
                     state.obscured();
-                    if (state.modality === StateManager.modality.EXCLUSIVE)
+                    if (state.modality === stateModality.EXCLUSIVE)
                         break;
                 }
 
@@ -89,13 +84,13 @@ define([], function () {
                 exitState.exiting();
 
                 // Revealed
-                if (exitState.modality === StateManager.modality.EXCLUSIVE) {
+                if (exitState.modality === stateModality.EXCLUSIVE) {
                     var i = this.stateStack.length,
                         state;
                     while (--i >= 0) {
                         state = this.stateStack[i];
                         state.revealed();
-                        if (state.modality === StateManager.modality.EXCLUSIVE)
+                        if (state.modality === stateModality.EXCLUSIVE)
                             break;
                     }
                 }
