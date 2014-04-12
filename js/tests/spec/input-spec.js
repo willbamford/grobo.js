@@ -20,16 +20,21 @@ define(['input'], function (Input) {
         beforeEach(function () {
             mockCanvas = {
                 listeners: [],
-                addEventListener: function (eventName, fn) {
-                    this.listeners[eventName] = fn;
-                },
-                removeEventListener: function (eventName, fn, flag) {
-                    this.listeners[eventName] = null;
-                },
                 simulateClick: function (event) {
                     var listener = this.listeners['click'];
                     if (listener) {
                         listener(event);
+                    }
+                },
+                getElement: function () {
+                    var self = this;
+                    return {
+                        addEventListener: function (eventName, fn) {
+                            self.listeners[eventName] = fn;
+                        },
+                        removeEventListener: function (eventName, fn, flag) {
+                            self.listeners[eventName] = null;
+                        }
                     }
                 }
             };
@@ -40,13 +45,35 @@ define(['input'], function (Input) {
             expect(input).not.toBeNull();
         });
 
+        describe('wildcard event handling', function () {
+
+            it('should be able to register for all events', function () {
+                var fn = function (e) {};
+                spyOn(input, 'on');
+                input.onEvent(fn);
+                expect(input.on).toHaveBeenCalledWith('click', fn);
+            });
+
+            it('should be able to deregister all events', function () {
+                var fn = function (e) {};
+                spyOn(input, 'off');
+                input.offEvent(fn);
+                expect(input.off).toHaveBeenCalledWith('click', fn);
+            });
+        });
+
         describe('click event handling', function () {
 
             it('should be able to register for "click" events', function () {
-                var clicked = false;
-                input.on('click', function (e) {clicked = true;});
+                var clicked = false,
+                    name = null;
+                input.on('click', function (e) {
+                    clicked = true;
+                    name = e.name;
+                });
                 mockCanvas.simulateClick(createClientEvent(0, 0, 0, 0));
                 expect(clicked).toBeTruthy();
+                expect(name).toEqual('click');
             });
 
             it('should be able to deregister for "click" events', function () {

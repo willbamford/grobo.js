@@ -1,23 +1,19 @@
 define(['state-modality'], function (stateModality) {
 
     var StateManager = function (input) {
-        this.input = input;
-
-        // this.input.on('click', function (e) {
-        // });
-
-        this.stateStack = [];
+        input.onEvent(this.onInput);
+        this.stack = [];
     };
 
     StateManager.prototype = {
 
         tick: function (delta) {
 
-            var i = this.stateStack.length,
+            var i = this.stack.length,
                 state,
                 statesToUpdateAndDraw = [];
             while (--i >= 0) {
-                state = this.stateStack[i];
+                state = this.stack[i];
                 statesToUpdateAndDraw.push(state);
                 if (state.modality === stateModality.EXCLUSIVE)
                     break;
@@ -56,7 +52,7 @@ define(['state-modality'], function (stateModality) {
         },
         peek: function () {
             if (!this.isEmpty()) {
-                return _.last(this.stateStack);
+                return _.last(this.stack);
             }
             return null;
         },
@@ -64,16 +60,16 @@ define(['state-modality'], function (stateModality) {
             if (!this.contains(enterState)) {
 
                 // Obscuring
-                var i = this.stateStack.length,
+                var i = this.stack.length,
                     state;
                 while (--i >= 0) {
-                    state = this.stateStack[i];
+                    state = this.stack[i];
                     state.obscured();
                     if (state.modality === stateModality.EXCLUSIVE)
                         break;
                 }
 
-                this.stateStack.push(enterState);
+                this.stack.push(enterState);
 
                 // Entered
                 enterState.entered();
@@ -85,15 +81,15 @@ define(['state-modality'], function (stateModality) {
             if (!this.isEmpty()) {
 
                 // Exiting
-                exitState = this.stateStack.pop();
+                exitState = this.stack.pop();
                 exitState.exiting();
 
                 // Revealed
                 if (exitState.modality === stateModality.EXCLUSIVE) {
-                    var i = this.stateStack.length,
+                    var i = this.stack.length,
                         state;
                     while (--i >= 0) {
-                        state = this.stateStack[i];
+                        state = this.stack[i];
                         state.revealed();
                         if (state.modality === stateModality.EXCLUSIVE)
                             break;
@@ -105,13 +101,16 @@ define(['state-modality'], function (stateModality) {
             return null;
         },
         contains: function (state) {
-            return _.contains(this.stateStack, state);
+            return _.contains(this.stack, state);
         },
         size: function () {
-            return this.stateStack.length;
+            return this.stack.length;
         },
         isEmpty: function () {
             return this.size() === 0;
+        },
+        onInput: function (event) {
+            this.stack[this.stack.length - 1].onInput(event);
         }
     };
 

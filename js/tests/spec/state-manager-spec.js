@@ -25,12 +25,25 @@ define(['state-manager', 'state-modality'], function (StateManager, stateModalit
                 obscured: function () {},
                 revealed: function () {},
                 update: function () {},
-                draw: function () {}
+                draw: function () {},
+                onInput: function (event) {}
             };
         };
 
+        // function createConsumableEvent() {
+        //     return {
+        //         isConsumed: false;
+        //         consume: function () {
+        //             this.isConsumed = true;
+        //         }
+        //     };
+        // };
+
         beforeEach(function () {
-            stateManager = new StateManager();
+            var input = {
+                onEvent: function () {}
+            };
+            stateManager = new StateManager(input);
         });
 
         it('should contain no active states initially', function () {
@@ -238,6 +251,48 @@ define(['state-manager', 'state-modality'], function (StateManager, stateModalit
                 var delta = 5;
                 stateManager.tick(delta);
                 expect(this.callTrace).toEqual('[U-B:5][U-C:5][U-D:5][D-B:5][D-C:5][D-D:5]');
+            });
+        });
+
+        describe('input', function () {
+
+            it('should register for all events', function () {
+                var stateManager,
+                    input = {
+                        onEvent: function (fn) {}
+                    };
+                spyOn(input, 'onEvent');
+                stateManager = new StateManager(input);
+                expect(input.onEvent, stateManager.onInput);
+            });
+
+            it('should pass input events through the stack until consumed', function () {
+                
+                /*
+                 *    | D [POPUP]     | update and draw third
+                 *    | C [POPUP]     | update and draw second
+                 *    | B [EXCLUSIVE] | update and draw first
+                 *    | A [POPUP]     |
+                 *    -----------------
+                 */
+
+                var self = this,
+                    stateA = createStubPopupState(),
+                    stateB = createStubExclusiveState(),
+                    stateC = createStubPopupState(),
+                    stateD = createStubPopupState();
+
+                stateManager.push(stateA).push(stateB).push(stateC).push(stateD);
+                
+                spyOn(stateA, 'onInput');
+                spyOn(stateB, 'onInput');
+                spyOn(stateC, 'onInput');
+                spyOn(stateD, 'onInput');
+
+                stateManager.onInput({
+                });
+
+                expect(stateD.onInput).toHaveBeenCalled();
             });
         });
     });

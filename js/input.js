@@ -1,7 +1,7 @@
 define([], function () {
 
     var Input = function (canvas) {
-        this.canvas = canvas;
+        this.canvas = canvas.getElement();
     };
 
     Input.prototype = {
@@ -11,6 +11,7 @@ define([], function () {
                     this.canvas.addEventListener('click', function (e) {
                         var coords = generateRelativeCoords(e);
                         var event = {
+                            name: 'click',
                             x: coords.x,
                             y: coords.y
                         };
@@ -26,6 +27,12 @@ define([], function () {
                     this.canvas.removeEventListener('click', fn, false);
                     break;
             }
+        },
+        onEvent: function (fn) {
+            this.on('click', fn);
+        },
+        offEvent: function (fn) {
+            this.off('click', fn);
         }
     };
 
