@@ -1,6 +1,11 @@
 define(['state-modality'], function (stateModality) {
 
-    var StateManager = function () {
+    var StateManager = function (input) {
+        this.input = input;
+
+        // this.input.on('click', function (e) {
+        // });
+
         this.stateStack = [];
     };
 

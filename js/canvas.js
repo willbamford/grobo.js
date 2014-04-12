@@ -1,25 +1,25 @@
 define([], function () {
 
-    var canvas,
-        context2d;
-    return {
-        init: function () {
-            canvas = document.getElementById('canvas');
-            context2d = canvas.getContext('2d');
+    var Canvas = function (elementId) {
+        this.element = document.getElementById(elementId);
+        this.context2d = this.element.getContext('2d');
+    };
 
-            // TODO: remove
-            window.canvas = canvas;
-            window.ctx = context2d;
-        },
+    Canvas.prototype = {
         clear: function () {
-            context2d.clearRect(0, 0, canvas.width, canvas.height);
+            this.context2d.clearRect(0, 0, this.element.width, this.element.height);
         },
         fill: function (style) {
-            context2d.fillStyle = style;
-            context2d.fillRect(0, 0, canvas.width, canvas.height);
+            this.context2d.fillStyle = style;
+            this.context2d.fillRect(0, 0, this.element.width, this.element.height);
+        },
+        getElement: function () {
+            return this.element;
         },
         getContext: function () {
-            return context2d;
+            return this.context2d;
         }
     };
+
+    return Canvas;
 });

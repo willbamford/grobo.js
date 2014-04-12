@@ -33,7 +33,7 @@ define(['state-manager', 'state-modality'], function (StateManager, stateModalit
             stateManager = new StateManager();
         });
 
-        it ('should contain no active states initially', function () {
+        it('should contain no active states initially', function () {
             expect(stateManager.isEmpty()).toBeTruthy();
         });
 

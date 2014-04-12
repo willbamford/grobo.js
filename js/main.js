@@ -2,10 +2,14 @@ require(
     [   'state-factory',
         'state-manager',
         'engine',
-        'canvas'
+        'canvas',
+        'input'
     ],
-    function (StateFactory, StateManager, Engine, canvas) {
-        var stateManager = new StateManager(),
+    function (StateFactory, StateManager, Engine, Canvas, Input) {
+
+        var canvas = new Canvas('canvas'),
+            input = new Input(canvas),
+            stateManager = new StateManager(input),
             config = {
                 stateManager: stateManager,
                 canvas: canvas
@@ -14,7 +18,7 @@ require(
             engine = new Engine(stateManager),
             menuState = stateFactory.getMenu(),
             gameState = stateFactory.getGame();
-        canvas.init();
+
         stateManager.change(gameState);
         engine.start();
 
