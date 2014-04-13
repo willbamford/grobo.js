@@ -1,7 +1,7 @@
 define(['lib', 'state-modality'], function (lib, stateModality) {
 
     var StateManager = function (input) {
-        input.onEvent(this.onInput);
+        input.onEvent(this.onInput.bind(this));
         this.stack = [];
     };
 
