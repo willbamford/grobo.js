@@ -15,17 +15,15 @@ require(
                 canvas: canvas
             },
             stateFactory = new StateFactory({stateManager: stateManager, canvas: canvas}),
-            engine = new Engine(stateManager),
-            menuState = stateFactory.getMenu(),
-            gameState = stateFactory.getGame();
+            engine = new Engine(stateManager);
 
-        stateManager.change(gameState);
+        stateManager.change(stateFactory.getMenu());
         engine.start();
 
-        window.setTimeout(function () { stateManager.push(menuState); }, 2000);
-        window.setTimeout(function () { stateManager.pop(); }, 3000);
-        window.setTimeout(function () { stateManager.push(menuState); }, 4000);
+        // window.setTimeout(function () { stateManager.push(menuState); }, 2000);
+        // window.setTimeout(function () { stateManager.pop(); }, 3000);
+        // window.setTimeout(function () { stateManager.push(menuState); }, 4000);
 
-        window.setTimeout(function () { engine.stop(); }, 5000);
+        window.setTimeout(function () { engine.stop(); }, 10000);
     }
 );

@@ -8,13 +8,11 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
     StateManager.prototype = {
 
         tick: function (delta) {
-
             var statesToUpdateAndDraw = [];
             lib.reverseUntil(this.stack, function (state) {
                 statesToUpdateAndDraw.push(state);
                 return state.modality === stateModality.EXCLUSIVE;
             });
-
             this.updateStates(statesToUpdateAndDraw, delta);
             this.drawStates(statesToUpdateAndDraw, delta);
         },

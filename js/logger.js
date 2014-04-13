@@ -9,10 +9,10 @@ define([], function () {
             list.appendChild(item);
         },
         info: function (message) {
-            logger.log('Info: ' + message);
+            this.log('Info: ' + message);
         },
         err: function (e) {
-            logger.log('Error: ' + e);
+            this.log('Error: ' + e);
         }
     };
 });
