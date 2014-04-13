@@ -8,9 +8,8 @@ define([], function () {
             }
         },
         reverseEach: function (arr, fn) {
-            var i = arr.length, el;
+            var i = arr.length;
             while (--i >= 0) {
-                el = arr[i];
                 fn(arr[i], i);
             }
         },
@@ -34,9 +33,8 @@ define([], function () {
             }
         },
         reverseUntil: function (arr, fn) {
-            var i = arr.length, el;
+            var i = arr.length;
             while (--i >= 0) {
-                el = arr[i];
                 if (fn(arr[i])) break;
             }
         }
