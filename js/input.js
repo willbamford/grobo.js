@@ -10,11 +10,9 @@ define([], function () {
                 case 'click':
                     this.canvas.addEventListener('click', function (e) {
                         var coords = generateRelativeCoords(e);
-                        var event = {
-                            name: 'click',
-                            x: coords.x,
-                            y: coords.y
-                        };
+                        event = generateConsumableEvent('click');
+                        event.x = coords.x;
+                        event.y = coords.y;
                         fn(event);
                         e.preventDefault();
                     });
@@ -40,6 +38,16 @@ define([], function () {
         return {
             x: event.clientX - event.target.offsetLeft,
             y: event.clientY - event.target.offsetTop 
+        };
+    }
+
+    function generateConsumableEvent(name) {
+        return {
+            name: name,
+            isConsumed: false,
+            consume: function () {
+                this.isConsumed = true;
+            }
         };
     }
 

@@ -23,6 +23,9 @@ define(['state-modality'], function (stateModality) {
         },
         draw: function (delta) {
             this.canvas.fill('green');
+        },
+        onInput: function (event) {
+            console.log('Menu event');
         }
     };
 

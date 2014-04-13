@@ -23,6 +23,9 @@ define(['state-modality'], function (stateModality) {
         },
         draw: function (delta) {
             this.canvas.fill('blue');
+        },
+        onInput: function (event) {
+            console.log('Game event');
         }
     };
 

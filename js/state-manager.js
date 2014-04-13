@@ -1,4 +1,4 @@
-define(['state-modality'], function (stateModality) {
+define(['lib', 'state-modality'], function (lib, stateModality) {
 
     var StateManager = function (input) {
         input.onEvent(this.onInput);
@@ -9,38 +9,26 @@ define(['state-modality'], function (stateModality) {
 
         tick: function (delta) {
 
-            var i = this.stack.length,
-                state,
-                statesToUpdateAndDraw = [];
-            while (--i >= 0) {
-                state = this.stack[i];
+            var statesToUpdateAndDraw = [];
+            lib.reverseUntil(this.stack, function (state) {
                 statesToUpdateAndDraw.push(state);
-                if (state.modality === stateModality.EXCLUSIVE)
-                    break;
-            }
+                return state.modality === stateModality.EXCLUSIVE;
+            });
 
             this.updateStates(statesToUpdateAndDraw, delta);
             this.drawStates(statesToUpdateAndDraw, delta);
         },
 
         updateStates: function (states, delta) {
-            var i = states.length;
-            while (--i >= 0) {
-                state = states[i];
+            lib.reverseEach(states, function (state) {
                 state.update(delta);
-            }
+            });
         },
 
         drawStates: function (states, delta) {
-            var i = states.length;
-            while (--i >= 0) {
-                state = states[i];
+           lib.reverseEach(states, function (state) {
                 state.draw(delta);
-            }
-        },
-
-        handleInput: function (events) {
-            // Input
+            });
         },
 
         change: function (state) {
@@ -52,7 +40,7 @@ define(['state-modality'], function (stateModality) {
         },
         peek: function () {
             if (!this.isEmpty()) {
-                return _.last(this.stack);
+                return lib.last(this.stack);
             }
             return null;
         },
@@ -60,14 +48,10 @@ define(['state-modality'], function (stateModality) {
             if (!this.contains(enterState)) {
 
                 // Obscuring
-                var i = this.stack.length,
-                    state;
-                while (--i >= 0) {
-                    state = this.stack[i];
+                lib.reverseUntil(this.stack, function (state) {
                     state.obscured();
-                    if (state.modality === stateModality.EXCLUSIVE)
-                        break;
-                }
+                    return state.modality === stateModality.EXCLUSIVE;
+                });
 
                 this.stack.push(enterState);
 
@@ -86,14 +70,10 @@ define(['state-modality'], function (stateModality) {
 
                 // Revealed
                 if (exitState.modality === stateModality.EXCLUSIVE) {
-                    var i = this.stack.length,
-                        state;
-                    while (--i >= 0) {
-                        state = this.stack[i];
+                    lib.reverseUntil(this.stack, function (state) {
                         state.revealed();
-                        if (state.modality === stateModality.EXCLUSIVE)
-                            break;
-                    }
+                        return state.modality === stateModality.EXCLUSIVE;
+                    });
                 }
 
                 return exitState;
@@ -101,7 +81,7 @@ define(['state-modality'], function (stateModality) {
             return null;
         },
         contains: function (state) {
-            return _.contains(this.stack, state);
+            return lib.contains(this.stack, state);
         },
         size: function () {
             return this.stack.length;
@@ -110,7 +90,10 @@ define(['state-modality'], function (stateModality) {
             return this.size() === 0;
         },
         onInput: function (event) {
-            this.stack[this.stack.length - 1].onInput(event);
+            lib.reverseUntil(this.stack, function (state) {
+                state.onInput(event);
+                return state.modality === stateModality.EXCLUSIVE || event.isConsumed();
+            });
         }
     };
 

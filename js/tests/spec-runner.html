@@ -11,8 +11,6 @@
     <script type="text/javascript" src="lib/jasmine-2.0.0/jasmine-html.js"></script>
     <script type="text/javascript" src="lib/jasmine-2.0.0/boot.js"></script>
 
-    <script src="../vendor/underscore-min.js"></script>
-
     <script>
         var require = {
             baseUrl: '../'
@@ -22,6 +20,7 @@
     <script>
         require(
             [
+                'tests/spec/lib-spec',
                 'tests/spec/input-spec',
                 'tests/spec/state-manager-spec'
             ],
