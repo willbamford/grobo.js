@@ -7,24 +7,29 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
 
     StateManager.prototype = {
 
-        tick: function (delta) {
-            var statesToUpdateAndDraw = [];
+        getActiveStates: function () {
+            var activeStates = [];
             lib.reverseUntil(this.stack, function (state) {
-                statesToUpdateAndDraw.push(state);
+                activeStates.push(state);
                 return state.modality === stateModality.EXCLUSIVE;
             });
-            this.updateStates(statesToUpdateAndDraw, delta);
-            this.drawStates(statesToUpdateAndDraw, delta);
+            return activeStates.reverse();
         },
 
-        updateStates: function (states, delta) {
-            lib.reverseEach(states, function (state) {
+        tick: function (delta) {
+            var activeStates = this.getActiveStates();
+            this.update(activeStates, delta);
+            this.draw(activeStates, delta);
+        },
+
+        update: function (states, delta) {
+            lib.each(states, function (state) {
                 state.update(delta);
             });
         },
 
-        drawStates: function (states, delta) {
-           lib.reverseEach(states, function (state) {
+        draw: function (states, delta) {
+           lib.each(states, function (state) {
                 state.draw(delta);
             });
         },
@@ -55,6 +60,8 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
 
                 // Entered
                 enterState.entered();
+
+                // this.update();
             }
             return this;
         },
@@ -73,6 +80,8 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
                         return state.modality === stateModality.EXCLUSIVE;
                     });
                 }
+
+                // this.update();
 
                 return exitState;
             }
