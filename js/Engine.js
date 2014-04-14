@@ -1,14 +1,15 @@
 define([], function () {
 
-    var Engine = function (stateManager) {
-        this.stateManager = stateManager;
-        this.tickCount = 0;
-        this.requestId = null;
-        this.isRunning = false;
-        this.lastTime = null;
-    };
+    var refEngine = {
 
-    Engine.prototype = {
+        init: function (stateManager) {
+            this.stateManager = stateManager;
+            this.tickCount = 0;
+            this.requestId = null;
+            this.isRunning = false;
+            this.lastTime = null;
+            return this;
+        },
 
         start: function () {
             if (!this.isRunning) {
@@ -33,10 +34,10 @@ define([], function () {
             }
             this.stateManager.tick(delta);
             this.lastTime = currentTime;
-            
+
             this.requestId = window.requestAnimationFrame(this.tick.bind(this));
         }
     };
 
-    return Engine;
+    return refEngine;
 });

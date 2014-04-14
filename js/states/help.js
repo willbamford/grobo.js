@@ -1,33 +1,33 @@
 define(['state-modality', 'logger'], function (stateModality, logger) {
 
-    var GameState = function (config) {
+    var HelpState = function (config) {
         this.canvas = config.canvas;
         this.stateFactory = config.stateFactory;
         this.stateManager = config.stateManager;
     };
 
-    GameState.prototype = {
-        modality: stateModality.EXCLUSIVE,
+    HelpState.prototype = {
+        modality: stateModality.POPUP,
         entered: function () {
-            logger.info('Entered game state');
+            logger.info('Entered help state');
         },
         exiting: function () {
-            logger.info('Exiting game state');
+            logger.info('Exiting help state');
         },
         obscured: function () {
-            logger.info('Obscured game state');
+            logger.info('Obscured help state');
         },
         revealed: function () {
-            logger.info('Revealed game state');
+            logger.info('Revealed help state');
         },
         update: function (delta) {},
         draw: function (delta) {
-            this.canvas.fill('blue');
+            this.canvas.fill('rgba(0, 0, 0, 0.5)');
         },
         onInput: function (event) {
-            this.stateManager.push(this.stateFactory.getHelp());
+            this.stateManager.pop();
         }
     };
 
-    return GameState;
+    return HelpState;
 });

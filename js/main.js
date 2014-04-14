@@ -5,17 +5,17 @@ require(
         'canvas',
         'input'
     ],
-    function (StateFactory, StateManager, Engine, Canvas, Input) {
+    function (refStateFactory, refStateManager, refEngine, refCanvas, refInput) {
 
-        var canvas = new Canvas('canvas'),
-            input = new Input(canvas),
-            stateManager = new StateManager(input),
+        var canvas = Object.create(refCanvas).init('canvas'),
+            input = Object.create(refInput).init(canvas),
+            stateManager = Object.create(refStateManager).init(input),
             config = {
                 stateManager: stateManager,
                 canvas: canvas
             },
-            stateFactory = new StateFactory({stateManager: stateManager, canvas: canvas}),
-            engine = new Engine(stateManager);
+            stateFactory = Object.create(refStateFactory).init(config),
+            engine = Object.create(refEngine).init(stateManager);
 
         stateManager.change(stateFactory.getMenu());
         engine.start();

@@ -1,10 +1,11 @@
 define([], function () {
 
-    var Input = function (canvas) {
-        this.canvas = canvas.getElement();
-    };
+    var refInput = {
 
-    Input.prototype = {
+        init: function (canvas) {
+            this.canvas = canvas.getElement();
+            return this;
+        },
         on: function (eventName, fn) {
             switch (eventName) {
                 case 'click':
@@ -51,5 +52,5 @@ define([], function () {
         };
     }
 
-    return Input;
+    return refInput;
 });

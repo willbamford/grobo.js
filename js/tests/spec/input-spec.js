@@ -1,4 +1,4 @@
-define(['input'], function (Input) { 
+define(['input'], function (refInput) { 
 
     describe('Input', function () {
         
@@ -38,7 +38,11 @@ define(['input'], function (Input) {
                     }
                 }
             };
-            input = new Input(mockCanvas);
+            input = Object.create(refInput).init(mockCanvas);
+        });
+
+        it('should return "this" on init', function () {
+            expect(typeof Object.create(refInput)).toEqual('object');
         });
 
         it('should be able to instantiate', function () {

@@ -1,4 +1,4 @@
-define(['state-manager', 'state-modality'], function (StateManager, stateModality) { 
+define(['state-manager', 'state-modality'], function (refStateManager, stateModality) { 
 
     describe('State manager', function () {
         
@@ -44,7 +44,11 @@ define(['state-manager', 'state-modality'], function (StateManager, stateModalit
             var input = {
                 onEvent: function () {}
             };
-            stateManager = new StateManager(input);
+            stateManager = Object.create(refStateManager).init(input);
+        });
+
+        it('should return "this" on init', function () {
+            expect(typeof Object.create(refStateManager)).toEqual('object');
         });
 
         it('should contain no active states initially', function () {
@@ -98,10 +102,10 @@ define(['state-manager', 'state-modality'], function (StateManager, stateModalit
                 spyOn(stateD, 'obscured');
 
                 stateManager.push(stateX);
-                // expect(stateA.obscured).not.toHaveBeenCalled();
-                // expect(stateB.obscured).toHaveBeenCalled();
-                // expect(stateC.obscured).toHaveBeenCalled();
-                // expect(stateD.obscured).toHaveBeenCalled();
+                expect(stateA.obscured).not.toHaveBeenCalled();
+                expect(stateB.obscured).toHaveBeenCalled();
+                expect(stateC.obscured).toHaveBeenCalled();
+                expect(stateD.obscured).toHaveBeenCalled();
             });
 
             it('should increase stack size', function () {
@@ -192,9 +196,7 @@ define(['state-manager', 'state-modality'], function (StateManager, stateModalit
                     stateB = createStubPopupState();
 
                 stateManager.push(stateA).push(stateB);
-
                 spyOn(stateA, 'revealed'); // Not
-
                 stateManager.pop();
                 expect(stateA.revealed).not.toHaveBeenCalled();
             });
@@ -282,13 +284,12 @@ define(['state-manager', 'state-modality'], function (StateManager, stateModalit
             });
 
             it('should register for all events', function () {
-                var stateManager,
-                    input = {
+                var input = {
                         onEvent: function (fn) {}
                     };
                 spyOn(input, 'onEvent');
-                stateManager = new StateManager(input);
-                expect(input.onEvent, stateManager.onInput);
+                stateManager = Object.create(refStateManager).init(input);
+                expect(input.onEvent, stateManager.onInput).toHaveBeenCalled();
             });
 
             it('should pass input events through the stack until exclusive state', function () {             

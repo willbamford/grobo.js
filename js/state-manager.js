@@ -1,11 +1,12 @@
 define(['lib', 'state-modality'], function (lib, stateModality) {
 
-    var StateManager = function (input) {
-        input.onEvent(this.onInput.bind(this));
-        this.stack = [];
-    };
+    var refStateManager = {
 
-    StateManager.prototype = {
+        init: function (input) {
+            input.onEvent(this.onInput.bind(this));
+            this.stack = [];
+            return this;
+        },
 
         getActiveStates: function () {
             var activeStates = [];
@@ -60,8 +61,6 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
 
                 // Entered
                 enterState.entered();
-
-                // this.update();
             }
             return this;
         },
@@ -80,8 +79,6 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
                         return state.modality === stateModality.EXCLUSIVE;
                     });
                 }
-
-                // this.update();
 
                 return exitState;
             }
@@ -104,5 +101,5 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
         }
     };
 
-    return StateManager;
+    return refStateManager;
 });
