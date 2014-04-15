@@ -11,8 +11,8 @@ define([], function () {
             switch (eventName) {
                 case 'click':
                     this.canvas.addEventListener('click', function (e) {
-                        var coords = generateRelativeCoords(e);
-                        event = generateConsumableEvent('click');
+                        var coords = generateRelativeCoords(e),
+                            event = generateConsumableEvent('click');
                         event.x = coords.x;
                         event.y = coords.y;
                         fn(event);
