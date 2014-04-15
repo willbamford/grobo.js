@@ -6,6 +6,7 @@ define([], function () {
             this.canvas = canvas.getElement();
             return this;
         },
+
         on: function (eventName, fn) {
             switch (eventName) {
                 case 'click':
@@ -20,6 +21,7 @@ define([], function () {
                     break;
             }
         },
+
         off: function (eventName, fn) {
             switch (eventName) {
                 case 'click':
@@ -27,9 +29,11 @@ define([], function () {
                     break;
             }
         },
+
         onEvent: function (fn) {
             this.on('click', fn);
         },
+
         offEvent: function (fn) {
             this.off('click', fn);
         }

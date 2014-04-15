@@ -5,6 +5,7 @@ define([], function () {
     }
 
     var lib = {
+
         each: function (arr, fn) {
             checkArray(arr);
             var i = 0, len = arr.length;
@@ -13,6 +14,7 @@ define([], function () {
                 i++;
             }
         },
+
         reverseEach: function (arr, fn) {
             checkArray(arr);
             var i = arr.length;
@@ -20,6 +22,7 @@ define([], function () {
                 fn(arr[i], i);
             }
         },
+
         contains: function (arr, el) {
             checkArray(arr);
             var i = 0, len = arr.length;
@@ -30,10 +33,12 @@ define([], function () {
             }
             return false;
         },
+
         last: function (arr) {
             checkArray(arr);
             return arr[arr.length - 1];
         },
+
         until: function (arr, fn) {
             checkArray(arr);
             var i = 0, len = arr.length;
@@ -42,6 +47,7 @@ define([], function () {
                 i++;
             }
         },
+
         reverseUntil: function (arr, fn) {
             checkArray(arr);
             var i = arr.length;
