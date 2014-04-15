@@ -1,21 +1,23 @@
-define([], function () {
+define(['ui/view'], function (refView) {
 
-    var Button = function (canvas, label, x, y, width, height) {
-        this.canvas = canvas;
+    var refButton = Object.create(refView);
+
+    refButton.init = function (canvas, parentView, width, height, x, y, label) {
+        this._viewInit(canvas, parentView, width, height, x, y);
         this.label = label;
-        this.x = x; this.y = y;
-        this.width = width; this.height = height;
+        return this;
     };
 
-    Button.prototype = {
-        update: function (delta) {
+    refButton.update = function (delta) {
 
-        },
-        draw: function (delta) {
-            this.canvas.fillRect('white', this.x, this.y, this.width, this.height);
-            this.canvas.fillText('black', this.label, this.x + 20, this.y + 20);
-        }
+    },
+
+    refButton.draw = function (delta) {
+        var x = this.getWorldX(),
+            y = this.getWorldY();
+        this.canvas.fillRect('white', x, y, this.width, this.height);
+        this.canvas.fillText('black', this.label, x + 20, y + 20);
     };
 
-    return Button;
+    return refButton;
 });

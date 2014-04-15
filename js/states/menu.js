@@ -1,4 +1,4 @@
-define(['state-modality', 'ui/button', 'logger'], function (stateModality, Button, logger) {
+define(['state-modality', 'ui/button', 'logger'], function (stateModality, refButton, logger) {
 
     var refMenuState = {
         modality: stateModality.EXCLUSIVE,
@@ -6,8 +6,8 @@ define(['state-modality', 'ui/button', 'logger'], function (stateModality, Butto
             this.canvas = config.canvas;
             this.stateFactory = config.stateFactory;
             this.stateManager = config.stateManager;
-            this.button1 = new Button(this.canvas, 'Hit me!', 20, 20, 100, 40);
-            this.button2 = new Button(this.canvas, 'Button 2', 20, 80, 100, 40);
+            this.button1 = Object.create(refButton).init(this.canvas, null, 100, 40, 20, 20, 'Button 1');
+            this.button2 = Object.create(refButton).init(this.canvas, null, 100, 40, 20, 80, 'Button 2');
             return this;
         },
         entered: function () {
@@ -29,6 +29,7 @@ define(['state-modality', 'ui/button', 'logger'], function (stateModality, Butto
             this.button2.draw(delta);
         },
         onInput: function (event) {
+            event.consume();
             this.stateManager.push(this.stateFactory.getGame());
         }
     };
