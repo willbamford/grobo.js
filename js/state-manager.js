@@ -73,12 +73,10 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
                 exitState.exiting();
 
                 // Revealed
-                if (exitState.modality === stateModality.EXCLUSIVE) {
-                    lib.reverseUntil(this.stack, function (state) {
-                        state.revealed();
-                        return state.modality === stateModality.EXCLUSIVE;
-                    });
-                }
+                lib.reverseUntil(this.stack, function (state) {
+                    state.revealed();
+                    return state.modality === stateModality.EXCLUSIVE;
+                });
 
                 return exitState;
             }

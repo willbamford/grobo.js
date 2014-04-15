@@ -183,23 +183,6 @@ define(['state-manager', 'state-modality'], function (refStateManager, stateModa
                 expect(stateC.revealed).toHaveBeenCalled();
                 expect(stateD.revealed).not.toHaveBeenCalled();
             });
-
-            it('should not invoke "revealed" if popped state is a popup', function () {
-
-                /*
-                 *    | B [POPUP]     | Pop
-                 *    | A [EXCLUSIVE] | already revealed
-                 *    -----------------
-                 */
-
-                var stateA = createStubExclusiveState(),
-                    stateB = createStubPopupState();
-
-                stateManager.push(stateA).push(stateB);
-                spyOn(stateA, 'revealed'); // Not
-                stateManager.pop();
-                expect(stateA.revealed).not.toHaveBeenCalled();
-            });
         });
 
         describe('change', function () {
