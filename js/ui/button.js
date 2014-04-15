@@ -3,7 +3,7 @@ define(['ui/view'], function (refView) {
     var refButton = Object.create(refView);
 
     refButton.init = function (canvas, parentView, width, height, x, y, label) {
-        this._viewInit(canvas, parentView, width, height, x, y);
+        this._initView(canvas, parentView, width, height, x, y);
         this.label = label;
         return this;
     };
