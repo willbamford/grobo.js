@@ -42,12 +42,14 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
                 this.push(state);
             }
         },
+
         peek: function () {
             if (!this.isEmpty()) {
                 return lib.last(this.stack);
             }
             return null;
         },
+
         push: function (enterState) {
             if (!this.contains(enterState)) {
 
@@ -64,6 +66,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
             }
             return this;
         },
+
         pop: function () {
             var exitState = null;
             if (!this.isEmpty()) {
@@ -82,15 +85,19 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
             }
             return null;
         },
+
         contains: function (state) {
             return lib.contains(this.stack, state);
         },
+
         size: function () {
             return this.stack.length;
         },
+
         isEmpty: function () {
             return this.size() === 0;
         },
+
         onInput: function (event) {
             lib.reverseUntil(this.stack, function (state) {
                 state.onInput(event);
