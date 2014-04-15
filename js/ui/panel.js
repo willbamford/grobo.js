@@ -8,11 +8,11 @@ define(['ui/view'], function (refView) {
         return this;
     };
 
-    refPanel.draw = function (delta) {
+    refPanel.draw = function () {
         var x = this.getWorldX(),
             y = this.getWorldY();
         this.canvas.fillRect(this.style, this.x, this.y, this.width, this.height);
-        this.drawChildren(delta);
+        this.drawChildren();
     };
 
     return refPanel;

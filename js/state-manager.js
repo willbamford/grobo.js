@@ -20,7 +20,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
         tick: function (delta) {
             var activeStates = this.getActiveStates();
             this.update(activeStates, delta);
-            this.draw(activeStates, delta);
+            this.draw(activeStates);
         },
 
         update: function (states, delta) {
@@ -31,7 +31,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
 
         draw: function (states, delta) {
            lib.each(states, function (state) {
-                state.draw(delta);
+                state.draw();
             });
         },
 

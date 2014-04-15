@@ -47,13 +47,13 @@ define(['lib'], function (lib) {
             return this.parent ? this.parent.getWorldY() + this.y : this.y;
         },
 
-        draw: function (delta) {
-            this.drawChildren(delta);
+        draw: function () {
+            this.drawChildren();
         },
 
-        drawChildren: function (delta) {
+        drawChildren: function () {
             lib.each(this.children, function (childView) {
-                childView.draw(delta);
+                childView.draw();
             });
         }
     };

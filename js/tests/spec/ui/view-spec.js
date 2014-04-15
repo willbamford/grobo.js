@@ -87,16 +87,14 @@ define(['ui/view'], function (refView) {
         describe('draw', function () {
 
             it('should draw child views', function () {
-                var delta = 10;
                 view.init({}, null, 0, 0, 0, 0);
                 spyOn(view, 'drawChildren');
-                view.draw(delta);
-                expect(view.drawChildren).toHaveBeenCalledWith(delta);
+                view.draw();
+                expect(view.drawChildren).toHaveBeenCalled();
             });
 
             it('should invoke "draw" on all children when drawing all children', function () {
-                var delta = 99,
-                    child1 = Object.create(refView),
+                var child1 = Object.create(refView),
                     child2 = Object.create(refView),
                     child3 = Object.create(refView);
                 spyOn(child1, 'draw');
@@ -104,10 +102,10 @@ define(['ui/view'], function (refView) {
                 spyOn(child3, 'draw');
                 view.init();
                 view.addChild(child1).addChild(child2).addChild(child3);
-                view.draw(delta);
-                expect(child1.draw).toHaveBeenCalledWith(delta);
-                expect(child2.draw).toHaveBeenCalledWith(delta);
-                expect(child3.draw).toHaveBeenCalledWith(delta);
+                view.draw();
+                expect(child1.draw).toHaveBeenCalled();
+                expect(child2.draw).toHaveBeenCalled();
+                expect(child3.draw).toHaveBeenCalled();
             });
         });
     });

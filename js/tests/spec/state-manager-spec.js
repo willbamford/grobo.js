@@ -225,10 +225,10 @@ define(['state-manager', 'state-modality'], function (refStateManager, stateModa
                 stateC.update = function (delta) { self.callTrace += '[U-C:' + delta + ']'; };
                 stateD.update = function (delta) { self.callTrace += '[U-D:' + delta + ']'; };
 
-                stateA.draw = function (delta) { self.callTrace += '[D-A:' + delta + ']'; };
-                stateB.draw = function (delta) { self.callTrace += '[D-B:' + delta + ']'; };
-                stateC.draw = function (delta) { self.callTrace += '[D-C:' + delta + ']'; };
-                stateD.draw = function (delta) { self.callTrace += '[D-D:' + delta + ']'; };
+                stateA.draw = function () { self.callTrace += '[D-A]'; };
+                stateB.draw = function () { self.callTrace += '[D-B]'; };
+                stateC.draw = function () { self.callTrace += '[D-C]'; };
+                stateD.draw = function () { self.callTrace += '[D-D]'; };
 
                 stateManager.push(stateA).push(stateB).push(stateC).push(stateD);
             });
@@ -236,7 +236,7 @@ define(['state-manager', 'state-modality'], function (refStateManager, stateModa
             it('should call update and draw on states in order', function () {
                 var delta = 5;
                 stateManager.tick(delta);
-                expect(this.callTrace).toEqual('[U-B:5][U-C:5][U-D:5][D-B:5][D-C:5][D-D:5]');
+                expect(this.callTrace).toEqual('[U-B:5][U-C:5][U-D:5][D-B][D-C][D-D]');
             });
         });
 

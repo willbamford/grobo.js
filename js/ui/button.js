@@ -12,7 +12,7 @@ define(['ui/view'], function (refView) {
 
     },
 
-    refButton.draw = function (delta) {
+    refButton.draw = function () {
         var x = this.getWorldX(),
             y = this.getWorldY();
         this.canvas.fillRect('white', x, y, this.width, this.height);
