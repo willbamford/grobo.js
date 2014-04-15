@@ -42,11 +42,7 @@ define(['input'], function (refInput) {
         });
 
         it('should return "this" on init', function () {
-            expect(typeof Object.create(refInput)).toEqual('object');
-        });
-
-        it('should be able to instantiate', function () {
-            expect(input).not.toBeNull();
+            expect(typeof Object.create(refInput).init(mockCanvas)).toEqual('object');
         });
 
         describe('wildcard event handling', function () {

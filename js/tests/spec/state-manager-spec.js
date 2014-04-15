@@ -37,15 +37,18 @@ define(['state-manager', 'state-modality'], function (refStateManager, stateModa
             };
         };
 
-        beforeEach(function () {
-            var input = {
-                onEvent: function () {}
+        function createMockInput() {
+            return {
+                onEvent: function (fn) {}
             };
-            stateManager = Object.create(refStateManager).init(input);
+        };
+
+        beforeEach(function () {
+            stateManager = Object.create(refStateManager).init(createMockInput());
         });
 
         it('should return "this" on init', function () {
-            expect(typeof Object.create(refStateManager)).toEqual('object');
+            expect(typeof Object.create(refStateManager).init(createMockInput())).toEqual('object');
         });
 
         it('should contain no active states initially', function () {
@@ -264,12 +267,10 @@ define(['state-manager', 'state-modality'], function (refStateManager, stateModa
             });
 
             it('should register for all events', function () {
-                var input = {
-                        onEvent: function (fn) {}
-                    };
-                spyOn(input, 'onEvent');
-                stateManager = Object.create(refStateManager).init(input);
-                expect(input.onEvent, stateManager.onInput).toHaveBeenCalled();
+                var mockInput = createMockInput();
+                spyOn(mockInput, 'onEvent');
+                stateManager = Object.create(refStateManager).init(mockInput);
+                expect(mockInput.onEvent, stateManager.onInput).toHaveBeenCalled();
             });
 
             it('should pass input events through the stack until exclusive state', function () {             

@@ -2,10 +2,6 @@ define(['lib'], function (lib) {
 
     describe('Library', function () {
 
-        it('should be able to instantiate', function () {
-            expect(lib).not.toBeNull();
-        });
-
         describe('each', function () {
             
             it('should iterate over array and pass element and index to callback function', function () {
