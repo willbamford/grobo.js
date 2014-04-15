@@ -56,7 +56,7 @@ define(['lib'], function (lib) {
                 expect(callTrace).toEqual('[one][two]');
             });
 
-            it('reverse should do the same but in reverse', function () {
+            it('should call callback function until true returned (last element to first)', function () {
                 var arr = ['one', 'two', 'three'],
                     callTrace = '';
                 lib.reverseUntil(arr, function (element) {
