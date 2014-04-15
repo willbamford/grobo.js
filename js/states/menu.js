@@ -1,16 +1,15 @@
 define(['state-modality', 'ui/button', 'logger'], function (stateModality, Button, logger) {
 
-    var MenuState = function (config) {
-        this.canvas = config.canvas;
-        this.stateFactory = config.stateFactory;
-        this.stateManager = config.stateManager;
-
-        this.button1 = new Button(this.canvas, 'Hit me!', 20, 20, 100, 40);
-        this.button2 = new Button(this.canvas, 'Button 2', 20, 80, 100, 40);
-    };
-
-    MenuState.prototype = {
+    var refMenuState = {
         modality: stateModality.EXCLUSIVE,
+        init: function (config) {
+            this.canvas = config.canvas;
+            this.stateFactory = config.stateFactory;
+            this.stateManager = config.stateManager;
+            this.button1 = new Button(this.canvas, 'Hit me!', 20, 20, 100, 40);
+            this.button2 = new Button(this.canvas, 'Button 2', 20, 80, 100, 40);
+            return this;
+        },
         entered: function () {
             logger.info('Entered menu state');
         },
@@ -34,5 +33,5 @@ define(['state-modality', 'ui/button', 'logger'], function (stateModality, Butto
         }
     };
 
-    return MenuState;
+    return refMenuState;
 });

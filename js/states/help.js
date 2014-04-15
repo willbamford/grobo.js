@@ -1,13 +1,13 @@
 define(['state-modality', 'logger'], function (stateModality, logger) {
 
-    var HelpState = function (config) {
-        this.canvas = config.canvas;
-        this.stateFactory = config.stateFactory;
-        this.stateManager = config.stateManager;
-    };
-
-    HelpState.prototype = {
+    var refHelpState = {
         modality: stateModality.POPUP,
+        init: function (config) {
+            this.canvas = config.canvas;
+            this.stateFactory = config.stateFactory;
+            this.stateManager = config.stateManager;
+            return this;
+        },
         entered: function () {
             logger.info('Entered help state');
         },
@@ -29,5 +29,5 @@ define(['state-modality', 'logger'], function (stateModality, logger) {
         }
     };
 
-    return HelpState;
+    return refHelpState;
 });

@@ -1,6 +1,6 @@
 define(
     ['states/game', 'states/menu', 'states/help'],
-    function (GameState, MenuState, HelpState) {
+    function (refGameState, refMenuState, refHelpState) {
 
         var refStateFactory = {
         
@@ -13,21 +13,21 @@ define(
 
             getGame: function () {
                 if (!this.states.game) {
-                    this.states.game = new GameState(this.config);
+                    this.states.game = Object.create(refGameState).init(this.config);
                 }
                 return this.states.game;
             },
 
             getMenu: function () {
                 if (!this.states.menu) {
-                    this.states.menu = new MenuState(this.config);
+                    this.states.menu = Object.create(refMenuState).init(this.config);
                 }
                 return this.states.menu;
             },
 
             getHelp: function () {
                 if (!this.states.help) {
-                    this.states.help = new HelpState(this.config);
+                    this.states.help = Object.create(refHelpState).init(this.config);
                 }
                 return this.states.help;    
             }

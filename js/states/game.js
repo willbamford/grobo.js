@@ -1,13 +1,13 @@
 define(['state-modality', 'logger'], function (stateModality, logger) {
 
-    var GameState = function (config) {
-        this.canvas = config.canvas;
-        this.stateFactory = config.stateFactory;
-        this.stateManager = config.stateManager;
-    };
-
-    GameState.prototype = {
+    var refGameState = {
         modality: stateModality.EXCLUSIVE,
+        init: function (config) {
+            this.canvas = config.canvas;
+            this.stateFactory = config.stateFactory;
+            this.stateManager = config.stateManager;
+            return this;
+        },
         entered: function () {
             logger.info('Entered game state');
         },
@@ -29,5 +29,5 @@ define(['state-modality', 'logger'], function (stateModality, logger) {
         }
     };
 
-    return GameState;
+    return refGameState;
 });

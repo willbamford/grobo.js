@@ -94,7 +94,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
         onInput: function (event) {
             lib.reverseUntil(this.stack, function (state) {
                 state.onInput(event);
-                return state.modality === stateModality.EXCLUSIVE || event.isConsumed();
+                return state.modality === stateModality.EXCLUSIVE || event.isConsumed;
             });
         }
     };

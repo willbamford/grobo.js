@@ -32,11 +32,8 @@ define(['state-manager', 'state-modality'], function (refStateManager, stateModa
 
         function createConsumableEvent() {
             return {
-                _isConsumed: false,
-                isConsumed: function () { return this._isConsumed; },
-                consume: function () {
-                    this._isConsumed = true;
-                }
+                isConsumed: false,
+                consume: function () { this.isConsumed = true; }
             };
         };
 
