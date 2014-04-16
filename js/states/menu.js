@@ -37,6 +37,11 @@ define(
                 return this;
             },
 
+            entered: function () {
+                this.isAnimating = true;
+                this.view.x = this.canvas.width;
+            },
+
             update: function (delta) {
                 if (this.isAnimating) {
                     if (this.view.x > 0) {
@@ -57,7 +62,7 @@ define(
                 this.view.handleInput(event);
                 if (event.name === 'click' && !event.isConsumed) {
                     event.consume();
-                    this.stateManager.push(this.stateFactory.getGame());
+                    this.stateManager.push(this.stateFactory.getHelp());
                 }
             }
         });

@@ -19,7 +19,7 @@ require(
             stateFactory    = lib.create(refStateFactory).init(config),
             engine          = lib.create(refEngine).init(stateManager);
 
-        stateManager.change(stateFactory.getMenu());
+        stateManager.change(stateFactory.getGame());
         engine.start();
 
         // window.setTimeout(function () { stateManager.push(menuState); }, 2000);

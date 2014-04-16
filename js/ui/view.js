@@ -59,34 +59,51 @@ define(['lib', 'geom'], function (lib, geom) {
             });
         },
 
+        /* Unit test ...
         handleInput: function (event) {
+            switch (event.name) {
+                case 'click':
+                    this.handleClick(event);
+                    break;
+            }
+        },
+
+        childrenHandleInput: function (event) {
             lib.reverseUntil(this.children, function (child) {
                 child.handleInput(event);
                 return event.isConsumed;
             });
+            return event.isConsumed;
+        },
 
-            if (!event.isConsumed) {
-                switch (event.name) {
-                    case 'click':
-                        lib.each(this.clickListeners, function (clickListener) {
-                            clickListener(event);
-                        });
-                        break;
-                }
+        handleClick: function (event) {
+            if (!this.childrenHandleInput(event) && this.isEventInside(event)) {
+                lib.each(this.clickListeners, function (listener) {
+                    listener(event);
+                });
             }
         },
 
-        onClick: function (fn) {
-            var i = this.clickListeners.indexOf(fn);
-            if (i === -1)
-                this.clickListeners.push(fn);
-        },
-
-        offClick: function (fn) {
-            var i = this.clickListeners.indexOf(fn);
-            if (i !== -1)
-                this.clickListeners.splice(i, 1);
+        isEventInside: function (event) {
+            return geom.isPointInsideRect(
+                event.x, event.y,
+                this.getWorldX(), this.getWorldY(),
+                this.width, this.height
+            );
         }
+        */
+
+        // onClick: function (fn) {
+        //     var i = this.clickListeners.indexOf(fn);
+        //     if (i === -1)
+        //         this.clickListeners.push(fn);
+        // },
+
+        // offClick: function (fn) {
+        //     var i = this.clickListeners.indexOf(fn);
+        //     if (i !== -1)
+        //         this.clickListeners.splice(i, 1);
+        // }
     };
 
     return refView;

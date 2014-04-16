@@ -160,32 +160,36 @@ define(['lib', 'ui/view'], function (lib, refView) {
                 view.handleInput(mockEvent);
                 expect(callTrace).toEqual('[child3][child2]');
             });
-        });
 
-        describe('event binding', function () {
+            it('should forward unconsumed "click" events to listeners', function () {
 
-            it('should be able to bind multiple callbacks to the "click" event', function () {
-                var hasClicked1 = false, hasClicked2 = false;
-                view.init({});
-                view.onClick(function (event) { hasClicked1 = true; });
-                view.onClick(function (event) { hasClicked2 = true; });
-                view.handleInput({ name: 'click' });
-                expect(hasClicked1).toBeTruthy();
-                expect(hasClicked2).toBeTruthy();
-            });
-
-            it('should be able to unbind a callback from the "click" event', function () {
-                var hasClicked1 = false, hasClicked2 = false,
-                    callback1 = function (event) { hasClicked1 = true; },
-                    callback2 = function (event) { hasClicked2 = true; };
-                view.init({});
-                view.onClick(callback1);
-                view.onClick(callback2);
-                view.offClick(callback1);
-                view.handleInput({ name: 'click' });
-                expect(hasClicked1).toBeFalsy();
-                expect(hasClicked2).toBeTruthy();
             });
         });
+
+        // describe('event binding', function () {
+
+        //     it('should be able to bind multiple callbacks to the "click" event', function () {
+        //         var hasClicked1 = false, hasClicked2 = false;
+        //         view.init({});
+        //         view.onClick(function (event) { hasClicked1 = true; });
+        //         view.onClick(function (event) { hasClicked2 = true; });
+        //         view.handleInput({ name: 'click' });
+        //         expect(hasClicked1).toBeTruthy();
+        //         expect(hasClicked2).toBeTruthy();
+        //     });
+
+        //     it('should be able to unbind a callback from the "click" event', function () {
+        //         var hasClicked1 = false, hasClicked2 = false,
+        //             callback1 = function (event) { hasClicked1 = true; },
+        //             callback2 = function (event) { hasClicked2 = true; };
+        //         view.init({});
+        //         view.onClick(callback1);
+        //         view.onClick(callback2);
+        //         view.offClick(callback1);
+        //         view.handleInput({ name: 'click' });
+        //         expect(hasClicked1).toBeFalsy();
+        //         expect(hasClicked2).toBeTruthy();
+        //     });
+        // });
     });
 });

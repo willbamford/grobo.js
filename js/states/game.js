@@ -20,7 +20,7 @@ define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
         handleInput: function (event) {
             if (event.name === 'click') {
                 event.consume();
-                this.stateManager.push(this.stateFactory.getHelp());
+                this.stateManager.push(this.stateFactory.getMenu());
             }
         }
     });
