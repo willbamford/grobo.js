@@ -22,6 +22,12 @@ define(['ui/view', 'geom'], function (refView, geom) {
             case 'click':
                 this.onClick(event);
                 break;
+            case 'touchup':
+                this.onTouchUp(event);
+                break;
+            case 'touchdown':
+                this.onTouchDown(event);
+                break;
         }
     };
 
@@ -35,6 +41,16 @@ define(['ui/view', 'geom'], function (refView, geom) {
             alert('Click!');
             event.isConsumed = true;
         }
+    };
+
+    refButton.onTouchUp = function (event) {
+        
+        event.consume();
+    };
+
+    refButton.onTouchDown = function (event) {
+        
+        event.consume();
     };
 
     return refButton;

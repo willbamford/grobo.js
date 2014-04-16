@@ -3,19 +3,27 @@ define([], function () {
     var refInput = {
 
         init: function (canvas) {
-            this.canvas = canvas.getElement();
+            this.canvasElement = canvas.getElement();
             return this;
         },
 
         on: function (eventName, fn) {
             switch (eventName) {
                 case 'click':
-                    this.canvas.addEventListener('click', function (e) {
-                        var coords = generateRelativeCoords(e),
-                            event = generateConsumableEvent('click');
-                        event.x = coords.x;
-                        event.y = coords.y;
-                        fn(event);
+                    this.canvasElement.addEventListener('click', function (e) {
+                        fn(generateEvent(e, 'click'));
+                        e.preventDefault();
+                    });
+                    break;
+                case 'touchdown':
+                    this.canvasElement.addEventListener('mousedown', function (e) {
+                        fn(generateEvent(e, 'touchdown'));
+                        e.preventDefault();
+                    });
+                    break;
+                case 'touchup':
+                    this.canvasElement.addEventListener('mouseup', function (e) {
+                        fn(generateEvent(e, 'touchup'));
                         e.preventDefault();
                     });
                     break;
@@ -23,38 +31,38 @@ define([], function () {
         },
 
         off: function (eventName, fn) {
-            switch (eventName) {
-                case 'click':
-                    this.canvas.removeEventListener('click', fn, false);
-                    break;
-            }
+            var map = {
+                'click': 'click',
+                'touchup': 'mouseup',
+                'touchdown': 'mousedown'
+            };
+            this.canvasElement.removeEventListener(map[eventName], fn, false);
         },
 
         onEvent: function (fn) {
             this.on('click', fn);
+            this.on('touchdown', fn);
+            this.on('touchup', fn);
         },
 
         offEvent: function (fn) {
             this.off('click', fn);
+            this.off('touchdown', fn);
+            this.off('touchup', fn);
         }
     };
 
-    function generateRelativeCoords(event) {
-        return {
-            x: event.clientX - event.target.offsetLeft,
-            y: event.clientY - event.target.offsetTop 
-        };
-    }
-
-    function generateConsumableEvent(name) {
+    function generateEvent(sourceEvent, name) {
         return {
             name: name,
+            x: sourceEvent.clientX - sourceEvent.target.offsetLeft,
+            y: sourceEvent.clientY - sourceEvent.target.offsetTop,
             isConsumed: false,
             consume: function () {
                 this.isConsumed = true;
             }
-        };
-    }
+        }
+    };
 
     return refInput;
 });

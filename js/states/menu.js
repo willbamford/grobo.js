@@ -81,7 +81,9 @@ define(
             onInput: function (event) {
                 this.view.onInput(event);
                 // event.consume();
-                // this.stateManager.push(this.stateFactory.getGame());
+                if (!event.isConsumed) {
+                    this.stateManager.push(this.stateFactory.getGame());
+                }
             }
         };
 
