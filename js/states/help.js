@@ -1,8 +1,8 @@
-define(['state-modality', 'logger'], function (stateModality, logger) {
+define(['states/state', 'logger'], function (refState, logger) {
 
     var refHelpState = {
 
-        modality: stateModality.POPUP,
+        modality: refState.POPUP,
 
         init: function (config) {
             this.canvas = config.canvas;

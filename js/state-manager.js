@@ -1,4 +1,4 @@
-define(['lib', 'state-modality'], function (lib, stateModality) {
+define(['lib', 'states/state'], function (lib, refState) {
 
     var refStateManager = {
 
@@ -12,7 +12,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
             var activeStates = [];
             lib.reverseUntil(this.stack, function (state) {
                 activeStates.push(state);
-                return state.modality === stateModality.EXCLUSIVE;
+                return state.modality === refState.EXCLUSIVE;
             });
             return activeStates.reverse();
         },
@@ -56,7 +56,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
                 // Obscuring
                 lib.reverseUntil(this.stack, function (state) {
                     state.obscured();
-                    return state.modality === stateModality.EXCLUSIVE;
+                    return state.modality === refState.EXCLUSIVE;
                 });
 
                 this.stack.push(enterState);
@@ -78,7 +78,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
                 // Revealed
                 lib.reverseUntil(this.stack, function (state) {
                     state.revealed();
-                    return state.modality === stateModality.EXCLUSIVE;
+                    return state.modality === refState.EXCLUSIVE;
                 });
 
                 return exitState;
@@ -101,7 +101,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
         handleInput: function (event) {
             lib.reverseUntil(this.stack, function (state) {
                 state.handleInput(event);
-                return state.modality === stateModality.EXCLUSIVE || event.isConsumed;
+                return state.modality === refState.EXCLUSIVE || event.isConsumed;
             });
         }
     };

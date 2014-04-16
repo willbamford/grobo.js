@@ -1,6 +1,6 @@
 define(
-    ['lib', 'state-manager', 'state-modality'],
-    function (lib, refStateManager, stateModality) { 
+    ['lib', 'state-manager', 'states/state'],
+    function (lib, refStateManager, refState) { 
 
         describe('State manager', function () {
             
@@ -12,11 +12,11 @@ define(
                 };
 
             function createStubPopupState() {
-                return createStubState(stateModality.POPUP);
+                return createStubState(refState.POPUP);
             };
 
             function createStubExclusiveState() {
-                return createStubState(stateModality.EXCLUSIVE);
+                return createStubState(refState.EXCLUSIVE);
             };
 
             function createStubState(modality) {

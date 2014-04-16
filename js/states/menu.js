@@ -1,12 +1,12 @@
 define(
-    ['lib', 'state-modality', 'ui/button', 'ui/panel', 'logger'],
-    function (lib, stateModality, refButton, refPanel, logger) {
+    ['lib', 'states/state', 'ui/button', 'ui/panel', 'logger'],
+    function (lib, refState, refButton, refPanel, logger) {
 
         var refMenuState = {
 
             isAnimating: false,
 
-            modality: stateModality.EXCLUSIVE,
+            modality: refState.EXCLUSIVE,
 
             view: null,
 
@@ -77,7 +77,6 @@ define(
 
             handleInput: function (event) {
                 this.view.handleInput(event);
-                // event.consume();
                 if (event.name === 'click' && !event.isConsumed) {
                     event.consume();
                     this.stateManager.push(this.stateFactory.getGame());
