@@ -8,9 +8,7 @@ define(['ui/view', 'geom'], function (refView, geom) {
         return this;
     };
 
-    refButton.update = function (delta) {
-
-    },
+    refButton.update = function (delta) {},
 
     refButton.draw = function () {
         var x = this.getWorldX(),

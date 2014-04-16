@@ -10,18 +10,18 @@ define(['lib'], function (lib) {
         x: 0,
         y: 0,
 
-        _initView: function (canvas, parent, width, height, x, y) {
-            this.canvas = canvas;
-            this.parent = parent;
-            this.width = width;
-            this.height = height;
-            this.x = x || 0;
-            this.y = y || 0;
-            this.children = [];
+        _initView: function (config) {
+            this.canvas     = config.canvas || null;
+            this.parent     = config.parent || null;
+            this.width      = config.width || 0;
+            this.height     = config.height || 0;
+            this.x          = config.x || 0;
+            this.y          = config.y || 0;
+            this.children   = [];
         },
 
-        init: function (canvas, parent, width, height, x, y) {
-            this._initView(canvas, parent, width, height, x, y);
+        init: function (config) {
+            this._initView(config);
             return this;
         },
 
