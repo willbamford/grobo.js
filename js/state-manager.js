@@ -3,7 +3,7 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
     var refStateManager = {
 
         init: function (input) {
-            input.onEvent(this.onInput.bind(this));
+            input.onEvent(this.handleInput.bind(this));
             this.stack = [];
             return this;
         },
@@ -98,9 +98,9 @@ define(['lib', 'state-modality'], function (lib, stateModality) {
             return this.size() === 0;
         },
 
-        onInput: function (event) {
+        handleInput: function (event) {
             lib.reverseUntil(this.stack, function (state) {
-                state.onInput(event);
+                state.handleInput(event);
                 return state.modality === stateModality.EXCLUSIVE || event.isConsumed;
             });
         }

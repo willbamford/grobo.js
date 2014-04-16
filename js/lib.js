@@ -54,6 +54,21 @@ define([], function () {
             while (--i >= 0) {
                 if (fn(arr[i])) break;
             }
+        },
+
+        create: function (parent, augment) {
+            function F() {}
+            F.prototype = parent;
+            var derived = new F(), i, len, props, prop;
+            if (augment) {
+                props = Object.keys(augment);
+                len = props.length;
+                for (i = 0; i < len; i++) {
+                    prop = props[i];
+                    derived[prop] = augment[prop];
+                }
+            }
+            return derived;
         }
     };
     return lib;

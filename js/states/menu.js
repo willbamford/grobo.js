@@ -1,6 +1,6 @@
 define(
-    ['state-modality', 'ui/button', 'ui/panel', 'logger'],
-    function (stateModality, refButton, refPanel, logger) {
+    ['lib', 'state-modality', 'ui/button', 'ui/panel', 'logger'],
+    function (lib, stateModality, refButton, refPanel, logger) {
 
         var refMenuState = {
 
@@ -15,7 +15,7 @@ define(
                 this.stateFactory = config.stateFactory;
                 this.stateManager = config.stateManager;
 
-                this.view = Object.create(refPanel).init({
+                this.view = lib.create(refPanel).init({
                     canvas: this.canvas,
                     parent: null,
                     width: this.canvas.width, height: this.canvas.height,
@@ -23,14 +23,14 @@ define(
                     style: 'red'
                 });
                 
-                var button1 = Object.create(refButton).init({
+                var button1 = lib.create(refButton).init({
                     canvas: this.canvas,
                     parent: null,
                     width: 100, height: 40,
                     x: 20, y: 20,
                     label: 'Button 1'
                 }),
-                button2 = Object.create(refButton).init({
+                button2 = lib.create(refButton).init({
                     canvas: this.canvas,
                     parent: null,
                     width: 100, height: 40,
@@ -78,8 +78,8 @@ define(
                 this.view.draw();
             },
 
-            onInput: function (event) {
-                this.view.onInput(event);
+            handleInput: function (event) {
+                this.view.handleInput(event);
                 // event.consume();
                 if (!event.isConsumed) {
                     this.stateManager.push(this.stateFactory.getGame());

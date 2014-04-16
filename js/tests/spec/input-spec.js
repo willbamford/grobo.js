@@ -1,4 +1,4 @@
-define(['input'], function (refInput) { 
+define(['lib', 'input'], function (lib, refInput) { 
 
     describe('Input', function () {
         
@@ -41,11 +41,11 @@ define(['input'], function (refInput) {
                     }
                 }
             };
-            input = Object.create(refInput).init(mockCanvas);
+            input = lib.create(refInput).init(mockCanvas);
         });
 
         it('should return "this" on init', function () {
-            expect(typeof Object.create(refInput).init(mockCanvas)).toEqual('object');
+            expect(typeof lib.create(refInput).init(mockCanvas)).toEqual('object');
         });
 
         describe('wildcard event handling', function () {

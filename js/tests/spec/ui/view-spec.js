@@ -1,11 +1,11 @@
-define(['ui/view'], function (refView) { 
+define(['lib', 'ui/view'], function (lib, refView) { 
 
     var view;
 
     describe('View', function () {
 
         beforeEach(function () {
-            view = Object.create(refView);
+            view = lib.create(refView);
         });
 
         it('should return "this" on init', function () {
@@ -14,7 +14,7 @@ define(['ui/view'], function (refView) {
         });
 
         it('should be able to initialise with the canvas and parent view', function () {
-            var parent = Object.create(refView),
+            var parent = lib.create(refView),
                 canvas = {};
             view.init({
                 canvas: canvas,
@@ -27,7 +27,7 @@ define(['ui/view'], function (refView) {
         it('should be able to initialise with dimensions and an (x, y) coordinate', function () {
             var config = {
                 canvas: {},
-                parent: Object.create(refView),
+                parent: lib.create(refView),
                 width: 400,
                 height: 300,
                 x: 5,
@@ -43,7 +43,7 @@ define(['ui/view'], function (refView) {
         it('should default (x, y) coordinate to (0, 0)', function () {
             var config = {
                 canvas: {},
-                parent: Object.create(refView),
+                parent: lib.create(refView),
                 width: 100,
                 height: 100
             };
@@ -56,21 +56,21 @@ define(['ui/view'], function (refView) {
 
             it('should be able to chain add', function () {
                 view.init({});
-                view.addChild(Object.create(refView)).addChild(Object.create(refView));
+                view.addChild(lib.create(refView)).addChild(lib.create(refView));
                 expect(view.children.length).toEqual(2);
             });
 
             it('should set the child\'s parent on add', function () {
-                var child = Object.create(refView);
+                var child = lib.create(refView);
                 view.init({});
                 view.addChild(child);
                 expect(child.parent).toEqual(view);
             });
 
             it('should be able to remove', function () {
-                var child1 = Object.create(refView),
-                    child2 = Object.create(refView),
-                    child3 = Object.create(refView);
+                var child1 = lib.create(refView),
+                    child2 = lib.create(refView),
+                    child3 = lib.create(refView);
                 view.init({});
                 view.addChild(child1).addChild(child2).addChild(child3);
                 expect(view.children.length).toEqual(3);
@@ -81,7 +81,7 @@ define(['ui/view'], function (refView) {
             });
 
             it('should unset the child\'s parent on remove', function () {
-                var child = Object.create(refView);
+                var child = lib.create(refView);
                 view.init({});
                 view.addChild(child);
                 view.removeChild(child);
@@ -92,13 +92,13 @@ define(['ui/view'], function (refView) {
         describe('world coordinates', function () {
 
             it('should be relative to that of own local coordinates and the parent', function () {
-                var parentsParentView = Object.create(refView).init({
+                var parentsParentView = lib.create(refView).init({
                     canvas: {},
                     parent: null,
                     x: 100,
                     y: 200
                 }),
-                parentView = Object.create(refView).init({
+                parentView = lib.create(refView).init({
                     canvas: {},
                     parent: parentsParentView,
                     x: 300,
@@ -126,9 +126,9 @@ define(['ui/view'], function (refView) {
             });
 
             it('should invoke "draw" on all children when drawing all children', function () {
-                var child1 = Object.create(refView),
-                    child2 = Object.create(refView),
-                    child3 = Object.create(refView);
+                var child1 = lib.create(refView),
+                    child2 = lib.create(refView),
+                    child3 = lib.create(refView);
                 spyOn(child1, 'draw');
                 spyOn(child2, 'draw');
                 spyOn(child3, 'draw');
@@ -146,9 +146,9 @@ define(['ui/view'], function (refView) {
             it('should pass events to children until consumed', function () {
 
                 var callTrace = '',
-                    child1 = { onInput: function (event) { callTrace += '[child1]'; } },
-                    child2 = { onInput: function (event) { callTrace += '[child2]'; event.consume(); } },
-                    child3 = { onInput: function (event) { callTrace += '[child3]'; } },
+                    child1 = { handleInput: function (event) { callTrace += '[child1]'; } },
+                    child2 = { handleInput: function (event) { callTrace += '[child2]'; event.consume(); } },
+                    child3 = { handleInput: function (event) { callTrace += '[child3]'; } },
                     mockEvent = {
                         isConsumed: false,
                         consume: function () {
@@ -157,7 +157,7 @@ define(['ui/view'], function (refView) {
                     };
                 view.init({});
                 view.addChild(child1).addChild(child2).addChild(child3);
-                view.onInput(mockEvent);
+                view.handleInput(mockEvent);
                 expect(callTrace).toEqual('[child3][child2]');
             });
         });

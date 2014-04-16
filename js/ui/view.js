@@ -57,9 +57,9 @@ define(['lib'], function (lib) {
             });
         },
 
-        onInput: function (event) {
+        handleInput: function (event) {
             lib.reverseUntil(this.children, function (child) {
-                child.onInput(event);
+                child.handleInput(event);
                 return event.isConsumed;
             });
         }

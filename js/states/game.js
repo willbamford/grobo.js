@@ -36,7 +36,7 @@ define(['state-modality', 'logger'], function (stateModality, logger) {
             this.canvas.fill('blue');
         },
 
-        onInput: function (event) {
+        handleInput: function (event) {
             event.consume();
             this.stateManager.push(this.stateFactory.getHelp());
         }

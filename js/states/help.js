@@ -33,7 +33,7 @@ define(['state-modality', 'logger'], function (stateModality, logger) {
             this.canvas.fill('rgba(0, 0, 0, 0.5)');
         },
 
-        onInput: function (event) {
+        handleInput: function (event) {
             event.consume();
             this.stateManager.pop();
         }

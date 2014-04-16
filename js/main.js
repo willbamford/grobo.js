@@ -1,21 +1,23 @@
 require(
-    [   'state-factory',
+    [
+        'lib',
+        'state-factory',
         'state-manager',
         'engine',
         'canvas',
         'input'
     ],
-    function (refStateFactory, refStateManager, refEngine, refCanvas, refInput) {
+    function (lib, refStateFactory, refStateManager, refEngine, refCanvas, refInput) {
 
-        var canvas          = Object.create(refCanvas).init('canvas'),
-            input           = Object.create(refInput).init(canvas),
-            stateManager    = Object.create(refStateManager).init(input),
+        var canvas          = lib.create(refCanvas).init('canvas'),
+            input           = lib.create(refInput).init(canvas),
+            stateManager    = lib.create(refStateManager).init(input),
             config = {
                 stateManager: stateManager,
                 canvas: canvas
             },
-            stateFactory    = Object.create(refStateFactory).init(config),
-            engine          = Object.create(refEngine).init(stateManager);
+            stateFactory    = lib.create(refStateFactory).init(config),
+            engine          = lib.create(refEngine).init(stateManager);
 
         stateManager.change(stateFactory.getMenu());
         engine.start();
