@@ -65,8 +65,9 @@ define(
             },
 
             onInput: function (event) {
-                event.consume();
-                this.stateManager.push(this.stateFactory.getGame());
+                this.view.onInput(event);
+                // event.consume();
+                // this.stateManager.push(this.stateFactory.getGame());
             }
         };
 

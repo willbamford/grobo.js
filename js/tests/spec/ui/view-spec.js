@@ -108,5 +108,26 @@ define(['ui/view'], function (refView) {
                 expect(child3.draw).toHaveBeenCalled();
             });
         });
+
+        describe('input', function () {
+
+            it('should pass events to children until consumed', function () {
+
+                var callTrace = '',
+                    child1 = { onInput: function (event) { callTrace += '[child1]'; } },
+                    child2 = { onInput: function (event) { callTrace += '[child2]'; event.consume(); } },
+                    child3 = { onInput: function (event) { callTrace += '[child3]'; } },
+                    mockEvent = {
+                        isConsumed: false,
+                        consume: function () {
+                            this.isConsumed = true;
+                        }
+                    };
+                view.init();
+                view.addChild(child1).addChild(child2).addChild(child3);
+                view.onInput(mockEvent);
+                expect(callTrace).toEqual('[child3][child2]');
+            });
+        });
     });
 });

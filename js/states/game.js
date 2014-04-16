@@ -2,6 +2,8 @@ define(['state-modality', 'logger'], function (stateModality, logger) {
 
     var refGameState = {
 
+        isAnimating: false,
+
         modality: stateModality.EXCLUSIVE,
 
         init: function (config) {
@@ -27,9 +29,10 @@ define(['state-modality', 'logger'], function (stateModality, logger) {
             logger.info('Revealed game state');
         },
 
-        update: function (delta) {},
+        update: function (delta) {
+        },
 
-        draw: function (delta) {
+        draw: function () {
             this.canvas.fill('blue');
         },
 

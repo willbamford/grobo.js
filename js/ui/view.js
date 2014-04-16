@@ -49,11 +49,18 @@ define(['lib'], function (lib) {
 
         draw: function () {
             this.drawChildren();
-        },
+        },  
 
         drawChildren: function () {
-            lib.each(this.children, function (childView) {
-                childView.draw();
+            lib.each(this.children, function (child) {
+                child.draw();
+            });
+        },
+
+        onInput: function (event) {
+            lib.reverseUntil(this.children, function (child) {
+                child.onInput(event);
+                return event.isConsumed;
             });
         }
     };
