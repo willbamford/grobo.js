@@ -1,15 +1,12 @@
-define(['states/state', 'logger'], function (refState, logger) {
+define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
 
-    var refGameState = {
+    var refGameState = lib.create(refState, {
 
         isAnimating: false,
 
-        modality: refState.EXCLUSIVE,
-
         init: function (config) {
-            this.canvas = config.canvas;
-            this.stateFactory = config.stateFactory;
-            this.stateManager = config.stateManager;
+            config['modality'] = this.EXCLUSIVE;
+            this._initState(config);
             return this;
         },
 
@@ -41,7 +38,7 @@ define(['states/state', 'logger'], function (refState, logger) {
                 this.stateManager.push(this.stateFactory.getHelp());
             }
         }
-    };
+    });
 
     return refGameState;
 });
