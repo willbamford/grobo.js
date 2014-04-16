@@ -14,8 +14,9 @@ define(['lib', 'ui/view', 'geom'], function (lib, refView, geom) {
                 y = this.getWorldY();
             this.canvas.fillRect('white', x, y, this.width, this.height);
             this.canvas.fillText('black', this.label, x + 20, y + 20);
-        },
+        }
 
+        /*
         handleInput: function (event) {
             switch (event.name) {
                 case 'click':
@@ -51,6 +52,7 @@ define(['lib', 'ui/view', 'geom'], function (lib, refView, geom) {
             
             event.consume();
         }
+        */
     });
 
     return refButton;

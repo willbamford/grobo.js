@@ -1,4 +1,4 @@
-define(['lib'], function (lib) {
+define(['lib', 'geom'], function (lib, geom) {
 
     var refView = {
 
@@ -9,15 +9,17 @@ define(['lib'], function (lib) {
         height: 0,
         x: 0,
         y: 0,
+        clickListeners: null,
 
         _initView: function (config) {
-            this.canvas     = config.canvas || null;
-            this.parent     = config.parent || null;
-            this.width      = config.width || 0;
-            this.height     = config.height || 0;
-            this.x          = config.x || 0;
-            this.y          = config.y || 0;
-            this.children   = [];
+            this.canvas         = config.canvas || null;
+            this.parent         = config.parent || null;
+            this.width          = config.width || 0;
+            this.height         = config.height || 0;
+            this.x              = config.x || 0;
+            this.y              = config.y || 0;
+            this.children       = [];
+            this.clickListeners = [];
         },
 
         init: function (config) {
@@ -62,6 +64,28 @@ define(['lib'], function (lib) {
                 child.handleInput(event);
                 return event.isConsumed;
             });
+
+            if (!event.isConsumed) {
+                switch (event.name) {
+                    case 'click':
+                        lib.each(this.clickListeners, function (clickListener) {
+                            clickListener(event);
+                        });
+                        break;
+                }
+            }
+        },
+
+        onClick: function (fn) {
+            var i = this.clickListeners.indexOf(fn);
+            if (i === -1)
+                this.clickListeners.push(fn);
+        },
+
+        offClick: function (fn) {
+            var i = this.clickListeners.indexOf(fn);
+            if (i !== -1)
+                this.clickListeners.splice(i, 1);
         }
     };
 
