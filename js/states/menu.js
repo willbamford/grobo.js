@@ -15,14 +15,28 @@ define(
                 this.stateFactory = config.stateFactory;
                 this.stateManager = config.stateManager;
 
-                this.view = Object.create(refPanel).init(
-                    this.canvas, null,
-                    this.canvas.width, this.canvas.height, 0, 0,
-                    'red'
-                );
+                this.view = Object.create(refPanel).init({
+                    canvas: this.canvas,
+                    parent: null,
+                    width: this.canvas.width, height: this.canvas.height,
+                    x: 0, y: 0,
+                    style: 'red'
+                });
                 
-                var button1 = Object.create(refButton).init(this.canvas, null, 100, 40, 20, 20, 'Button 1'),
-                    button2 = Object.create(refButton).init(this.canvas, null, 100, 40, 20, 80, 'Button 2');
+                var button1 = Object.create(refButton).init({
+                    canvas: this.canvas,
+                    parent: null,
+                    width: 100, height: 40,
+                    x: 20, y: 20,
+                    label: 'Button 1'
+                }),
+                button2 = Object.create(refButton).init({
+                    canvas: this.canvas,
+                    parent: null,
+                    width: 100, height: 40,
+                    x: 20, y: 80,
+                    label: 'Button 2'
+                });
                 this.view.addChild(button1).addChild(button2);
                 return this;
             },

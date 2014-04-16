@@ -2,9 +2,9 @@ define(['ui/view', 'geom'], function (refView, geom) {
 
     var refButton = Object.create(refView);
 
-    refButton.init = function (canvas, parent, width, height, x, y, label) {
-        this._initView(canvas, parent, width, height, x, y);
-        this.label = label;
+    refButton.init = function (config) {
+        this._initView(config);
+        this.label = config.label;
         return this;
     };
 
