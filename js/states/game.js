@@ -37,8 +37,10 @@ define(['state-modality', 'logger'], function (stateModality, logger) {
         },
 
         handleInput: function (event) {
-            event.consume();
-            this.stateManager.push(this.stateFactory.getHelp());
+            if (event.name === 'click') {
+                event.consume();
+                this.stateManager.push(this.stateFactory.getHelp());
+            }
         }
     };
 

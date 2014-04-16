@@ -72,16 +72,14 @@ define(
             },
 
             draw: function () {
-                //this.canvas.fill('green');
-                // this.button1.draw(delta);
-                // this.button2.draw(delta);
                 this.view.draw();
             },
 
             handleInput: function (event) {
                 this.view.handleInput(event);
                 // event.consume();
-                if (!event.isConsumed) {
+                if (event.name === 'click' && !event.isConsumed) {
+                    event.consume();
                     this.stateManager.push(this.stateFactory.getGame());
                 }
             }
