@@ -2,28 +2,13 @@ define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
 
     var refGameState = lib.create(refState, {
 
+        name: 'Game',
         isAnimating: false,
 
         init: function (config) {
-            config['modality'] = this.EXCLUSIVE;
+            this.modality = this.EXCLUSIVE;
             this._initState(config);
             return this;
-        },
-
-        entered: function () {
-            logger.info('Entered game state');
-        },
-
-        exiting: function () {
-            logger.info('Exiting game state');
-        },
-
-        obscured: function () {
-            logger.info('Obscured game state');
-        },
-
-        revealed: function () {
-            logger.info('Revealed game state');
         },
 
         update: function (delta) {},

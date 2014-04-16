@@ -2,18 +2,14 @@ define(
     ['lib', 'states/state', 'ui/button', 'ui/panel', 'logger'],
     function (lib, refState, refButton, refPanel, logger) {
 
-        var refMenuState = {
+        var refMenuState = lib.create(refState, {
 
+            name: 'Menu',
             isAnimating: false,
 
-            modality: refState.EXCLUSIVE,
-
-            view: null,
-
             init: function (config) {
-                this.canvas = config.canvas;
-                this.stateFactory = config.stateFactory;
-                this.stateManager = config.stateManager;
+                this.modality = this.EXCLUSIVE;
+                this._initState(config);
 
                 this.view = lib.create(refPanel).init({
                     canvas: this.canvas,
@@ -41,24 +37,6 @@ define(
                 return this;
             },
 
-            entered: function () {
-                this.isAnimating = true;
-                this.view.x = this.canvas.width;
-                logger.info('Entered menu state');
-            },
-
-            exiting: function () {
-                logger.info('Exiting menu state');
-            },
-
-            obscured: function () {
-                logger.info('Menu state obscured');
-            },
-
-            revealed: function () {
-                logger.info('Menu state revealed');
-            },
-
             update: function (delta) {
                 if (this.isAnimating) {
                     if (this.view.x > 0) {
@@ -82,7 +60,7 @@ define(
                     this.stateManager.push(this.stateFactory.getGame());
                 }
             }
-        };
+        });
 
         return refMenuState;
     }

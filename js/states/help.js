@@ -1,30 +1,14 @@
-define(['states/state', 'logger'], function (refState, logger) {
+define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
 
-    var refHelpState = {
+    var refHelpState = lib.create(refState, {
 
+        name: 'Help',
         modality: refState.POPUP,
 
         init: function (config) {
-            this.canvas = config.canvas;
-            this.stateFactory = config.stateFactory;
-            this.stateManager = config.stateManager;
+            this.modality = this.POPUP;
+            this._initState(config);
             return this;
-        },
-
-        entered: function () {
-            logger.info('Entered help state');
-        },
-
-        exiting: function () {
-            logger.info('Exiting help state');
-        },
-
-        obscured: function () {
-            logger.info('Obscured help state');
-        },
-
-        revealed: function () {
-            logger.info('Revealed help state');
         },
 
         update: function (delta) {},
@@ -39,7 +23,7 @@ define(['states/state', 'logger'], function (refState, logger) {
                 this.stateManager.pop();
             }
         }
-    };
+    });
 
     return refHelpState;
 });

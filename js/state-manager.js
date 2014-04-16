@@ -1,4 +1,4 @@
-define(['lib', 'states/state'], function (lib, refState) {
+define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
 
     var refStateManager = {
 
@@ -102,6 +102,12 @@ define(['lib', 'states/state'], function (lib, refState) {
             lib.reverseUntil(this.stack, function (state) {
                 state.handleInput(event);
                 return state.modality === refState.EXCLUSIVE || event.isConsumed;
+            });
+        },
+
+        toString: function () {
+            lib.each(this.stack, function (state, i) {
+                console.log(i + ' state: ' + state.modality);
             });
         }
     };

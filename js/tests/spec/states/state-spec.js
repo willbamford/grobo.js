@@ -28,18 +28,15 @@ define(['lib', 'states/state'], function (lib, refState) {
             expect(typeof state.handleInput).toEqual('function');
         });
 
-        it('should be able to initialise with modality, canvas, stateFactory and stateManager', function () {
-            var modality = refState.EXCLUSIVE,
-                canvas = 'canvas',
+        it('should be able to initialise with canvas, stateFactory and stateManager', function () {
+            var canvas = 'canvas',
                 stateFactory = 'stateFactory',
                 stateManager = 'stateManager'
             state.init({
-                modality: modality,
                 canvas: canvas,
                 stateFactory: stateFactory,
                 stateManager: stateManager
             });
-            expect(state.modality).toEqual(modality);
             expect(state.canvas).toEqual(canvas);
             expect(state.stateFactory).toEqual(stateFactory);
             expect(state.stateManager).toEqual(stateManager);
