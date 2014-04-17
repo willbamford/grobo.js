@@ -29,7 +29,7 @@ define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
             });
         },
 
-        draw: function (states, delta) {
+        draw: function (states) {
            lib.each(states, function (state) {
                 state.draw();
             });
