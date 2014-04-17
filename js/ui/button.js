@@ -4,6 +4,12 @@ define(['lib', 'ui/view', 'geom'], function (lib, refView, geom) {
         init: function (config) {
             this._initView(config);
             this.label = config.label;
+
+            this.onClick(function (event) {
+                console.log('Clicked');
+                event.consume();
+            });
+
             return this;
         },
 

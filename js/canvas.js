@@ -37,6 +37,19 @@ define([], function () {
 
         getContext: function () {
             return this.context2d;
+        },
+
+        getCoords: function (event) {
+            if (event.offsetX !== undefined && event.offsetY !== undefined) {
+                return {
+                    x: event.offsetX,
+                    y: event.offsetY
+                }
+            }
+            return {
+                x: event.layerX,
+                y: event.layerY
+            };
         }
     };
 

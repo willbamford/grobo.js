@@ -5,14 +5,10 @@ define(['lib', 'input'], function (lib, refInput) {
         var input,
             mockCanvas;
 
-        function createMockSourceEvent(clientX, clientY, offsetLeft, offsetTop) {
+        function createMockSourceEvent(x, y) {
             return {
-                clientX: clientX,
-                clientY: clientY,
-                target: {
-                    offsetLeft: offsetLeft,
-                    offsetTop: offsetTop
-                },
+                offsetX: x,
+                offsetY: y,
                 preventDefault: function () {}
             };
         }
@@ -21,13 +17,16 @@ define(['lib', 'input'], function (lib, refInput) {
             mockCanvas = {
                 listeners: [],
                 simulateClick: function (event) {
-                    if (this.listeners['click']) this.listeners['click'](event);
+                    if (this.listeners['click'])
+                        this.listeners['click'](event);
                 },
                 simulateMouseDown: function (event) {
-                    if (this.listeners['mousedown']) this.listeners['mousedown'](event);
+                    if (this.listeners['mousedown'])
+                        this.listeners['mousedown'](event);
                 },
                 simulateMouseUp: function (event) {
-                    if (this.listeners['mouseup']) this.listeners['mouseup'](event);
+                    if (this.listeners['mouseup'])
+                        this.listeners['mouseup'](event);
                 },
                 getElement: function () {
                     var self = this;
@@ -39,6 +38,9 @@ define(['lib', 'input'], function (lib, refInput) {
                             self.listeners[eventName] = null;
                         }
                     }
+                },
+                getCoords: function (event) {
+                    return { x: event.offsetX, y: event.offsetY };
                 }
             };
             input = lib.create(refInput).init(mockCanvas);
@@ -78,7 +80,7 @@ define(['lib', 'input'], function (lib, refInput) {
                     clicked = true;
                     name = e.name;
                 });
-                mockCanvas.simulateClick(createMockSourceEvent(0, 0, 0, 0));
+                mockCanvas.simulateClick(createMockSourceEvent(0, 0));
                 expect(clicked).toBeTruthy();
                 expect(name).toEqual('click');
             });
@@ -88,26 +90,16 @@ define(['lib', 'input'], function (lib, refInput) {
                     fn = function (e) {clicked = true;};
                 input.on('click', fn);
                 input.off('click', fn);
-                mockCanvas.simulateClick(createMockSourceEvent(0, 0, 0, 0));
+                mockCanvas.simulateClick(createMockSourceEvent(0, 0));
                 expect(clicked).toBeFalsy();
             });
 
             it('should prevent default on the triggering event', function () {
-                var event = createMockSourceEvent(0, 0, 0, 0);
+                var event = createMockSourceEvent(0, 0);
                 spyOn(event, 'preventDefault');
                 input.on('click', function (e) {});
                 mockCanvas.simulateClick(event);
                 expect(event.preventDefault).toHaveBeenCalled();
-            });
-
-            it('should return event with coordinates relative to canvas', function () {
-                var event;
-                input.on('click', function (e) {
-                    event = e;
-                });
-                mockCanvas.simulateClick(createMockSourceEvent(100, 90, 50, 60));
-                expect(event.x).toEqual(100 - 50);
-                expect(event.y).toEqual(90 - 60);
             });
 
             it('should be able to register and deregister for "touchdown" events', function () {
@@ -116,7 +108,7 @@ define(['lib', 'input'], function (lib, refInput) {
                         touchDown = true;
                         name = e.name;
                     },
-                    mockEvent = createMockSourceEvent(0, 0, 0, 0);
+                    mockEvent = createMockSourceEvent(0, 0);
                 input.on('touchdown', listener);
                 mockCanvas.simulateMouseDown(mockEvent);
                 expect(touchDown).toBeTruthy();
@@ -133,7 +125,7 @@ define(['lib', 'input'], function (lib, refInput) {
                         touchUp = true;
                         name = e.name;
                     },
-                    mockEvent = createMockSourceEvent(0, 0, 0, 0);
+                    mockEvent = createMockSourceEvent(0, 0);
                 input.on('touchup', listener);
                 mockCanvas.simulateMouseUp(mockEvent);
                 expect(touchUp).toBeTruthy();

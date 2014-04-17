@@ -76,6 +76,10 @@ define(['lib', 'geom'], function (lib, geom) {
         },
 
         isEventInside: function (event) {
+
+            console.log('World: ' + this.getWorldX() + ', ' + this.getWorldY());
+            console.log('Event: ' + event.x + ', ' + event.y);
+
             return geom.isPointInsideRect(
                 event.x, event.y,
                 this.getWorldX(), this.getWorldY(),
@@ -84,10 +88,12 @@ define(['lib', 'geom'], function (lib, geom) {
         },
 
         handleClick: function (event) {
-            if (!this.handleInputChildren(event) && this.isEventInside(event)) {
-                lib.each(this.clickListeners, function (listener) {
-                    listener(event);
-                });
+            if (!this.handleInputChildren(event)) {
+                if (this.clickListeners.length > 0 && this.isEventInside(event)) {
+                    lib.each(this.clickListeners, function (listener) {
+                        listener(event);
+                    });
+                }
             }
         },
 

@@ -1,9 +1,9 @@
 define([], function () {
 
     var geom = {
-        isPointInsideRect: function (x, y, leftX, topY, width, height) {
-            return (x >= leftX) && (x <= leftX + width) &&
-                (y >= topY) && (y <= topY + height);
+        isPointInsideRect: function (x, y, left, top, width, height) {
+            return (x >= left) && (x <= left + width) &&
+                (y >= top) && (y <= top + height);
         }
     };
 
