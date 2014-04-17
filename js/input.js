@@ -2,54 +2,43 @@ define([], function () {
 
     var refInput = {
 
+        eventMap: {
+            'click': 'click',
+            'press': 'mousedown',
+            'release': 'mouseup',
+            'move': 'mousemove'
+        },
+
         init: function (canvas) {
             this.canvas = canvas;
             return this;
         },
 
         on: function (eventName, fn) {
-            var self = this;
-            switch (eventName) {
-                case 'click':
-                    this.canvas.getElement().addEventListener('click', function (e) {
-                        fn(generateEvent(self.canvas, e, 'click'));
-                        e.preventDefault();
-                    });
-                    break;
-                case 'touchdown':
-                    this.canvas.getElement().addEventListener('mousedown', function (e) {
-                        fn(generateEvent(self.canvas, e, 'touchdown'));
-                        e.preventDefault();
-                    });
-                    break;
-                case 'touchup':
-                    this.canvas.getElement().addEventListener('mouseup', function (e) {
-                        fn(generateEvent(self.canvas, e, 'touchup'));
-                        e.preventDefault();
-                    });
-                    break;
-            }
+            var self = this,
+                canvasEventName = this.eventMap[eventName];
+            this.canvas.getElement().addEventListener(canvasEventName, function (e) {
+                fn(generateEvent(self.canvas, e, eventName));
+                e.preventDefault();
+            });
         },
 
         off: function (eventName, fn) {
-            var map = {
-                'click': 'click',
-                'touchup': 'mouseup',
-                'touchdown': 'mousedown'
-            };
-            this.canvas.getElement().removeEventListener(map[eventName], fn, false);
+            this.canvas.getElement().removeEventListener(this.eventMap[eventName], fn, false);
         },
 
         onEvent: function (fn) {
             this.on('click', fn);
-            this.on('touchdown', fn);
-            this.on('touchup', fn);
+            this.on('press', fn);
+            this.on('release', fn);
+            this.on('move', fn);
         },
 
         offEvent: function (fn) {
             this.off('click', fn);
-            this.off('touchdown', fn);
-            this.off('touchup', fn);
+            this.off('press', fn);
+            this.off('release', fn);
+            this.off('move', fn);
         }
     };
 

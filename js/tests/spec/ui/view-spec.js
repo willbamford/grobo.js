@@ -174,21 +174,21 @@ define(['lib', 'ui/view'], function (lib, refView) {
                     expect(callTrace).toEqual('[child3][child2]');
                 });
 
-                it('should pass "touchdown" events to children until consumed', function () {
-                    var mockEvent = createMockEvent(0, 0, 'touchdown');
-                    view.handleTouchDown(mockEvent);
+                it('should pass "press" events to children until consumed', function () {
+                    var mockEvent = createMockEvent(0, 0, 'press');
+                    view.handlePress(mockEvent);
                     expect(callTrace).toEqual('[child3][child2]');
                 });
 
-                it('should pass "touchup" events to children until consumed', function () {
-                    var mockEvent = createMockEvent(0, 0, 'touchup');
-                    view.handleTouchUp(mockEvent);
+                it('should pass "release" events to children until consumed', function () {
+                    var mockEvent = createMockEvent(0, 0, 'release');
+                    view.handleRelease(mockEvent);
                     expect(callTrace).toEqual('[child3][child2]');
                 });
 
             });
 
-            describe('should send onconsumed events to listeners', function () {
+            describe('should send on consumed events to listeners', function () {
 
                 var callTrace;
 
@@ -213,48 +213,48 @@ define(['lib', 'ui/view'], function (lib, refView) {
                     expect(callTrace).toEqual('[click1][click2]');
                 });
 
-                it('bound to "onTouchDown" if event "touchdown" is inside the view', function () {
+                it('bound to "onTouchDown" if event "press" is inside the view', function () {
 
-                    var mockEvent = createMockEvent(11, 11, 'touchdown');
-                    view.on('touchdown', function (event) {
-                        callTrace += '[touchdown1]';
+                    var mockEvent = createMockEvent(11, 11, 'press');
+                    view.on('press', function (event) {
+                        callTrace += '[press1]';
                     });
-                    view.on('touchdown', function (event) {
-                        callTrace += '[touchdown2]';
+                    view.on('press', function (event) {
+                        callTrace += '[press2]';
                     });
-                    view.handleTouchDown(mockEvent);
-                    expect(callTrace).toEqual('[touchdown1][touchdown2]');
+                    view.handlePress(mockEvent);
+                    expect(callTrace).toEqual('[press1][press2]');
                 });
 
-                it('bound to "onTouchUp" if event "touchup" is inside the view', function () {
+                it('bound to "onTouchUp" if event "release" is inside the view', function () {
 
-                    var mockEvent = createMockEvent(11, 11, 'touchup');
-                    view.on('touchup', function (event) {
-                        callTrace += '[touchup1]';
+                    var mockEvent = createMockEvent(11, 11, 'release');
+                    view.on('release', function (event) {
+                        callTrace += '[release1]';
                     });
-                    view.on('touchup', function (event) {
-                        callTrace += '[touchup2]';
+                    view.on('release', function (event) {
+                        callTrace += '[release2]';
                     });
-                    view.handleTouchDown(mockEvent);
-                    expect(callTrace).toEqual('[touchup1][touchup2]');
+                    view.handlePress(mockEvent);
+                    expect(callTrace).toEqual('[release1][release2]');
                 });
             });
 
             it('should provide a single method for handling events (which in turn delegates to specific event handlers)', function () {
 
                 var mockClickEvent = createMockEvent(0, 0, 'click'),
-                    mockTouchDownEvent = createMockEvent(0, 0, 'touchdown'),
-                    mockTouchUpEvent = createMockEvent(0, 0, 'touchup');
+                    mockTouchDownEvent = createMockEvent(0, 0, 'press'),
+                    mockTouchUpEvent = createMockEvent(0, 0, 'release');
                 view.init({});
                 spyOn(view, 'handleClick');
-                spyOn(view, 'handleTouchDown');
-                spyOn(view, 'handleTouchUp');
+                spyOn(view, 'handlePress');
+                spyOn(view, 'handleRelease');
                 view.handleInput(mockClickEvent);
                 view.handleInput(mockTouchDownEvent);
                 view.handleInput(mockTouchUpEvent);
                 expect(view.handleClick).toHaveBeenCalledWith(mockClickEvent);
-                expect(view.handleTouchDown).toHaveBeenCalledWith(mockTouchDownEvent);
-                expect(view.handleTouchUp).toHaveBeenCalledWith(mockTouchUpEvent);
+                expect(view.handlePress).toHaveBeenCalledWith(mockTouchDownEvent);
+                expect(view.handleRelease).toHaveBeenCalledWith(mockTouchUpEvent);
             });
         });
 

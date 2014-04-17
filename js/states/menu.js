@@ -8,12 +8,12 @@ define(
             isAnimating: false,
 
             init: function (config) {
+
                 this.modality = this.EXCLUSIVE;
                 this._initState(config);
 
-                this.view = lib.create(refPanel).init({
+                var view = lib.create(refPanel).init({
                     canvas: this.canvas,
-                    parent: null,
                     width: this.canvas.width, height: this.canvas.height,
                     x: 0, y: 0,
                     style: 'green'
@@ -25,8 +25,6 @@ define(
                     x: 10, y: 10,
                     style: 'red'
                 });
-
-                this.view.addChild(panel);
                 
                 var button1 = lib.create(refButton).init({
                     canvas: this.canvas,
@@ -41,7 +39,10 @@ define(
                     label: 'Button 2'
                 });
 
+                view.addChild(panel);
                 panel.addChild(button1).addChild(button2);
+
+                this.view = view;
 
                 return this;
             },
@@ -54,7 +55,7 @@ define(
             update: function (delta) {
                 if (this.isAnimating) {
                     if (this.view.x > 0) {
-                        this.view.x -= delta / 8;
+                        this.view.x -= delta;
                         if (this.view.x <= 0) {
                             this.view.x = 0;
                             this.isAnimating = false;

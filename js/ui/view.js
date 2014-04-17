@@ -21,8 +21,8 @@ define(['lib', 'geom'], function (lib, geom) {
             this.children           = [];
             this.listeners          = {
                 'click': [],
-                'touchdown': [],
-                'touchup': []
+                'press': [],
+                'release': []
             };
         },
 
@@ -82,11 +82,11 @@ define(['lib', 'geom'], function (lib, geom) {
                 case 'click':
                     this.handleClick(event);
                     break;
-                case 'touchdown':
-                    this.handleTouchDown(event);
+                case 'press':
+                    this.handlePress(event);
                     break;
-                case 'touchup':
-                    this.handleTouchUp(event);
+                case 'release':
+                    this.handleRelease(event);
                     break;
             }
         },
@@ -113,13 +113,13 @@ define(['lib', 'geom'], function (lib, geom) {
             }
         },
 
-        handleTouchDown: function (event) {
+        handlePress: function (event) {
             if (!this.handleInputChildren(event)) {
                 this.dispatchIfInside(event);
             }
         },
 
-        handleTouchUp: function (event) {
+        handleRelease: function (event) {
             if (!this.handleInputChildren(event)) {
                 this.dispatchIfInside(event);
             }

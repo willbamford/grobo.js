@@ -16,15 +16,15 @@ define(['lib', 'input'], function (lib, refInput) {
         beforeEach(function () {
             mockCanvas = {
                 listeners: [],
-                simulateClick: function (event) {
+                simulateClickEvent: function (event) {
                     if (this.listeners['click'])
                         this.listeners['click'](event);
                 },
-                simulateMouseDown: function (event) {
+                simulateMouseDownEvent: function (event) {
                     if (this.listeners['mousedown'])
                         this.listeners['mousedown'](event);
                 },
-                simulateMouseUp: function (event) {
+                simulateMouseUpEvent: function (event) {
                     if (this.listeners['mouseup'])
                         this.listeners['mouseup'](event);
                 },
@@ -57,8 +57,9 @@ define(['lib', 'input'], function (lib, refInput) {
                 spyOn(input, 'on');
                 input.onEvent(fn);
                 expect(input.on).toHaveBeenCalledWith('click', fn);
-                expect(input.on).toHaveBeenCalledWith('touchdown', fn);
-                expect(input.on).toHaveBeenCalledWith('touchup', fn);
+                expect(input.on).toHaveBeenCalledWith('press', fn);
+                expect(input.on).toHaveBeenCalledWith('release', fn);
+                expect(input.on).toHaveBeenCalledWith('move', fn);
             });
 
             it('should be able to deregister all events', function () {
@@ -66,8 +67,9 @@ define(['lib', 'input'], function (lib, refInput) {
                 spyOn(input, 'off');
                 input.offEvent(fn);
                 expect(input.off).toHaveBeenCalledWith('click', fn);
-                expect(input.off).toHaveBeenCalledWith('touchdown', fn);
-                expect(input.off).toHaveBeenCalledWith('touchup', fn);
+                expect(input.off).toHaveBeenCalledWith('press', fn);
+                expect(input.off).toHaveBeenCalledWith('release', fn);
+                expect(input.off).toHaveBeenCalledWith('move', fn);
             });
         });
 
@@ -80,7 +82,7 @@ define(['lib', 'input'], function (lib, refInput) {
                     clicked = true;
                     name = e.name;
                 });
-                mockCanvas.simulateClick(createMockSourceEvent(0, 0));
+                mockCanvas.simulateClickEvent(createMockSourceEvent(0, 0));
                 expect(clicked).toBeTruthy();
                 expect(name).toEqual('click');
             });
@@ -90,7 +92,7 @@ define(['lib', 'input'], function (lib, refInput) {
                     fn = function (e) {clicked = true;};
                 input.on('click', fn);
                 input.off('click', fn);
-                mockCanvas.simulateClick(createMockSourceEvent(0, 0));
+                mockCanvas.simulateClickEvent(createMockSourceEvent(0, 0));
                 expect(clicked).toBeFalsy();
             });
 
@@ -98,42 +100,42 @@ define(['lib', 'input'], function (lib, refInput) {
                 var event = createMockSourceEvent(0, 0);
                 spyOn(event, 'preventDefault');
                 input.on('click', function (e) {});
-                mockCanvas.simulateClick(event);
+                mockCanvas.simulateClickEvent(event);
                 expect(event.preventDefault).toHaveBeenCalled();
             });
 
-            it('should be able to register and deregister for "touchdown" events', function () {
-                var touchDown = false, name = null,
+            it('should be able to register and deregister for "press" events', function () {
+                var press = false, name = null,
                     listener = function (e) {
-                        touchDown = true;
+                        press = true;
                         name = e.name;
                     },
                     mockEvent = createMockSourceEvent(0, 0);
-                input.on('touchdown', listener);
-                mockCanvas.simulateMouseDown(mockEvent);
-                expect(touchDown).toBeTruthy();
-                expect(name).toEqual('touchdown');
-                touchDown = false;
-                input.off('touchdown', listener);
-                mockCanvas.simulateMouseDown(mockEvent);
-                expect(touchDown).toBeFalsy();
+                input.on('press', listener);
+                mockCanvas.simulateMouseDownEvent(mockEvent);
+                expect(press).toBeTruthy();
+                expect(name).toEqual('press');
+                press = false;
+                input.off('press', listener);
+                mockCanvas.simulateMouseDownEvent(mockEvent);
+                expect(press).toBeFalsy();
             });
 
-            it('should be able to register and deregister for "touchup" events', function () {
-                var touchUp = false, name = null,
+            it('should be able to register and deregister for "release" events', function () {
+                var release = false, name = null,
                     listener = function (e) {
-                        touchUp = true;
+                        release = true;
                         name = e.name;
                     },
                     mockEvent = createMockSourceEvent(0, 0);
-                input.on('touchup', listener);
-                mockCanvas.simulateMouseUp(mockEvent);
-                expect(touchUp).toBeTruthy();
-                expect(name).toEqual('touchup');
-                touchUp = false;
-                input.off('touchup', listener);
-                mockCanvas.simulateMouseDown(mockEvent);
-                expect(touchUp).toBeFalsy();
+                input.on('release', listener);
+                mockCanvas.simulateMouseUpEvent(mockEvent);
+                expect(release).toBeTruthy();
+                expect(name).toEqual('release');
+                release = false;
+                input.off('release', listener);
+                mockCanvas.simulateMouseDownEvent(mockEvent);
+                expect(release).toBeFalsy();
             });
         });
     });
