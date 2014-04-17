@@ -3,10 +3,10 @@ define([], function () {
     var refInput = {
 
         eventMap: {
-            'click': 'click',
-            'press': 'mousedown',
-            'release': 'mouseup',
-            'move': 'mousemove'
+            click:   'click',
+            press:   'mousedown',
+            release: 'mouseup',
+            move:    'mousemove'
         },
 
         init: function (canvas) {

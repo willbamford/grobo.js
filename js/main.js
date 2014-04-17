@@ -25,6 +25,6 @@ require(
         // window.setTimeout(function () { stateManager.push(menuState); }, 2000);
         // window.setTimeout(function () { stateManager.pop(); }, 3000);
         // window.setTimeout(function () { stateManager.push(menuState); }, 4000);
-        // window.setTimeout(function () { engine.stop(); }, 10000);
+        window.setTimeout(function () { engine.stop(); }, 10000);
     }
 );

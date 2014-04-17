@@ -69,6 +69,7 @@ define(
             },
 
             handleInput: function (event) {
+
                 this.view.handleInput(event);
                 if (event.name === 'click' && !event.isConsumed) {
                     event.consume();

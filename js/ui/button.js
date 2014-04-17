@@ -4,6 +4,7 @@ define(['lib', 'ui/view', 'geom'], function (lib, refView, geom) {
 
         NORMAL_BACKGROUND_STYLE: 'white',
         ACTIVE_BACKGROUND_STYLE: 'purple',
+        HOVER_BACKGROUND_STYLE: 'green',
 
         init: function (config) {
             var self = this;
@@ -24,6 +25,14 @@ define(['lib', 'ui/view', 'geom'], function (lib, refView, geom) {
             this.on('release', function (event) {
                 self.backgroundStyle = self.NORMAL_BACKGROUND_STYLE;
                 event.consume();
+            });
+
+            this.on('over', function (event) {
+                self.backgroundStyle = self.HOVER_BACKGROUND_STYLE;
+            });
+
+            this.on('out', function (event) {
+                self.backgroundStyle = self.NORMAL_BACKGROUND_STYLE;
             });
 
             return this;

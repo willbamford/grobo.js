@@ -10,6 +10,7 @@ define(['lib', 'geom'], function (lib, geom) {
         x: 0,
         y: 0,
         listeners: null,
+        wasLastEventInside: false,
 
         _initView: function (config) {
             this.canvas             = config.canvas || null;
@@ -22,8 +23,12 @@ define(['lib', 'geom'], function (lib, geom) {
             this.listeners          = {
                 'click': [],
                 'press': [],
-                'release': []
+                'release': [],
+                'move': [],
+                'over': [],
+                'out': []
             };
+            this.wasLastEventInside = false;
         },
 
         init: function (config) {
@@ -88,6 +93,9 @@ define(['lib', 'geom'], function (lib, geom) {
                 case 'release':
                     this.handleRelease(event);
                     break;
+                case 'move':
+                    this.handleMove(event);
+                    break;
             }
         },
 
@@ -109,30 +117,57 @@ define(['lib', 'geom'], function (lib, geom) {
 
         handleClick: function (event) {
             if (!this.handleInputChildren(event)) {
-                this.dispatchIfInside(event);
+                this.triggerIfInside(event);
             }
         },
 
         handlePress: function (event) {
             if (!this.handleInputChildren(event)) {
-                this.dispatchIfInside(event);
+                this.triggerIfInside(event);
             }
         },
 
         handleRelease: function (event) {
             if (!this.handleInputChildren(event)) {
-                this.dispatchIfInside(event);
+                this.triggerIfInside(event);
             }
         },
 
-        dispatchIfInside: function (event) {
+        handleMove: function (event) {
+            var isInside = this.isEventInside(event);
+            if (!this.handleInputChildren(event)) {
+                if (isInside)
+                    this.trigger(event);
+            }
+            
+            if (!this.wasLastEventInside && isInside)
+                this.handleOver(event);
+            else if (this.wasLastEventInside && !isInside)
+                this.handleOut(event);
+            this.wasLastEventInside = isInside;
+        },
+
+        handleOver: function (event) {
+            this.trigger({ name: 'over', source: event });
+        },
+
+        handleOut: function (event) {
+            this.trigger({ name: 'out', source: event });
+        },
+
+        trigger: function (event) {
             var listeners = this.listeners[event.name];
-            if (listeners && listeners.length > 0 && this.isEventInside(event)) {
+            if (listeners && listeners.length > 0) {
                 lib.each(listeners, function (listener) {
                     listener(event);
                 });
             }
         },
+
+        triggerIfInside: function (event) {
+            if (this.isEventInside(event))
+                this.trigger(event);
+        }
     };
 
     return refView;

@@ -188,7 +188,7 @@ define(['lib', 'ui/view'], function (lib, refView) {
 
             });
 
-            describe('should send on consumed events to listeners', function () {
+            describe('should dispatch unconsumed events to listeners', function () {
 
                 var callTrace;
 
@@ -200,7 +200,7 @@ define(['lib', 'ui/view'], function (lib, refView) {
                     });
                 });
 
-                it('bound to "onClick" if event "click" is inside the view', function () {
+                it('bound to "click" and event is inside the view', function () {
 
                     var mockEvent = createMockEvent(11, 11, 'click');
                     view.on('click', function (event) {
@@ -213,7 +213,7 @@ define(['lib', 'ui/view'], function (lib, refView) {
                     expect(callTrace).toEqual('[click1][click2]');
                 });
 
-                it('bound to "onTouchDown" if event "press" is inside the view', function () {
+                it('bound to "press" and event is inside the view', function () {
 
                     var mockEvent = createMockEvent(11, 11, 'press');
                     view.on('press', function (event) {
@@ -226,7 +226,7 @@ define(['lib', 'ui/view'], function (lib, refView) {
                     expect(callTrace).toEqual('[press1][press2]');
                 });
 
-                it('bound to "onTouchUp" if event "release" is inside the view', function () {
+                it('bound to "release" and event is inside the view', function () {
 
                     var mockEvent = createMockEvent(11, 11, 'release');
                     view.on('release', function (event) {
@@ -240,21 +240,57 @@ define(['lib', 'ui/view'], function (lib, refView) {
                 });
             });
 
+            describe('derived boundary events', function () {
+
+                it('should generate "over" event when pointer moves from outside to inside', function () {
+
+                    var moveFromEvent = createMockEvent(21, 21, 'move'),
+                        moveToEvent = createMockEvent(20, 20, 'move');
+                    view.init({
+                        x: 10, y: 10,
+                        width: 10, height: 10
+                    });
+                    spyOn(view, 'handleOver');
+                    view.handleMove(moveFromEvent);
+                    expect(view.handleOver).not.toHaveBeenCalledWith(moveToEvent);
+                    view.handleMove(moveToEvent);
+                    expect(view.handleOver).toHaveBeenCalledWith(moveToEvent);
+                });
+
+                it('should generate "out" event when pointer moves from inside to outside', function () {
+                    var moveFromEvent = createMockEvent(10, 10, 'move'),
+                        moveToEvent = createMockEvent(9, 9, 'move');
+                    view.init({
+                        x: 10, y: 10,
+                        width: 10, height: 10
+                    });
+                    spyOn(view, 'handleOut');
+                    view.handleMove(moveFromEvent);
+                    expect(view.handleOut).not.toHaveBeenCalledWith(moveToEvent);
+                    view.handleMove(moveToEvent);
+                    expect(view.handleOut).toHaveBeenCalledWith(moveToEvent);
+                });
+            });
+
             it('should provide a single method for handling events (which in turn delegates to specific event handlers)', function () {
 
                 var mockClickEvent = createMockEvent(0, 0, 'click'),
-                    mockTouchDownEvent = createMockEvent(0, 0, 'press'),
-                    mockTouchUpEvent = createMockEvent(0, 0, 'release');
+                    mockPress = createMockEvent(0, 0, 'press'),
+                    mockRelease = createMockEvent(0, 0, 'release'),
+                    mockMove = createMockEvent(0, 0, 'move');
                 view.init({});
                 spyOn(view, 'handleClick');
                 spyOn(view, 'handlePress');
                 spyOn(view, 'handleRelease');
+                spyOn(view, 'handleMove');
                 view.handleInput(mockClickEvent);
-                view.handleInput(mockTouchDownEvent);
-                view.handleInput(mockTouchUpEvent);
+                view.handleInput(mockPress);
+                view.handleInput(mockRelease);
+                view.handleInput(mockMove);
                 expect(view.handleClick).toHaveBeenCalledWith(mockClickEvent);
-                expect(view.handlePress).toHaveBeenCalledWith(mockTouchDownEvent);
-                expect(view.handleRelease).toHaveBeenCalledWith(mockTouchUpEvent);
+                expect(view.handlePress).toHaveBeenCalledWith(mockPress);
+                expect(view.handleRelease).toHaveBeenCalledWith(mockRelease);
+                expect(view.handleMove).toHaveBeenCalledWith(mockMove);
             });
         });
 
