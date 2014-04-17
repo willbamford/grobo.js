@@ -1,5 +1,17 @@
 define(['lib', 'ui/view'], function (lib, refView) { 
 
+    function createMockEvent(x, y, name) {
+        return {
+            name: (name || 'click'),
+            x: (x || 0),
+            y: (y || 0),
+            isConsumed: false,
+            consume: function () {
+                this.isConsumed = true;
+            }
+        };
+    }
+
     var view;
 
     describe('View', function () {
@@ -143,53 +155,74 @@ define(['lib', 'ui/view'], function (lib, refView) {
 
         describe('input', function () {
 
-            it('should pass events to children until consumed', function () {
+            it('should pass "click" events to children until consumed', function () {
 
                 var callTrace = '',
                     child1 = { handleInput: function (event) { callTrace += '[child1]'; } },
                     child2 = { handleInput: function (event) { callTrace += '[child2]'; event.consume(); } },
                     child3 = { handleInput: function (event) { callTrace += '[child3]'; } },
-                    mockEvent = {
-                        isConsumed: false,
-                        consume: function () {
-                            this.isConsumed = true;
-                        }
-                    };
+                    mockEvent = createMockEvent();
                 view.init({});
                 view.addChild(child1).addChild(child2).addChild(child3);
-                view.handleInput(mockEvent);
+                view.handleClick(mockEvent);
                 expect(callTrace).toEqual('[child3][child2]');
             });
 
-            it('should forward unconsumed "click" events to listeners', function () {
+            it('should send unconsumed "click" events inside the view to "onClick" listeners', function () {
 
+                var callTrace = '',
+                    clickX = 11, clickY = 11,
+                    mockEvent = createMockEvent(clickX, clickY);
+                view.init({
+                    x: 10, y: 10,
+                    width: 2, height: 2
+                });
+                view.onClick(function (event) {
+                    callTrace += '[click1]';
+                });
+                view.onClick(function (event) {
+                    callTrace += '[click2]';
+                });
+                view.handleClick(mockEvent);
+                expect(callTrace).toEqual('[click1][click2]');
+            });
+
+            it('should provide a single method for handling events (which in-turn delegates to specific methods)', function () {
+
+                var mockClickEvent = createMockEvent(0, 0, 'click'),
+                    mockTouchDownEvent = createMockEvent(0, 0, 'touchDown'),
+                    mockTouchUpEvent = createMockEvent(0, 0, 'touchup');
+                view.init({});
+                spyOn(view, 'handleClick');
+                view.handleInput(mockClickEvent);
+                view.handleInput(mockTouchDownEvent);
+                view.handleInput(mockTouchUpEvent);
+                expect(view.handleClick).toHaveBeenCalledWith(mockClickEvent);
             });
         });
 
-        // describe('event binding', function () {
+        describe('event binding', function () {
 
-        //     it('should be able to bind multiple callbacks to the "click" event', function () {
-        //         var hasClicked1 = false, hasClicked2 = false;
-        //         view.init({});
-        //         view.onClick(function (event) { hasClicked1 = true; });
-        //         view.onClick(function (event) { hasClicked2 = true; });
-        //         view.handleInput({ name: 'click' });
-        //         expect(hasClicked1).toBeTruthy();
-        //         expect(hasClicked2).toBeTruthy();
-        //     });
-
-        //     it('should be able to unbind a callback from the "click" event', function () {
-        //         var hasClicked1 = false, hasClicked2 = false,
-        //             callback1 = function (event) { hasClicked1 = true; },
-        //             callback2 = function (event) { hasClicked2 = true; };
-        //         view.init({});
-        //         view.onClick(callback1);
-        //         view.onClick(callback2);
-        //         view.offClick(callback1);
-        //         view.handleInput({ name: 'click' });
-        //         expect(hasClicked1).toBeFalsy();
-        //         expect(hasClicked2).toBeTruthy();
-        //     });
-        // });
+            it('should be able to bind and unbind listeners to "click" events', function () {
+                var hasClicked1 = false, hasClicked2 = false, hasClicked3 = false,
+                    callback1 = function (event) { hasClicked1 = true; },
+                    callback2 = function (event) { hasClicked2 = true; },
+                    callback3 = function (event) { hasClicked3 = true; },
+                    clickX = 150, clickY = 150,
+                    mockEvent = createMockEvent(clickX, clickY);
+                view.init({
+                    x: 100, y: 100,
+                    width: 100, height: 100
+                });
+                view.onClick(callback1);
+                view.onClick(callback2);
+                view.onClick(callback3);
+                view.offClick(callback2);
+                view.handleClick(mockEvent);
+                expect(hasClicked1).toBeTruthy();
+                expect(hasClicked2).toBeFalsy();
+                expect(hasClicked3).toBeTruthy();
+            });
+        });
     });
 });
