@@ -155,55 +155,112 @@ define(['lib', 'ui/view'], function (lib, refView) {
 
         describe('input', function () {
 
-            it('should pass "click" events to children until consumed', function () {
+            describe('child event handling', function () {
 
-                var callTrace = '',
-                    child1 = { handleInput: function (event) { callTrace += '[child1]'; } },
-                    child2 = { handleInput: function (event) { callTrace += '[child2]'; event.consume(); } },
-                    child3 = { handleInput: function (event) { callTrace += '[child3]'; } },
-                    mockEvent = createMockEvent();
-                view.init({});
-                view.addChild(child1).addChild(child2).addChild(child3);
-                view.handleClick(mockEvent);
-                expect(callTrace).toEqual('[child3][child2]');
+                var child1, child2, child3;
+
+                beforeEach(function () {
+                    callTrace = '';
+                    child1 = { handleInput: function (event) { callTrace += '[child1]'; } };
+                    child2 = { handleInput: function (event) { callTrace += '[child2]'; event.consume(); } };
+                    child3 = { handleInput: function (event) { callTrace += '[child3]'; } };
+                    view.init({});
+                    view.addChild(child1).addChild(child2).addChild(child3);
+                });
+
+                it('should pass "click" events to children until consumed', function () {
+                    var mockEvent = createMockEvent(0, 0, 'click');
+                    view.handleClick(mockEvent);
+                    expect(callTrace).toEqual('[child3][child2]');
+                });
+
+                it('should pass "touchdown" events to children until consumed', function () {
+                    var mockEvent = createMockEvent(0, 0, 'touchdown');
+                    view.handleTouchDown(mockEvent);
+                    expect(callTrace).toEqual('[child3][child2]');
+                });
+
+                it('should pass "touchup" events to children until consumed', function () {
+                    var mockEvent = createMockEvent(0, 0, 'touchup');
+                    view.handleTouchUp(mockEvent);
+                    expect(callTrace).toEqual('[child3][child2]');
+                });
+
             });
 
-            it('should send unconsumed "click" events inside the view to "onClick" listeners', function () {
+            describe('should send onconsumed events to listeners', function () {
 
-                var callTrace = '',
-                    clickX = 11, clickY = 11,
-                    mockEvent = createMockEvent(clickX, clickY);
-                view.init({
-                    x: 10, y: 10,
-                    width: 2, height: 2
+                var callTrace;
+
+                beforeEach(function () {
+                    callTrace = '';
+                    view.init({
+                        x: 10, y: 10,
+                        width: 100, height: 100
+                    });
                 });
-                view.onClick(function (event) {
-                    callTrace += '[click1]';
+
+                it('bound to "onClick" if event "click" is inside the view', function () {
+
+                    var mockEvent = createMockEvent(11, 11, 'click');
+                    view.on('click', function (event) {
+                        callTrace += '[click1]';
+                    });
+                    view.on('click', function (event) {
+                        callTrace += '[click2]';
+                    });
+                    view.handleClick(mockEvent);
+                    expect(callTrace).toEqual('[click1][click2]');
                 });
-                view.onClick(function (event) {
-                    callTrace += '[click2]';
+
+                it('bound to "onTouchDown" if event "touchdown" is inside the view', function () {
+
+                    var mockEvent = createMockEvent(11, 11, 'touchdown');
+                    view.on('touchdown', function (event) {
+                        callTrace += '[touchdown1]';
+                    });
+                    view.on('touchdown', function (event) {
+                        callTrace += '[touchdown2]';
+                    });
+                    view.handleTouchDown(mockEvent);
+                    expect(callTrace).toEqual('[touchdown1][touchdown2]');
                 });
-                view.handleClick(mockEvent);
-                expect(callTrace).toEqual('[click1][click2]');
+
+                it('bound to "onTouchUp" if event "touchup" is inside the view', function () {
+
+                    var mockEvent = createMockEvent(11, 11, 'touchup');
+                    view.on('touchup', function (event) {
+                        callTrace += '[touchup1]';
+                    });
+                    view.on('touchup', function (event) {
+                        callTrace += '[touchup2]';
+                    });
+                    view.handleTouchDown(mockEvent);
+                    expect(callTrace).toEqual('[touchup1][touchup2]');
+                });
             });
 
-            it('should provide a single method for handling events (which in-turn delegates to specific methods)', function () {
+            it('should provide a single method for handling events (which in turn delegates to specific event handlers)', function () {
 
                 var mockClickEvent = createMockEvent(0, 0, 'click'),
-                    mockTouchDownEvent = createMockEvent(0, 0, 'touchDown'),
+                    mockTouchDownEvent = createMockEvent(0, 0, 'touchdown'),
                     mockTouchUpEvent = createMockEvent(0, 0, 'touchup');
                 view.init({});
                 spyOn(view, 'handleClick');
+                spyOn(view, 'handleTouchDown');
+                spyOn(view, 'handleTouchUp');
                 view.handleInput(mockClickEvent);
                 view.handleInput(mockTouchDownEvent);
                 view.handleInput(mockTouchUpEvent);
                 expect(view.handleClick).toHaveBeenCalledWith(mockClickEvent);
+                expect(view.handleTouchDown).toHaveBeenCalledWith(mockTouchDownEvent);
+                expect(view.handleTouchUp).toHaveBeenCalledWith(mockTouchUpEvent);
             });
         });
 
         describe('event binding', function () {
 
-            it('should be able to bind and unbind listeners to "click" events', function () {
+            it('should be able to bind and unbind listeners to events', function () {
                 var hasClicked1 = false, hasClicked2 = false, hasClicked3 = false,
                     callback1 = function (event) { hasClicked1 = true; },
                     callback2 = function (event) { hasClicked2 = true; },
@@ -214,15 +271,16 @@ define(['lib', 'ui/view'], function (lib, refView) {
                     x: 100, y: 100,
                     width: 100, height: 100
                 });
-                view.onClick(callback1);
-                view.onClick(callback2);
-                view.onClick(callback3);
-                view.offClick(callback2);
+                view.on('click', callback1);
+                view.on('click', callback2);
+                view.on('click', callback3);
+                view.off('click', callback2);
                 view.handleClick(mockEvent);
                 expect(hasClicked1).toBeTruthy();
                 expect(hasClicked2).toBeFalsy();
                 expect(hasClicked3).toBeTruthy();
             });
+
         });
     });
 });

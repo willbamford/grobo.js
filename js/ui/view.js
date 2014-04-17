@@ -9,17 +9,21 @@ define(['lib', 'geom'], function (lib, geom) {
         height: 0,
         x: 0,
         y: 0,
-        clickListeners: null,
+        listeners: null,
 
         _initView: function (config) {
-            this.canvas         = config.canvas || null;
-            this.parent         = config.parent || null;
-            this.width          = config.width || 0;
-            this.height         = config.height || 0;
-            this.x              = config.x || 0;
-            this.y              = config.y || 0;
-            this.children       = [];
-            this.clickListeners = [];
+            this.canvas             = config.canvas || null;
+            this.parent             = config.parent || null;
+            this.width              = config.width || 0;
+            this.height             = config.height || 0;
+            this.x                  = config.x || 0;
+            this.y                  = config.y || 0;
+            this.children           = [];
+            this.listeners          = {
+                'click': [],
+                'touchdown': [],
+                'touchup': []
+            };
         },
 
         init: function (config) {
@@ -59,10 +63,30 @@ define(['lib', 'geom'], function (lib, geom) {
             });
         },
 
+        on: function (eventName, fn) {
+            var listeners = this.listeners[eventName],
+                i = listeners.indexOf(fn);
+            if (i === -1)
+                listeners.push(fn);
+        },
+
+        off: function (eventName, fn) {
+            var listeners = this.listeners[eventName],
+                i = listeners.indexOf(fn);
+            if (i !== -1)
+                listeners.splice(i, 1);
+        },
+
         handleInput: function (event) {
             switch (event.name) {
                 case 'click':
                     this.handleClick(event);
+                    break;
+                case 'touchdown':
+                    this.handleTouchDown(event);
+                    break;
+                case 'touchup':
+                    this.handleTouchUp(event);
                     break;
             }
         },
@@ -76,10 +100,6 @@ define(['lib', 'geom'], function (lib, geom) {
         },
 
         isEventInside: function (event) {
-
-            console.log('World: ' + this.getWorldX() + ', ' + this.getWorldY());
-            console.log('Event: ' + event.x + ', ' + event.y);
-
             return geom.isPointInsideRect(
                 event.x, event.y,
                 this.getWorldX(), this.getWorldY(),
@@ -89,25 +109,30 @@ define(['lib', 'geom'], function (lib, geom) {
 
         handleClick: function (event) {
             if (!this.handleInputChildren(event)) {
-                if (this.clickListeners.length > 0 && this.isEventInside(event)) {
-                    lib.each(this.clickListeners, function (listener) {
-                        listener(event);
-                    });
-                }
+                this.dispatchIfInside(event);
             }
         },
 
-        onClick: function (fn) {
-            var i = this.clickListeners.indexOf(fn);
-            if (i === -1)
-                this.clickListeners.push(fn);
+        handleTouchDown: function (event) {
+            if (!this.handleInputChildren(event)) {
+                this.dispatchIfInside(event);
+            }
         },
 
-        offClick: function (fn) {
-            var i = this.clickListeners.indexOf(fn);
-            if (i !== -1)
-                this.clickListeners.splice(i, 1);
-        }
+        handleTouchUp: function (event) {
+            if (!this.handleInputChildren(event)) {
+                this.dispatchIfInside(event);
+            }
+        },
+
+        dispatchIfInside: function (event) {
+            var listeners = this.listeners[event.name];
+            if (listeners && listeners.length > 0 && this.isEventInside(event)) {
+                lib.each(listeners, function (listener) {
+                    listener(event);
+                });
+            }
+        },
     };
 
     return refView;

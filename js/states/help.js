@@ -19,9 +19,9 @@ define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
 
         handleInput: function (event) {
             if (event.name === 'click') {
-                event.consume();
                 this.stateManager.pop();
             }
+            event.consume();
         }
     });
 

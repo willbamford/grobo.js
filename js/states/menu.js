@@ -16,24 +16,33 @@ define(
                     parent: null,
                     width: this.canvas.width, height: this.canvas.height,
                     x: 0, y: 0,
+                    style: 'green'
+                });
+
+                var panel = lib.create(refPanel).init({
+                    canvas: this.canvas,
+                    width: this.canvas.width - 20, height: this.canvas.height - 20,
+                    x: 10, y: 10,
                     style: 'red'
                 });
+
+                this.view.addChild(panel);
                 
                 var button1 = lib.create(refButton).init({
                     canvas: this.canvas,
-                    parent: null,
                     width: 100, height: 40,
                     x: 20, y: 20,
                     label: 'Button 1'
                 }),
                 button2 = lib.create(refButton).init({
                     canvas: this.canvas,
-                    parent: null,
                     width: 100, height: 40,
                     x: 20, y: 80,
                     label: 'Button 2'
                 });
-                this.view.addChild(button1).addChild(button2);
+
+                panel.addChild(button1).addChild(button2);
+
                 return this;
             },
 
@@ -45,7 +54,7 @@ define(
             update: function (delta) {
                 if (this.isAnimating) {
                     if (this.view.x > 0) {
-                        this.view.x -= delta;
+                        this.view.x -= delta / 8;
                         if (this.view.x <= 0) {
                             this.view.x = 0;
                             this.isAnimating = false;

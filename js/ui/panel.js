@@ -7,11 +7,10 @@ define(['lib', 'ui/view'], function (lib, refView) {
             return this;
         },
 
-
         draw: function () {
             var x = this.getWorldX(),
                 y = this.getWorldY();
-            this.canvas.fillRect(this.style, this.x, this.y, this.width, this.height);
+            this.canvas.fillRect(this.style, x, y, this.width, this.height);
             this.drawChildren();
         }
     });
