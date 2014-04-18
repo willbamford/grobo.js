@@ -1,4 +1,4 @@
-define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
+define(['lib', 'states/state', 'logger', 'polyfills/function-bind'], function (lib, refState, logger) {
 
     var refStateManager = {
 
