@@ -14,7 +14,7 @@ define(['lib', 'states/state', 'logger'], function (lib, refState, logger) {
         update: function (delta) {},
 
         draw: function () {
-            this.canvas.fill('blue');
+            this.canvas.fill('yellow');
         },
 
         handleInput: function (event) {

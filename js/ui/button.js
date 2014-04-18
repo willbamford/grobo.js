@@ -42,9 +42,14 @@ define(['lib', 'ui/view', 'geom'], function (lib, refView, geom) {
 
         draw: function () {
             var x = this.getWorldX(),
-                y = this.getWorldY();
-            this.canvas.fillRect(this.backgroundStyle, x, y, this.width, this.height);
-            this.canvas.fillText('black', this.label, x + 20, y + 20);
+                y = this.getWorldY(),
+                canvas = this.canvas,
+                context = canvas.getContext();
+            canvas.fillRect(this.backgroundStyle, x, y, this.width, this.height);
+            context.font = 'bold 16px sans-serif';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            canvas.fillText('black', this.label, x + this.width / 2, y + this.height / 2);
         }
     });
 
