@@ -17,16 +17,16 @@ define(['lib', 'input'], function (lib, refInput) {
             mockCanvas = {
                 listeners: [],
                 simulateClickEvent: function (event) {
-                    if (this.listeners['click'])
-                        this.listeners['click'](event);
+                    if (this.listeners.click)
+                        this.listeners.click(event);
                 },
                 simulateMouseDownEvent: function (event) {
-                    if (this.listeners['mousedown'])
-                        this.listeners['mousedown'](event);
+                    if (this.listeners.mousedown)
+                        this.listeners.mousedown(event);
                 },
                 simulateMouseUpEvent: function (event) {
-                    if (this.listeners['mouseup'])
-                        this.listeners['mouseup'](event);
+                    if (this.listeners.mouseup)
+                        this.listeners.mouseup(event);
                 },
                 getElement: function () {
                     var self = this;
@@ -37,7 +37,7 @@ define(['lib', 'input'], function (lib, refInput) {
                         removeEventListener: function (eventName, fn, flag) {
                             self.listeners[eventName] = null;
                         }
-                    }
+                    };
                 },
                 getCoords: function (event) {
                     return { x: event.offsetX, y: event.offsetY };

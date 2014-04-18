@@ -13,11 +13,11 @@ define(
 
             function createStubPopupState() {
                 return createStubState(refState.POPUP);
-            };
+            }
 
             function createStubExclusiveState() {
                 return createStubState(refState.EXCLUSIVE);
-            };
+            }
 
             function createStubState(modality) {
                 return {
@@ -30,20 +30,20 @@ define(
                     draw: function () {},
                     handleInput: function (event) {}
                 };
-            };
+            }
 
             function createConsumableEvent() {
                 return {
                     isConsumed: false,
                     consume: function () { this.isConsumed = true; }
                 };
-            };
+            }
 
             function createMockInput() {
                 return {
                     onEvent: function (fn) {}
                 };
-            };
+            }
 
             beforeEach(function () {
                 stateManager = lib.create(refStateManager).init(createMockInput());

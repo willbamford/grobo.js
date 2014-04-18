@@ -5,7 +5,7 @@ define(
         var refStateFactory = {
         
             init: function (config) {
-                config['stateFactory'] = this;
+                config.stateFactory = this;
                 this.config = config;
                 this.states = {};
                 return this;

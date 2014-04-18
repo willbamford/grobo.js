@@ -52,8 +52,8 @@ define([], function () {
             consume: function () {
                 this.isConsumed = true;
             }
-        }
-    };
+        };
+    }
 
     return refInput;
 });

@@ -44,7 +44,7 @@ define([], function () {
                 return {
                     x: event.offsetX,
                     y: event.offsetY
-                }
+                };
             }
             return {
                 x: event.layerX,

@@ -31,7 +31,7 @@ define(['lib', 'states/state'], function (lib, refState) {
         it('should be able to initialise with canvas, stateFactory and stateManager', function () {
             var canvas = 'canvas',
                 stateFactory = 'stateFactory',
-                stateManager = 'stateManager'
+                stateManager = 'stateManager';
             state.init({
                 canvas: canvas,
                 stateFactory: stateFactory,

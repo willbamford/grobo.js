@@ -162,6 +162,7 @@ define(['lib', 'geom'], function (lib, geom) {
                     listener(event);
                 });
             }
+            /* this.draw(); */
         },
 
         triggerIfInside: function (event) {
