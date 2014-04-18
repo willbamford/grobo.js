@@ -1,13 +1,19 @@
-define([], function () {
+define(['fps', 'logger'], function (fps, logger) {
 
     var refEngine = {
 
         init: function (stateManager) {
+            var self = this;
             this.stateManager = stateManager;
             this.tickCount = 0;
             this.requestId = null;
             this.isRunning = false;
             this.lastTime = null;
+
+            fps.init(500, function (framesPerSecond) {
+                logger.info(framesPerSecond);
+            });
+
             return this;
         },
 
@@ -36,6 +42,8 @@ define([], function () {
             this.lastTime = currentTime;
 
             this.requestId = window.requestAnimationFrame(this.tick.bind(this));
+
+            fps.tick(delta);
         }
     };
 
