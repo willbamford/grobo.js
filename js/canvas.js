@@ -40,15 +40,10 @@ define([], function () {
         },
 
         getCoords: function (event) {
-            if (event.offsetX !== undefined && event.offsetY !== undefined) {
-                return {
-                    x: event.offsetX,
-                    y: event.offsetY
-                };
-            }
+            var rect = this.element.getBoundingClientRect();
             return {
-                x: event.layerX,
-                y: event.layerY
+                x: event.clientX - rect.left,
+                y: event.clientY - rect.top
             };
         }
     };

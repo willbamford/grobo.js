@@ -10,7 +10,7 @@ define(['fps', 'logger', 'polyfills/function-bind'], function (fps, logger) {
             this.isRunning = false;
             this.lastTime = null;
 
-            fps.init(500, function (framesPerSecond) {
+            fps.init(120, function (framesPerSecond) {
                 logger.info(framesPerSecond);
             });
 

@@ -24,19 +24,19 @@ define(['logger'], function (logger) {
         },
 
         entered: function () {
-            logger.info('Entered ' + this.getName() + ' state');
+            // logger.info('Entered ' + this.getName() + ' state');
         },
 
         exiting: function () {
-            logger.info('Exiting ' + this.getName() + ' state');
+            // logger.info('Exiting ' + this.getName() + ' state');
         },
 
         obscured: function () {
-            logger.info('Obscured ' + this.getName() + ' state');
+            // logger.info('Obscured ' + this.getName() + ' state');
         },
 
         revealed: function () {
-            logger.info('Entered ' + this.getName() + ' state');
+            // logger.info('Entered ' + this.getName() + ' state');
         },
 
         update: function (delta) {},
