@@ -5,7 +5,7 @@ module.exports = function (grunt) {
         jshint: {
             files: ['js/**/*.js'],
             options: {
-                ignores: ['js/vendor/**/*.js', 'js/tests/lib/**/*.js']
+                ignores: ['js/built/**/*.*', 'js/vendor/**/*.js', 'js/tests/lib/**/*.js']
             }
         },
         jasmine: {
@@ -15,9 +15,18 @@ module.exports = function (grunt) {
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: {
                         requireConfig: {
-                            baseUrl: 'js/'
+                            baseUrl: 'js'
                         }
                     }
+                }
+            }
+        },
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: 'js',
+                    name: 'main',
+                    out: "js/built/islandcx.js"
                 }
             }
         }

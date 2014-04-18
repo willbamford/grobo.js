@@ -1,4 +1,4 @@
-define(['fps', 'logger', 'polyfill/function-bind'], function (fps, logger) {
+define(['fps', 'logger', 'polyfills/function-bind'], function (fps, logger) {
 
     var refEngine = {
 
