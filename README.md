@@ -1,5 +1,4 @@
-islandcx.js
+grobo.js
 ===========
 
-An experiment into creating a game state manager with JavaScript.
-Based on [this article](http://blog.nuclex-games.com/tutorials/cxx/game-state-management/).
+An experiment into creating a simple canvas UI library and high-level state manager in JavaScript.
