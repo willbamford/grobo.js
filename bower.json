@@ -5,7 +5,7 @@
   "authors": [
     "Will Bamford <w.bamford@gmail.com>"
   ],
-  "description": "Simple canvas UI library and high-level state manager in JavaScript",
+  "description": "Simple canvas UI and high-level state manager in JavaScript",
   "main": "js/main.js",
   "moduleType": [
     "amd"
@@ -24,5 +24,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.11"
+  }
 }
