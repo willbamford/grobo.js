@@ -1,4 +1,4 @@
-define(['lib'], function (lib) { 
+define(['grobo/lib'], function (lib) { 
 
     describe('Library', function () {
 

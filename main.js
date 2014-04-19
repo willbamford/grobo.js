@@ -6,12 +6,12 @@ require.config({
 
 require(
     [
-        'lib',
-        'state-factory',
-        'state-manager',
-        'engine',
-        'canvas',
-        'input'
+        'grobo/lib',
+        'grobo/state-factory',
+        'grobo/state-manager',
+        'grobo/engine',
+        'grobo/canvas',
+        'grobo/input'
     ],
     function (lib, refStateFactory, refStateManager, refEngine, refCanvas, refInput) {
 

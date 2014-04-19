@@ -1,5 +1,10 @@
 define(
-    ['lib', 'states/game', 'states/menu', 'states/help'],
+    [
+        'grobo/lib',
+        'grobo/states/game',
+        'grobo/states/menu',
+        'grobo/states/help'
+    ],
     function (lib, refGameState, refMenuState, refHelpState) {
 
         var refStateFactory = {

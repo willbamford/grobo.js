@@ -1,4 +1,4 @@
-define(['lib', 'geom'], function (lib, geom) { 
+define(['grobo/lib', 'grobo/geom'], function (lib, geom) { 
 
     describe('Geometry Library', function () {
 

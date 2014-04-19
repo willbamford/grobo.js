@@ -1,5 +1,5 @@
 define(
-    ['lib', 'state-manager', 'states/state'],
+    ['grobo/lib', 'grobo/state-manager', 'grobo/states/state'],
     function (lib, refStateManager, refState) { 
 
         describe('State manager', function () {

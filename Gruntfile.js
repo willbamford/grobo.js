@@ -3,30 +3,25 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            files: ['js/**/*.js'],
+            files: ['grobo/*.js'],
             options: {
-                ignores: ['js/built/**/*.*', 'js/vendor/**/*.js', 'js/tests/lib/**/*.js']
+                ignores: ['built/**/*.*', 'tests/lib/**/*.js']
             }
         },
         jasmine: {
             all: {
                 options: {
-                    specs: 'js/tests/spec/**/*-spec.js',
-                    template: require('grunt-template-jasmine-requirejs'),
-                    templateOptions: {
-                        requireConfig: {
-                            baseUrl: 'js'
-                        }
-                    }
+                    specs: 'tests/spec/**/*-spec.js',
+                    template: require('grunt-template-jasmine-requirejs')
                 }
             }
         },
         requirejs: {
             compile: {
                 options: {
-                    baseUrl: 'js',
+                    baseUrl: '',
                     name: 'main',
-                    out: "js/built/grobo.js"
+                    out: "grobo-min.js"
                 }
             }
         }

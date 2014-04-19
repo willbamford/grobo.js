@@ -1,5 +1,10 @@
 define(
-    ['fps', 'logger', 'polyfills/function-bind', 'polyfills/animation-frame'],
+    [
+        'grobo/fps',
+        'grobo/logger',
+        'grobo/polyfills/function-bind',
+        'grobo/polyfills/animation-frame'
+    ],
     function (fps, logger) {
 
         var refEngine = {

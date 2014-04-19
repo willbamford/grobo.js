@@ -1,4 +1,4 @@
-define(['lib', 'ui/view'], function (lib, refView) { 
+define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) { 
 
     function createMockEvent(x, y, name) {
         return {

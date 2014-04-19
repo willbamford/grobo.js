@@ -1,5 +1,11 @@
 define(
-    ['lib', 'states/state', 'ui/button', 'ui/panel', 'logger'],
+    [
+        'grobo/lib',
+        'grobo/states/state',
+        'grobo/ui/button',
+        'grobo/ui/panel',
+        'grobo/logger'
+    ],
     function (lib, refState, refButton, refPanel, logger) {
 
         var refMenuState = lib.create(refState, {

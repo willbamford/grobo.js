@@ -1,4 +1,4 @@
-define(['lib', 'input'], function (lib, refInput) { 
+define(['grobo/lib', 'grobo/input'], function (lib, refInput) { 
 
     describe('Input', function () {
         
