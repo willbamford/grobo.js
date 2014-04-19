@@ -6,9 +6,11 @@ define([], function () {
 
         log: function (message) {
             console.log(message);
-            var item = document.createElement('li');
-            item.appendChild(document.createTextNode(message));
-            list.appendChild(item);
+            if (list) {
+                var item = document.createElement('li');
+                item.appendChild(document.createTextNode(message));
+                list.appendChild(item);
+            }
         },
 
         info: function (message) {
