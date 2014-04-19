@@ -1,12 +1,12 @@
 {
-  "name": "islandcx.js",
+  "name": "grobo.js",
   "author": {
     "name": "Will Bamford",
     "email": "w.bamford@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/WebSeed/islandcx.js"
+    "url": "https://github.com/WebSeed/grobo.js"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.10.0",

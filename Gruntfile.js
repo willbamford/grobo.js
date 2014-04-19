@@ -26,7 +26,7 @@ module.exports = function (grunt) {
                 options: {
                     baseUrl: 'js',
                     name: 'main',
-                    out: "js/built/islandcx.js"
+                    out: "js/built/grobo.js"
                 }
             }
         }
