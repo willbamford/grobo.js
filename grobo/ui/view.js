@@ -1,12 +1,13 @@
 define(
-    ['grobo/lib', 'grobo/geom'],
-    function (lib, geom) {
+    ['grobo/lib', 'grobo/helpers/geom', 'grobo/helpers/style'],
+    function (lib, geom, styleHelper) {
 
         var refView = {
 
             canvas: null,
             parent: null,
             children: null,
+            style: {},
             width: 0,
             height: 0,
             x: 0,
@@ -16,7 +17,7 @@ define(
 
             _initView: function (config) {
                 this.canvas             = config.canvas || null;
-                this.parent             = config.parent || null;
+                this.style              = config.style || {};
                 this.width              = config.width || 0;
                 this.height             = config.height || 0;
                 this.x                  = config.x || 0;
@@ -31,6 +32,7 @@ define(
                     'out': []
                 };
                 this.wasLastEventInside = false;
+                this.layout();
             },
 
             init: function (config) {
@@ -38,8 +40,40 @@ define(
                 return this;
             },
 
+            layout: function () {
+
+                var style = this.style,
+                    parent = this.parent || this.canvas,
+                    styleWidth = style.width || '100%',
+                    styleHeight = style.height || '100%',
+                    parentWidth = parent ? parent.width : 0,
+                    parentHeight = parent ? parent.height : 0;
+
+                // console.log('styleWidth: ' + styleWidth + ', styleHeight: ' + styleHeight + ', parentWidth: ' + parentWidth + ', parentHeight: ' + parentHeight);
+
+                // this.x = style.x || 0;
+                // this.y = style.y || 0;
+
+                this.width = styleHelper.measureSize(styleWidth, parentWidth);
+                this.height = styleHelper.measureSize(styleHeight, parentHeight);
+
+                if (typeof style.left !== "undefined" || typeof style.right !== "undefined") {
+                    this.x = style.left;
+                } else {
+                    this.x = Math.round((parentWidth - this.width) / 2);
+                }
+
+                if (typeof style.top !== "undefined" || typeof style.bottom !== "undefined") {
+                    this.y = style.top;
+                } else {
+                    this.y = Math.round((parentHeight - this.height) / 2);
+                }
+            },
+
             addChild: function (view) {
                 view.parent = this;
+                view.canvas = this.canvas;
+                view.layout();
                 this.children.push(view);
                 return this;
             },

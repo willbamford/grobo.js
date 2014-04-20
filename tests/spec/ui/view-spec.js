@@ -20,48 +20,79 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
             view = lib.create(refView);
         });
 
+        describe('layout', function () {
+
+            var mockCanvas;
+
+            beforeEach(function () {
+                mockCanvas = { width: 100, height: 50 };
+            });
+
+            it('should default to 100% width and height', function () {
+                view.init({
+                    canvas: mockCanvas,
+                    style: { width: 100, height: 50 }
+                });
+                var child = lib.create(refView);
+                child.init({
+                    style: {}
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(100);
+                expect(child.height).toEqual(50);
+            });
+
+            it('should center the view within parent if only size (width / height) set', function () {
+                view.init({
+                    canvas: mockCanvas,
+                    style: { width: 100, height: 50 }
+                });
+                var child = lib.create(refView);
+                child.init({
+                    style: {
+                        width: 10,
+                        height: '50%'
+                    }
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(10);
+                expect(child.height).toEqual(25);
+                expect(child.x).toEqual(45);
+                expect(child.y).toEqual(13);
+            });
+
+            it('should map left and top directly to x and y', function () {
+                view.init({
+                    canvas: mockCanvas,
+                    style: { width: 100, height: 50 }
+                });
+                var child = lib.create(refView);
+                child.init({
+                    style: { 
+                        left: 10,
+                        top: 20
+                    }
+                });
+                view.addChild(child);
+                expect(child.x).toEqual(10);
+                expect(child.y).toEqual(20);
+            });
+
+            xit('should layout child when added to a new parent', function () {});
+        });
+
         it('should return "this" on init', function () {
-            var view2 = view.init({ canvas: null });
+            var view2 = view.init({});
             expect(view2).toEqual(view);
         });
 
-        it('should be able to initialise with the canvas and parent view', function () {
+        it('should be able to initialise with the canvas', function () {
             var parent = lib.create(refView),
                 canvas = {};
             view.init({
-                canvas: canvas,
-                parent: parent
+                canvas: canvas
             });
             expect(view.canvas).toEqual(canvas);
-            expect(view.parent).toEqual(parent);
-        });
-
-        it('should be able to initialise with dimensions and an (x, y) coordinate', function () {
-            var config = {
-                canvas: {},
-                parent: lib.create(refView),
-                width: 400,
-                height: 300,
-                x: 5,
-                y: 10
-            };
-            view.init(config);
-            expect(view.width).toEqual(400);
-            expect(view.height).toEqual(300);
-            expect(view.x).toEqual(5);
-            expect(view.y).toEqual(10);
-        });
-
-        it('should default (x, y) coordinate to (0, 0)', function () {
-            var config = {
-                canvas: {},
-                parent: lib.create(refView),
-                width: 100,
-                height: 100
-            };
-            view.init(config);
-            expect(view.x).toEqual(0);
-            expect(view.y).toEqual(0);
         });
 
         describe('child view management', function () {
@@ -72,11 +103,13 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 expect(view.children.length).toEqual(2);
             });
 
-            it('should set the child\'s parent on add', function () {
-                var child = lib.create(refView);
-                view.init({});
+            it('should set the child\'s parent and canvas on add', function () {
+                var child = lib.create(refView),
+                    mockCanvas = { width: 10, height: 10 };
+                view.init({ canvas: mockCanvas });
                 view.addChild(child);
                 expect(child.parent).toEqual(view);
+                expect(child.canvas).toEqual(mockCanvas);
             });
 
             it('should be able to remove', function () {
@@ -104,24 +137,35 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
         describe('world coordinates', function () {
 
             it('should be relative to that of own local coordinates and the parent', function () {
-                var parentsParentView = lib.create(refView).init({
-                    canvas: {},
-                    parent: null,
-                    x: 100,
-                    y: 200
-                }),
+                var mockCanvas = { width: 400, height: 300 },
+                    grandparentView,
+                    parentView;
+
+                grandparentView = lib.create(refView).init({
+                    canvas: mockCanvas,
+                    style: {
+                        left: 100,
+                        top: 200
+                    }
+                });
+
                 parentView = lib.create(refView).init({
-                    canvas: {},
-                    parent: parentsParentView,
-                    x: 300,
-                    y: 400
+                    style: {
+                        left: 300,
+                        top: 400
+                    }
                 });
+
                 view.init({
-                    canvas: {},
-                    parent: parentView,
-                    x: 500,
-                    y: 600
+                    style: {
+                        left: 500,
+                        top: 600
+                    }
                 });
+
+                parentView.addChild(view);
+                grandparentView.addChild(parentView);
+
                 expect(view.getWorldX()).toEqual(900);
                 expect(view.getWorldY()).toEqual(1200);
             });
@@ -161,9 +205,9 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
 
                 beforeEach(function () {
                     callTrace = '';
-                    child1 = { handleInput: function (event) { callTrace += '[child1]'; } };
-                    child2 = { handleInput: function (event) { callTrace += '[child2]'; event.consume(); } };
-                    child3 = { handleInput: function (event) { callTrace += '[child3]'; } };
+                    child1 = lib.create(refView, { handleInput: function (event) { callTrace += '[child1]'; } } );
+                    child2 = lib.create(refView, { handleInput: function (event) { callTrace += '[child2]'; event.consume() } } );
+                    child3 = lib.create(refView, { handleInput: function (event) { callTrace += '[child3]'; } } );
                     view.init({});
                     view.addChild(child1).addChild(child2).addChild(child3);
                 });
@@ -195,8 +239,10 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 beforeEach(function () {
                     callTrace = '';
                     view.init({
-                        x: 10, y: 10,
-                        width: 100, height: 100
+                        style: {
+                            left: 10, top: 10,
+                            width: 100, height: 100
+                        }
                     });
                 });
 
@@ -247,8 +293,10 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                     var moveFromEvent = createMockEvent(21, 21, 'move'),
                         moveToEvent = createMockEvent(20, 20, 'move');
                     view.init({
-                        x: 10, y: 10,
-                        width: 10, height: 10
+                        style: {
+                            left: 10, top: 10,
+                            width: 10, height: 10
+                        }
                     });
                     spyOn(view, 'handleOver');
                     view.handleMove(moveFromEvent);
@@ -261,8 +309,10 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                     var moveFromEvent = createMockEvent(10, 10, 'move'),
                         moveToEvent = createMockEvent(9, 9, 'move');
                     view.init({
-                        x: 10, y: 10,
-                        width: 10, height: 10
+                        style: {
+                            left: 10, top: 10,
+                            width: 10, height: 10
+                        }
                     });
                     spyOn(view, 'handleOut');
                     view.handleMove(moveFromEvent);
@@ -304,8 +354,10 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                     clickX = 150, clickY = 150,
                     mockEvent = createMockEvent(clickX, clickY);
                 view.init({
-                    x: 100, y: 100,
-                    width: 100, height: 100
+                    style: {
+                        left: 100, top: 100,
+                        width: 100, height: 100
+                    }
                 });
                 view.on('click', callback1);
                 view.on('click', callback2);

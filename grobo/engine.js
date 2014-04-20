@@ -18,7 +18,7 @@ define(
                 this.lastTime = null;
 
                 fps.init(120, function (framesPerSecond) {
-                    logger.info(framesPerSecond);
+                    // logger.info(framesPerSecond);
                 });
 
                 return this;

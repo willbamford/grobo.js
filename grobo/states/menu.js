@@ -20,34 +20,36 @@ define(
 
                 var view = lib.create(refPanel).init({
                     canvas: this.canvas,
-                    width: this.canvas.width, height: this.canvas.height,
-                    x: 0, y: 0,
-                    style: 'green'
+                    style: {
+                        width: this.canvas.width,
+                        height: this.canvas.height,
+                        background: 'green'
+                    }
                 });
 
                 var panel = lib.create(refPanel).init({
-                    canvas: this.canvas,
-                    width: this.canvas.width - 20, height: this.canvas.height - 20,
-                    x: 10, y: 10,
-                    style: 'red'
+                    style: {
+                        width: '80%', height: '80%',
+                        background: 'red'
+                    }
                 });
                 
                 var button1 = lib.create(refButton).init({
-                    canvas: this.canvas,
-                    width: 100, height: 80,
-                    x: 20, y: 20,
+                    style: {
+                        width: '50%', height: '50%'
+                    },
                     label: 'Button 1'
                 }),
                 button2 = lib.create(refButton).init({
-                    canvas: this.canvas,
-                    width: 100, height: 80,
-                    x: 20, y: 200,
+                    style: {
+                        width: 100, height: 80
+                    },
                     label: 'Button 2'
                 }),
                 button3 = lib.create(refButton).init({
-                    canvas: this.canvas,
-                    width: 100, height: 80,
-                    x: 120, y: 110,
+                    style: {
+                        width: 100, height: 80
+                    },
                     label: 'Button 3'
                 });
 
@@ -81,7 +83,7 @@ define(
             },
 
             handleInput: function (event) {
-                console.log(event.x + ', ' + event.y);
+                // console.log(event.x + ', ' + event.y);
                 this.view.handleInput(event);
                 if (event.name === 'click' && !event.isConsumed) {
                     event.consume();
