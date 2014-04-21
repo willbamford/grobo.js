@@ -26,27 +26,22 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
 
             beforeEach(function () {
                 mockCanvas = { width: 100, height: 50 };
+                view.init({ canvas: mockCanvas });
             });
 
             it('should default to 100% width and height', function () {
-                view.init({
-                    canvas: mockCanvas,
-                    style: { width: 100, height: 50 }
-                });
                 var child = lib.create(refView);
                 child.init({
                     style: {}
                 });
                 view.addChild(child);
+                expect(view.width).toEqual(100);
+                expect(view.height).toEqual(50);
                 expect(child.width).toEqual(100);
                 expect(child.height).toEqual(50);
             });
 
-            it('should center the view within parent if only size (width / height) set', function () {
-                view.init({
-                    canvas: mockCanvas,
-                    style: { width: 100, height: 50 }
-                });
+            it('should horizontally (vertically) center the view within parent if only width (height) set', function () {
                 var child = lib.create(refView);
                 child.init({
                     style: {
@@ -61,13 +56,21 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 expect(child.y).toEqual(13);
             });
 
-            it('should map left and top directly to x and y', function () {
-                view.init({
-                    canvas: mockCanvas,
-                    style: { width: 100, height: 50 }
-                });
+            it('should be able to provide width (height) as a percentage which is rounded to a pixel value', function () {
                 var child = lib.create(refView);
                 child.init({
+                    style: {
+                        width: '15%',
+                        height: '85%'
+                    }
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(15);
+                expect(child.height).toEqual(43);
+            });
+
+            it('if only given left (top) this should map directly to x (y)', function () {
+                var child = lib.create(refView).init({
                     style: { 
                         left: 10,
                         top: 20
@@ -77,9 +80,105 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 expect(child.x).toEqual(10);
                 expect(child.y).toEqual(20);
             });
-
-            xit('should layout child when added to a new parent', function () {});
         
+            it('should be able to combine left or right (top or bottom) with width (height)', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        right: 30,
+                        width: 5,
+                        bottom: 11,
+                        height: '10%'
+                    }
+                });
+                view.addChild(child);
+                expect(child.x).toEqual(65);
+                expect(child.width).toEqual(5);
+                expect(child.y).toEqual(34);
+                expect(child.height).toEqual(5);
+            });
+
+            it('if only given positive right and bottom, x and y should be negative right and bottom', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        right: 20,
+                        bottom: 30
+                    }
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(100);
+                expect(child.x).toEqual(-20);
+                expect(child.height).toEqual(50);
+                expect(child.y).toEqual(-30);
+            });
+
+            it('should be able derive width (height) if only given right and left (top and bottom) ', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 8,
+                        right: 16,
+                        top: 5,
+                        bottom: 33
+                    }
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(76);
+                expect(child.height).toEqual(12);
+                expect(child.x).toEqual(8);
+                expect(child.y).toEqual(5);
+            });
+
+            it('should be able to provide percentage left / right / top / bottom', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: '10%',
+                        right: '10%',
+                        top: '10%',
+                        bottom: '10%'
+                    }
+                });
+                view.addChild(child);
+                expect(child.x).toEqual(10);
+                expect(child.y).toEqual(5);
+                expect(child.width).toEqual(80);
+                expect(child.height).toEqual(40);
+            });
+
+            it('should be able to provide negative left / right / top / bottom', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: '-50%',
+                        right: '-50%',
+                        top: '-50%',
+                        bottom: '-50%'
+                    }
+                });
+                view.addChild(child);
+                expect(child.x).toEqual(-50);
+                expect(child.width).toEqual(200);
+                expect(child.y).toEqual(-25);
+                expect(child.height).toEqual(100);
+            });
+
+            it('should override width (height) if left and right (top and bottom) provided', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 40,
+                        right: 40,
+                        width: 50,
+                        top: 10,
+                        bottom: 10,
+                        height: 50
+                    }
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(20);
+                expect(child.height).toEqual(30);
+            });
+
+            xit('width / height should never be negative');
+
+            xit('spacing');
+
             it('should layout children when performing layout', function () {
                 view.init({});
                 var child1 = lib.create(refView),

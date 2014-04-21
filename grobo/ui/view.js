@@ -47,24 +47,35 @@ define(
                     styleWidth = style.width || '100%',
                     styleHeight = style.height || '100%',
                     parentWidth = parent ? parent.width : 0,
-                    parentHeight = parent ? parent.height : 0;
+                    parentHeight = parent ? parent.height : 0,
+                    left, right, top, bottom;
 
-                // console.log('styleWidth: ' + styleWidth + ', styleHeight: ' + styleHeight + ', parentWidth: ' + parentWidth + ', parentHeight: ' + parentHeight);
+                this.width = Math.round(styleHelper.measureSize(styleWidth, parentWidth));
+                this.height = Math.round(styleHelper.measureSize(styleHeight, parentHeight));
 
-                // this.x = style.x || 0;
-                // this.y = style.y || 0;
+                left = style.left !== undefined ? Math.round(styleHelper.measureSize(style.left, parentWidth)) : undefined;
+                right = style.right !== undefined ? Math.round(styleHelper.measureSize(style.right, parentWidth)) : undefined;
+                top = style.top !== undefined ? Math.round(styleHelper.measureSize(style.top, parentHeight)) : undefined;
+                bottom = style.bottom !== undefined ? Math.round(styleHelper.measureSize(style.bottom, parentHeight)) : undefined;
 
-                this.width = styleHelper.measureSize(styleWidth, parentWidth);
-                this.height = styleHelper.measureSize(styleHeight, parentHeight);
-
-                if (typeof style.left !== "undefined" || typeof style.right !== "undefined") {
-                    this.x = style.left;
+                if (left !== undefined && right !== undefined) {
+                    this.x = left;
+                    this.width = (parentWidth - right) - this.x;
+                } else if (left !== undefined) {
+                    this.x = left;
+                } else if (right !== undefined) {
+                    this.x = parentWidth - this.width - right;
                 } else {
                     this.x = Math.round((parentWidth - this.width) / 2);
                 }
 
-                if (typeof style.top !== "undefined" || typeof style.bottom !== "undefined") {
-                    this.y = style.top;
+                if (top !== undefined && bottom !== undefined) {
+                    this.y = top;
+                    this.height = (parentHeight - bottom) - this.y;
+                } else if (top !== undefined) {
+                    this.y = top;
+                } else if (bottom !== undefined) {
+                    this.y = parentHeight - this.height - bottom;
                 } else {
                     this.y = Math.round((parentHeight - this.height) / 2);
                 }
