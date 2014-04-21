@@ -84,10 +84,10 @@ define(
                     y = Math.round((parentHeight - height) / 2);
                 }
 
-                spacingLeft = spacingLeft !== undefined ? Math.round(styleHelper.measureSize(spacingLeft, parentWidth)) : undefined;
-                spacingRight = spacingRight !== undefined ? Math.round(styleHelper.measureSize(spacingRight, parentWidth)) : undefined;
-                spacingTop = spacingTop !== undefined ? Math.round(styleHelper.measureSize(spacingTop, parentHeight)) : undefined;
-                spacingBottom = spacingBottom !== undefined ? Math.round(styleHelper.measureSize(spacingBottom, parentHeight)) : undefined;
+                spacingLeft = spacingLeft ? Math.round(styleHelper.measureSize(spacingLeft, parentWidth)) : 0;
+                spacingRight = spacingRight ? Math.round(styleHelper.measureSize(spacingRight, parentWidth)) : 0;
+                spacingTop = spacingTop ? Math.round(styleHelper.measureSize(spacingTop, parentHeight)) : 0;
+                spacingBottom = spacingBottom ? Math.round(styleHelper.measureSize(spacingBottom, parentHeight)) : 0;
 
                 if (spacingLeft) {
                     x += spacingLeft;
