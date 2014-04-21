@@ -48,10 +48,10 @@ define(
                     styleHeight = style.height || '100%',
                     parentWidth = parent ? parent.width : 0,
                     parentHeight = parent ? parent.height : 0,
-                    left, right, top, bottom;
-
-                this.width = Math.round(styleHelper.measureSize(styleWidth, parentWidth));
-                this.height = Math.round(styleHelper.measureSize(styleHeight, parentHeight));
+                    width = Math.round(styleHelper.measureSize(styleWidth, parentWidth)),
+                    height = Math.round(styleHelper.measureSize(styleHeight, parentHeight)),
+                    left, right, top, bottom,
+                    x, y;
 
                 left = style.left !== undefined ? Math.round(styleHelper.measureSize(style.left, parentWidth)) : undefined;
                 right = style.right !== undefined ? Math.round(styleHelper.measureSize(style.right, parentWidth)) : undefined;
@@ -59,26 +59,34 @@ define(
                 bottom = style.bottom !== undefined ? Math.round(styleHelper.measureSize(style.bottom, parentHeight)) : undefined;
 
                 if (left !== undefined && right !== undefined) {
-                    this.x = left;
-                    this.width = (parentWidth - right) - this.x;
+                    x = left;
+                    width = (parentWidth - right) - x;
                 } else if (left !== undefined) {
-                    this.x = left;
+                    x = left;
                 } else if (right !== undefined) {
-                    this.x = parentWidth - this.width - right;
+                    x = parentWidth - width - right;
                 } else {
-                    this.x = Math.round((parentWidth - this.width) / 2);
+                    x = Math.round((parentWidth - width) / 2);
                 }
 
                 if (top !== undefined && bottom !== undefined) {
-                    this.y = top;
-                    this.height = (parentHeight - bottom) - this.y;
+                    y = top;
+                    height = (parentHeight - bottom) - y;
                 } else if (top !== undefined) {
-                    this.y = top;
+                    y = top;
                 } else if (bottom !== undefined) {
-                    this.y = parentHeight - this.height - bottom;
+                    y = parentHeight - height - bottom;
                 } else {
-                    this.y = Math.round((parentHeight - this.height) / 2);
+                    y = Math.round((parentHeight - height) / 2);
                 }
+
+                if (width < 0) width = 0;
+                if (height < 0) height = 0;
+
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
 
                 lib.each(this.children, function (child) {
                     child.layout();

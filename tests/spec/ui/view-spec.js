@@ -175,7 +175,19 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 expect(child.height).toEqual(30);
             });
 
-            xit('width / height should never be negative');
+            it('width and height should never be negative (minimum zero)', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 80,
+                        right: 80,
+                        top: 40,
+                        bottom: 40
+                    }
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(0);
+                expect(child.height).toEqual(0);
+            });
 
             xit('spacing');
 
