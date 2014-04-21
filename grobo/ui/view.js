@@ -68,6 +68,10 @@ define(
                 } else {
                     this.y = Math.round((parentHeight - this.height) / 2);
                 }
+
+                lib.each(this.children, function (child) {
+                    child.layout();
+                });
             },
 
             addChild: function (view) {

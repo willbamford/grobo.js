@@ -79,6 +79,19 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
             });
 
             xit('should layout child when added to a new parent', function () {});
+        
+            it('should layout children when performing layout', function () {
+                view.init({});
+                var child1 = lib.create(refView),
+                    child2 = lib.create(refView);
+                view.addChild(child1).addChild(child2);
+                spyOn(child1, 'layout');
+                spyOn(child2, 'layout');
+                view.layout();
+                expect(child1.layout).toHaveBeenCalled();
+                expect(child2.layout).toHaveBeenCalled();
+
+            });
         });
 
         it('should return "this" on init', function () {

@@ -1,58 +1,61 @@
 define([], function () {
 
-    function checkArray(arr) {
-        if (!arr) throw 'Input array null or undefined';
-    }
-
     var lib = {
 
         each: function (arr, fn) {
-            checkArray(arr);
-            var i = 0, len = arr.length;
-            while (i < len) {
-                if (fn(arr[i], i)) break;
-                i++;
+            if (arr && arr.length > 0) {
+                var i = 0, len = arr.length;
+                while (i < len) {
+                    if (fn(arr[i], i)) break;
+                    i++;
+                }
             }
         },
 
         reverseEach: function (arr, fn) {
-            checkArray(arr);
-            var i = arr.length;
-            while (--i >= 0) {
-                fn(arr[i], i);
+            if (arr && arr.length > 0) {
+                var i = arr.length;
+                while (--i >= 0) {
+                    fn(arr[i], i);
+                }
             }
         },
 
         contains: function (arr, el) {
-            checkArray(arr);
-            var i = 0, len = arr.length;
-            while (i < len) {
-                if (arr[i] === el)
-                    return true;
-                i++;
+            if (arr && arr.length > 0) {
+                var i = 0, len = arr.length;
+                while (i < len) {
+                    if (arr[i] === el)
+                        return true;
+                    i++;
+                }
             }
             return false;
         },
 
         last: function (arr) {
-            checkArray(arr);
-            return arr[arr.length - 1];
+            if (arr && arr.length > 0) {
+                return arr[arr.length - 1];
+            }
+            return null;
         },
 
         until: function (arr, fn) {
-            checkArray(arr);
-            var i = 0, len = arr.length;
-            while (i < len) {
-                if (fn(arr[i])) break;
-                i++;
+            if (arr && arr.length > 0) {
+                var i = 0, len = arr.length;
+                while (i < len) {
+                    if (fn(arr[i])) break;
+                    i++;
+                }
             }
         },
 
         reverseUntil: function (arr, fn) {
-            checkArray(arr);
-            var i = arr.length;
-            while (--i >= 0) {
-                if (fn(arr[i])) break;
+            if (arr && arr.length > 0) {
+                var i = arr.length;
+                while (--i >= 0) {
+                    if (fn(arr[i])) break;
+                }
             }
         },
 
