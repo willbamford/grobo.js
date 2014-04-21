@@ -51,6 +51,10 @@ define(
                     width = Math.round(styleHelper.measureSize(styleWidth, parentWidth)),
                     height = Math.round(styleHelper.measureSize(styleHeight, parentHeight)),
                     left, right, top, bottom,
+                    spacingLeft = style.spacingLeft || style.spacing,
+                    spacingRight = style.spacingRight || style.spacing,
+                    spacingTop = style.spacingTop || style.spacing,
+                    spacingBottom = style.spacingBottom || style.spacing,
                     x, y;
 
                 left = style.left !== undefined ? Math.round(styleHelper.measureSize(style.left, parentWidth)) : undefined;
@@ -78,6 +82,29 @@ define(
                     y = parentHeight - height - bottom;
                 } else {
                     y = Math.round((parentHeight - height) / 2);
+                }
+
+                spacingLeft = spacingLeft !== undefined ? Math.round(styleHelper.measureSize(spacingLeft, parentWidth)) : undefined;
+                spacingRight = spacingRight !== undefined ? Math.round(styleHelper.measureSize(spacingRight, parentWidth)) : undefined;
+                spacingTop = spacingTop !== undefined ? Math.round(styleHelper.measureSize(spacingTop, parentHeight)) : undefined;
+                spacingBottom = spacingBottom !== undefined ? Math.round(styleHelper.measureSize(spacingBottom, parentHeight)) : undefined;
+
+                if (spacingLeft) {
+                    x += spacingLeft;
+                    width -= spacingLeft;
+                }
+
+                if (spacingRight) {
+                    width -= spacingRight;
+                }
+
+                if (spacingTop) {
+                    y += spacingTop;
+                    height -= spacingTop;
+                }
+
+                if (spacingBottom) {
+                    height -= spacingBottom;
                 }
 
                 if (width < 0) width = 0;

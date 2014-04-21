@@ -189,7 +189,51 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 expect(child.height).toEqual(0);
             });
 
-            xit('spacing');
+            it('should be able to set uniform spacing', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        spacing: 10,
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                });
+                view.addChild(child);
+                expect(child.width).toEqual(80);
+                expect(child.height).toEqual(30);
+            });
+
+            it('should be able to set targetted spacing', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10,
+                        spacingLeft: 5,
+                        spacingRight: 8,
+                        spacingTop: 4,
+                        spacingBottom: 1
+                    }
+                });
+                view.addChild(child);
+                expect(child.x).toEqual(15);
+                expect(child.width).toEqual(67);
+                expect(child.y).toEqual(14);
+                expect(child.height).toEqual(25);
+            });
+
+            it('should be able to set percentage spacing', function () {
+                var child = lib.create(refView).init({
+                    style: { spacing: '4%' }
+                });
+                view.addChild(child);
+                expect(child.x).toEqual(4);
+                expect(child.width).toEqual(92);
+                expect(child.y).toEqual(2);
+                expect(child.height).toEqual(46);
+            });
 
             it('should layout children when performing layout', function () {
                 view.init({});
