@@ -1,6 +1,6 @@
 define(['grobo/helpers/style'], function (style) { 
 
-    describe('Style', function () {
+    describe('Style helper', function () {
 
         describe('measure size', function () {
 

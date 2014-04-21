@@ -1,6 +1,6 @@
 define(['grobo/lib', 'grobo/helpers/geom'], function (lib, geom) { 
 
-    describe('Geometry Library', function () {
+    describe('Geometry helper', function () {
 
         describe('rect contains point', function () {
 
