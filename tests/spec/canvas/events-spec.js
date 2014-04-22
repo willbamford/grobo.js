@@ -28,6 +28,10 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                     if (this.listeners.mouseup)
                         this.listeners.mouseup(event);
                 },
+                simulateMouseMoveEvent: function (event) {
+                    if (this.listeners.mousemove)
+                        this.listeners.mousemove(event);
+                },
                 getElement: function () {
                     var self = this;
                     return {
@@ -96,7 +100,7 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                 expect(clicked).toBeFalsy();
             });
 
-            it('should prevent default on the triggering event', function () {
+            it('should prevent default on the triggering "click" event', function () {
                 var event = createMockSourceEvent(0, 0);
                 spyOn(event, 'preventDefault');
                 canvasEvents.on('click', function (e) {});
@@ -136,6 +140,23 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                 canvasEvents.off('release', listener);
                 mockCanvas.simulateMouseDownEvent(mockEvent);
                 expect(release).toBeFalsy();
+            });
+
+            it('should be able to register and deregister for "move" events', function () {
+                var move = false, name = null,
+                    listener = function (e) {
+                        move = true;
+                        name = e.name;
+                    },
+                    mockEvent = createMockSourceEvent(0, 0);
+                canvasEvents.on('move', listener);
+                mockCanvas.simulateMouseMoveEvent(mockEvent);
+                expect(move).toBeTruthy();
+                expect(name).toEqual('move');
+                move = false;
+                canvasEvents.off('move', listener);
+                mockCanvas.simulateMouseMoveEvent(mockEvent);
+                expect(move).toBeFalsy();
             });
         });
     });

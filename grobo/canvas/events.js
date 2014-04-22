@@ -68,7 +68,7 @@ define(['grobo/logger'], function (logger) {
                     break;
                 case 'move':
                     eventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
-                        canvasElement.removeEventListener(eventType, fn);
+                    canvasElement.removeEventListener(eventType, fn);
                     break;
             }
         },
