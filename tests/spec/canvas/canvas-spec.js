@@ -22,14 +22,16 @@ define(['grobo/lib', 'grobo/canvas/canvas'], function (lib, refCanvas) {
                 };
             });
 
-            it('should be able to obtain for "mousedown", "mousemove" and "mouseup"', function () {
+            it('should be able to obtain for "click", "mousedown", "mousemove" and "mouseup"', function () {
                 var coords;
-                coords = canvas.getCoordsForEvent({type: 'mousedown', clientX: 80, clientY: 90});
+                coords = canvas.getCoordsForEvent({type: 'click', clientX: 80, clientY: 90});
                 expect(coords).toEqual({x: 30, y: 10});
-                coords = canvas.getCoordsForEvent({type: 'mousemove', clientX: 81, clientY: 91});
+                coords = canvas.getCoordsForEvent({type: 'mousedown', clientX: 81, clientY: 91});
                 expect(coords).toEqual({x: 31, y: 11});
-                coords = canvas.getCoordsForEvent({type: 'mouseup', clientX: 82, clientY: 92});
+                coords = canvas.getCoordsForEvent({type: 'mousemove', clientX: 82, clientY: 92});
                 expect(coords).toEqual({x: 32, y: 12});
+                coords = canvas.getCoordsForEvent({type: 'mouseup', clientX: 83, clientY: 93});
+                expect(coords).toEqual({x: 33, y: 13});
             });
 
             it('should be able to obtain for "touchstart"', function () {

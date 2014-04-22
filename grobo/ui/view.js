@@ -202,21 +202,18 @@ define(
             },
 
             handleClick: function (event) {
-                if (!this.handleInputChildren(event)) {
+                if (!this.handleInputChildren(event))
                     this.triggerIfInside(event);
-                }
             },
 
             handlePress: function (event) {
-                if (!this.handleInputChildren(event)) {
+                if (!this.handleInputChildren(event))
                     this.triggerIfInside(event);
-                }
             },
 
             handleRelease: function (event) {
-                if (!this.handleInputChildren(event)) {
+                if (!this.handleInputChildren(event))
                     this.triggerIfInside(event);
-                }
             },
 
             handleMove: function (event) {

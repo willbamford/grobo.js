@@ -55,7 +55,9 @@ define([], function () {
                     clientX = event.changedTouches[0].clientX;
                     clientY = event.changedTouches[0].clientY;
                 }
-            } else if (event.type === 'mousedown' ||
+            } else if (
+                event.type === 'click' ||
+                event.type === 'mousedown' ||
                 event.type === 'mousemove' ||
                 event.type === 'mouseup') {
                 clientX = event.clientX;

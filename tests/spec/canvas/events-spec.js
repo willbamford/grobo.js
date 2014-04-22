@@ -88,14 +88,6 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                 expect(clicked).toBeFalsy();
             });
 
-            it('should prevent default on the triggering "click" event', function () {
-                var event = createMockSourceEvent(0, 0);
-                spyOn(event, 'preventDefault');
-                canvasEvents.on('click', function (e) {});
-                mockCanvas.simulateEvent('click', event);
-                expect(event.preventDefault).toHaveBeenCalled();
-            });
-
             it('should be able to register and deregister for "press" events', function () {
                 var press = false, name = null,
                     listener = function (e) {

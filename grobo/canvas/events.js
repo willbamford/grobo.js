@@ -7,6 +7,12 @@ define(['grobo/logger'], function (logger) {
             return this;
         },
 
+        isTouchSupported: function () {
+            return 'ontouchmove' in document.documentElement &&
+                'ontouchstart' in document.documentElement &&
+                'ontouchend' in document.documentElement;
+        },
+
         on: function (eventName, fn) {
 
             var self = this,
@@ -17,7 +23,6 @@ define(['grobo/logger'], function (logger) {
                 case 'click':
                     canvasElement.addEventListener('click', function (e) {
                         fn(generateEvent(self.canvas, e, eventName));
-                        e.preventDefault();
                     });
                     break;
                 case 'press':
@@ -36,16 +41,9 @@ define(['grobo/logger'], function (logger) {
                     eventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
                         canvasElement.addEventListener(eventType, function (e) {
                         fn(generateEvent(self.canvas, e, eventName));
-                        e.preventDefault();
                     });
                     break;
             }
-        },
-
-        isTouchSupported: function () {
-            return 'ontouchmove' in document.documentElement &&
-                'ontouchstart' in document.documentElement &&
-                'ontouchend' in document.documentElement;
         },
 
         off: function (eventName, fn) {

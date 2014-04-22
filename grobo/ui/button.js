@@ -19,7 +19,7 @@ define(
                 this.style.background = this.NORMAL_BACKGROUND_STYLE;
 
                 this.on('click', function (event) {
-                    alert('Click!');
+                    alert('Button click');
                     event.consume();
                 });
 
