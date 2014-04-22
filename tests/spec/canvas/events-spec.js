@@ -156,6 +156,38 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                 mockCanvas.simulateEvent('touchstart', mockEvent);
                 expect(press).toBeFalsy();
             });
+
+            it('should be able to register and deregister for "resize" events', function () {
+                var resize = false, name = null,
+                    listener = function (e) {
+                        resize = true;
+                        name = e.name;
+                    },
+                    mockWindow = {
+                        listener: null,
+                        simulateResize: function () {
+                            if (this.listener) this.listener({});
+                        },
+                        addEventListener: function (name, fn) {
+                            if (name === 'resize')
+                                this.listener = fn;
+                        },
+                        removeEventListener: function (name, fn, flag) {
+                            if (name === 'resize')
+                                this.listener = null;
+                        }
+                    };
+                canvasEvents.init(mockCanvas, mockWindow);
+                canvasEvents.on('resize', listener);
+                expect(resize).toBeFalsy();
+                mockWindow.simulateResize();
+                expect(resize).toBeTruthy();
+
+                resize = false;
+                canvasEvents.off('resize', listener);
+                mockWindow.simulateResize();
+                expect(resize).toBeFalsy();
+            });
         });
     });
 });

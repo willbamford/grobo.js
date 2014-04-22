@@ -2,8 +2,9 @@ define(['grobo/logger'], function (logger) {
 
     var refEvents = {
 
-        init: function (canvas) {
+        init: function (canvas, w) {
             this.canvas = canvas;
+            this.window = w || window;
             return this;
         },
 
@@ -17,30 +18,35 @@ define(['grobo/logger'], function (logger) {
 
             var self = this,
                 canvasElement = this.canvas.getElement(),
-                eventType = null;
+                sourceEventType = null;
 
             switch (eventName) {
                 case 'click':
-                    canvasElement.addEventListener('click', function (e) {
+                    canvasElement.addEventListener(eventName, function (e) {
                         fn(generateEvent(self.canvas, e, eventName));
                     });
                     break;
                 case 'press':
-                    eventType = this.isTouchSupported() ? 'touchstart' : 'mousedown';
-                    canvasElement.addEventListener(eventType, function (e) {
+                    sourceEventType = this.isTouchSupported() ? 'touchstart' : 'mousedown';
+                    canvasElement.addEventListener(sourceEventType, function (e) {
                         fn(generateEvent(self.canvas, e, eventName));
                     });
                     break;
                 case 'release':
-                    eventType = this.isTouchSupported() ? 'touchend' : 'mouseup';
-                    canvasElement.addEventListener(eventType, function (e) {
+                    sourceEventType = this.isTouchSupported() ? 'touchend' : 'mouseup';
+                    canvasElement.addEventListener(sourceEventType, function (e) {
                         fn(generateEvent(self.canvas, e, eventName));
                     });
                     break;
                 case 'move':
-                    eventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
-                        canvasElement.addEventListener(eventType, function (e) {
+                    sourceEventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
+                        canvasElement.addEventListener(sourceEventType, function (e) {
                         fn(generateEvent(self.canvas, e, eventName));
+                    });
+                    break;
+                case 'resize':
+                    this.window.addEventListener(eventName, function (e) {
+                        fn({ name: 'resize' });
                     });
                     break;
             }
@@ -50,23 +56,26 @@ define(['grobo/logger'], function (logger) {
 
             var self = this,
                 canvasElement = this.canvas.getElement(),
-                eventType = null;
+                sourceEventType = null;
 
             switch (eventName) {
                 case 'click':
-                    canvasElement.removeEventListener('click', fn);
+                    canvasElement.removeEventListener(eventName, fn);
                     break;
                 case 'press':
-                    eventType = this.isTouchSupported() ? 'touchstart' : 'mousedown';
-                    canvasElement.removeEventListener(eventType, fn);
+                    sourceEventType = this.isTouchSupported() ? 'touchstart' : 'mousedown';
+                    canvasElement.removeEventListener(sourceEventType, fn);
                     break;
                 case 'release':
-                    eventType = this.isTouchSupported() ? 'touchend' : 'mouseup';
-                    canvasElement.removeEventListener(eventType, fn);
+                    sourceEventType = this.isTouchSupported() ? 'touchend' : 'mouseup';
+                    canvasElement.removeEventListener(sourceEventType, fn);
                     break;
                 case 'move':
-                    eventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
-                    canvasElement.removeEventListener(eventType, fn);
+                    sourceEventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
+                    canvasElement.removeEventListener(sourceEventType, fn);
+                    break;
+                case 'resize':
+                    this.window.removeEventListener(eventName, fn);
                     break;
             }
         },
@@ -83,6 +92,10 @@ define(['grobo/logger'], function (logger) {
             this.off('press', fn);
             this.off('release', fn);
             this.off('move', fn);
+        },
+
+        setWindow: function (w) {
+            win = w;
         }
     };
 
