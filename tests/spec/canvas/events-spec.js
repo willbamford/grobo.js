@@ -16,21 +16,9 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
         beforeEach(function () {
             mockCanvas = {
                 listeners: [],
-                simulateClickEvent: function (event) {
-                    if (this.listeners.click)
-                        this.listeners.click(event);
-                },
-                simulateMouseDownEvent: function (event) {
-                    if (this.listeners.mousedown)
-                        this.listeners.mousedown(event);
-                },
-                simulateMouseUpEvent: function (event) {
-                    if (this.listeners.mouseup)
-                        this.listeners.mouseup(event);
-                },
-                simulateMouseMoveEvent: function (event) {
-                    if (this.listeners.mousemove)
-                        this.listeners.mousemove(event);
+                simulateEvent: function (name, event) {
+                    if (this.listeners[name])
+                        this.listeners[name](event);
                 },
                 getElement: function () {
                     var self = this;
@@ -86,7 +74,7 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                     clicked = true;
                     name = e.name;
                 });
-                mockCanvas.simulateClickEvent(createMockSourceEvent(0, 0));
+                mockCanvas.simulateEvent('click', createMockSourceEvent(0, 0));
                 expect(clicked).toBeTruthy();
                 expect(name).toEqual('click');
             });
@@ -96,7 +84,7 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                     fn = function (e) {clicked = true;};
                 canvasEvents.on('click', fn);
                 canvasEvents.off('click', fn);
-                mockCanvas.simulateClickEvent(createMockSourceEvent(0, 0));
+                mockCanvas.simulateEvent('click', createMockSourceEvent(0, 0));
                 expect(clicked).toBeFalsy();
             });
 
@@ -104,7 +92,7 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                 var event = createMockSourceEvent(0, 0);
                 spyOn(event, 'preventDefault');
                 canvasEvents.on('click', function (e) {});
-                mockCanvas.simulateClickEvent(event);
+                mockCanvas.simulateEvent('click', event);
                 expect(event.preventDefault).toHaveBeenCalled();
             });
 
@@ -116,12 +104,12 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                     },
                     mockEvent = createMockSourceEvent(0, 0);
                 canvasEvents.on('press', listener);
-                mockCanvas.simulateMouseDownEvent(mockEvent);
+                mockCanvas.simulateEvent('mousedown', mockEvent);
                 expect(press).toBeTruthy();
                 expect(name).toEqual('press');
                 press = false;
                 canvasEvents.off('press', listener);
-                mockCanvas.simulateMouseDownEvent(mockEvent);
+                mockCanvas.simulateEvent('mousedown', mockEvent);
                 expect(press).toBeFalsy();
             });
 
@@ -133,12 +121,12 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                     },
                     mockEvent = createMockSourceEvent(0, 0);
                 canvasEvents.on('release', listener);
-                mockCanvas.simulateMouseUpEvent(mockEvent);
+                mockCanvas.simulateEvent('mouseup', mockEvent);
                 expect(release).toBeTruthy();
                 expect(name).toEqual('release');
                 release = false;
                 canvasEvents.off('release', listener);
-                mockCanvas.simulateMouseDownEvent(mockEvent);
+                mockCanvas.simulateEvent('mouseup', mockEvent);
                 expect(release).toBeFalsy();
             });
 
@@ -150,13 +138,31 @@ define(['grobo/lib', 'grobo/canvas/events'], function (lib, refCanvasEvents) {
                     },
                     mockEvent = createMockSourceEvent(0, 0);
                 canvasEvents.on('move', listener);
-                mockCanvas.simulateMouseMoveEvent(mockEvent);
+                mockCanvas.simulateEvent('mousemove', mockEvent);
                 expect(move).toBeTruthy();
                 expect(name).toEqual('move');
                 move = false;
                 canvasEvents.off('move', listener);
-                mockCanvas.simulateMouseMoveEvent(mockEvent);
+                mockCanvas.simulateEvent('mousemove', mockEvent);
                 expect(move).toBeFalsy();
+            });
+
+            it('should use "touch" events if available and fallback to mouse events', function () {
+                var press = false, name = null,
+                    listener = function (e) {
+                        press = true;
+                        name = e.name;
+                    },
+                    mockEvent = createMockSourceEvent(0, 0);
+                canvasEvents.isTouchSupported = function () { return true; }
+                canvasEvents.on('press', listener);
+                mockCanvas.simulateEvent('touchstart', mockEvent);
+                expect(press).toBeTruthy();
+                expect(name).toEqual('press');
+                press = false;
+                canvasEvents.off('press', listener);
+                mockCanvas.simulateEvent('touchstart', mockEvent);
+                expect(press).toBeFalsy();
             });
         });
     });
