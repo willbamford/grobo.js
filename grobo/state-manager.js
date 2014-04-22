@@ -9,8 +9,8 @@ define(
 
         var refStateManager = {
 
-            init: function (input) {
-                input.onEvent(this.handleInput.bind(this));
+            init: function (canvasEvents) {
+                canvasEvents.onInput(this.handleInput.bind(this));
                 this.stack = [];
                 return this;
             },
@@ -110,6 +110,10 @@ define(
                     state.handleInput(event);
                     return state.modality === refState.EXCLUSIVE || event.isConsumed;
                 });
+            },
+
+            handleResize: function (event) {
+
             },
 
             toString: function () {

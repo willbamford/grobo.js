@@ -39,18 +39,18 @@ define(
                 };
             }
 
-            function createMockInput() {
+            function createMockCanvasEvents() {
                 return {
-                    onEvent: function (fn) {}
+                    onInput: function (fn) {}
                 };
             }
 
             beforeEach(function () {
-                stateManager = lib.create(refStateManager).init(createMockInput());
+                stateManager = lib.create(refStateManager).init(createMockCanvasEvents());
             });
 
             it('should return "this" on init', function () {
-                expect(typeof lib.create(refStateManager).init(createMockInput())).toEqual('object');
+                expect(typeof lib.create(refStateManager).init(createMockCanvasEvents())).toEqual('object');
             });
 
             it('should contain no active states initially', function () {
@@ -269,10 +269,10 @@ define(
                 });
 
                 it('should register for all events', function () {
-                    var mockInput = createMockInput();
-                    spyOn(mockInput, 'onEvent');
+                    var mockInput = createMockCanvasEvents();
+                    spyOn(mockInput, 'onInput');
                     stateManager = lib.create(refStateManager).init(mockInput);
-                    expect(mockInput.onEvent, stateManager.handleInput).toHaveBeenCalled();
+                    expect(mockInput.onInput, stateManager.handleInput).toHaveBeenCalled();
                 });
 
                 it('should pass input events through the stack until exclusive state', function () {             

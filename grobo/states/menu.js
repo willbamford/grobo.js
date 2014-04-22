@@ -83,7 +83,6 @@ define(
             },
 
             handleInput: function (event) {
-                // console.log(event.x + ', ' + event.y);
                 this.view.handleInput(event);
                 if (event.name === 'click' && !event.isConsumed) {
                     event.consume();

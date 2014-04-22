@@ -81,6 +81,19 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 expect(child.y).toEqual(20);
             });
         
+            it('if only given left (top), width (height) should default to fill space', function () {
+                var child = lib.create(refView).init({
+                    style: { 
+                        left: 10,
+                        top: 20
+                    }
+                });
+                view.addChild(child);
+                expect(child.x).toEqual(10);
+                expect()
+                expect(child.y).toEqual(20);
+            });
+
             it('should be able to combine left or right (top or bottom) with width (height)', function () {
                 var child = lib.create(refView).init({
                     style: {

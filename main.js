@@ -10,14 +10,14 @@ require(
         'grobo/state-factory',
         'grobo/state-manager',
         'grobo/engine',
-        'grobo/canvas',
-        'grobo/input'
+        'grobo/canvas/canvas',
+        'grobo/canvas/events'
     ],
-    function (lib, refStateFactory, refStateManager, refEngine, refCanvas, refInput) {
+    function (lib, refStateFactory, refStateManager, refEngine, refCanvas, refCanvasEvents) {
 
         var canvas          = lib.create(refCanvas).init('canvas'),
-            input           = lib.create(refInput).init(canvas),
-            stateManager    = lib.create(refStateManager).init(input),
+            canvasEvents    = lib.create(refCanvasEvents).init(canvas),
+            stateManager    = lib.create(refStateManager).init(canvasEvents),
             config = {
                 stateManager: stateManager,
                 canvas: canvas

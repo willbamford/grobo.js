@@ -39,11 +39,32 @@ define([], function () {
             return this.context2d;
         },
 
-        getCoords: function (event) {
-            var rect = this.element.getBoundingClientRect();
+        getCoordsForEvent: function (event) {
+            var rect = this.element.getBoundingClientRect(),
+                clientX = 0,
+                clientY = 0;
+
+            if (event.type === 'touchstart' ||
+                event.type === 'touchmove') {
+                if (event.touches && event.touches.length) {
+                    clientX = event.touches[0].clientX;
+                    clientY = event.touches[0].clientY;
+                }
+            } else if (event.type === 'touchend') {
+                if (event.changedTouches && event.changedTouches.length) {
+                    clientX = event.changedTouches[0].clientX;
+                    clientY = event.changedTouches[0].clientY;
+                }
+            } else if (event.type === 'mousedown' ||
+                event.type === 'mousemove' ||
+                event.type === 'mouseup') {
+                clientX = event.clientX;
+                clientY = event.clientY;
+            }
+
             return {
-                x: event.clientX - rect.left,
-                y: event.clientY - rect.top
+                x: clientX - rect.left,
+                y: clientY - rect.top
             };
         }
     };
