@@ -9,8 +9,8 @@ define(
 
         var refStateManager = {
 
-            init: function (canvasEvents) {
-                canvasEvents.onInput(this.handleInput.bind(this));
+            init: function (canvas) {
+                canvas.onInput(this.handleInput.bind(this));
                 this.stack = [];
                 return this;
             },
