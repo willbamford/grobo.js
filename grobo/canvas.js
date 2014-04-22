@@ -90,9 +90,10 @@ define([], function () {
                     });
                     break;
                 case 'resize':
-                    this.window.addEventListener(eventName, function (e) {
-                        fn({ name: 'resize' });
-                    });
+                    this.resizeListeners.push(fn);
+                    // this.window.addEventListener(eventName, function (e) {
+                    //     fn({ name: 'resize' });
+                    // });
                     break;
             }
         },
@@ -120,7 +121,9 @@ define([], function () {
                     element.removeEventListener(sourceEventType, fn);
                     break;
                 case 'resize':
-                    this.window.removeEventListener(eventName, fn);
+                
+                    this.resizeListeners
+                    // this.window.removeEventListener(eventName, fn);
                     break;
             }
         },

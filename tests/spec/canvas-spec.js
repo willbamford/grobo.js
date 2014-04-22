@@ -238,23 +238,23 @@ define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
                     expect(press).toBeFalsy();
                 });
 
-                it('should be able bind and unbind from "resize" events', function () {
-                    var resize = false,
-                        name = null,
-                        listener = function (e) {
-                            resize = true;
-                            name = e.name;
-                        };
-                    canvas.on('resize', listener);
-                    expect(resize).toBeFalsy();
-                    mockWindow.simulateResize();
-                    expect(resize).toBeTruthy();
+                // it('should be able bind and unbind from "resize" events', function () {
+                //     var resize = false,
+                //         name = null,
+                //         listener = function (e) {
+                //             resize = true;
+                //             name = e.name;
+                //         };
+                //     canvas.on('resize', listener);
+                //     expect(resize).toBeFalsy();
+                //     mockWindow.simulateResize();
+                //     expect(resize).toBeTruthy();
 
-                    resize = false;
-                    canvas.off('resize', listener);
-                    mockWindow.simulateResize();
-                    expect(resize).toBeFalsy();
-                });
+                //     resize = false;
+                //     canvas.off('resize', listener);
+                //     mockWindow.simulateResize();
+                //     expect(resize).toBeFalsy();
+                // });
             });
         });
     });

@@ -22,15 +22,7 @@ define([], function () {
         },
 
         contains: function (arr, el) {
-            if (arr && arr.length > 0) {
-                var i = 0, len = arr.length;
-                while (i < len) {
-                    if (arr[i] === el)
-                        return true;
-                    i++;
-                }
-            }
-            return false;
+            return arr ? (arr.indexOf(el) !== -1) : false;
         },
 
         last: function (arr) {
