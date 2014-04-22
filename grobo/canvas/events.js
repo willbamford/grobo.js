@@ -92,10 +92,6 @@ define(['grobo/logger'], function (logger) {
             this.off('press', fn);
             this.off('release', fn);
             this.off('move', fn);
-        },
-
-        setWindow: function (w) {
-            win = w;
         }
     };
 
