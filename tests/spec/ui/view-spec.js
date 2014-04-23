@@ -224,17 +224,17 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                         right: 10,
                         top: 10,
                         bottom: 10,
-                        spacingLeft: 5,
+                        spacing: 10,
+                        spacingLeft: 0,
                         spacingRight: 8,
-                        spacingTop: 4,
-                        spacingBottom: 1
+                        spacingTop: 4
                     }
                 });
                 view.addChild(child);
-                expect(child.x).toEqual(15);
-                expect(child.width).toEqual(67);
+                expect(child.x).toEqual(10);
+                expect(child.width).toEqual(72);
                 expect(child.y).toEqual(14);
-                expect(child.height).toEqual(25);
+                expect(child.height).toEqual(16);
             });
 
             it('should be able to set percentage spacing', function () {

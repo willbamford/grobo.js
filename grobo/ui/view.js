@@ -51,10 +51,10 @@ define(
                     width = Math.round(styleHelper.measureSize(styleWidth, parentWidth)),
                     height = Math.round(styleHelper.measureSize(styleHeight, parentHeight)),
                     left, right, top, bottom,
-                    spacingLeft = style.spacingLeft || style.spacing,
-                    spacingRight = style.spacingRight || style.spacing,
-                    spacingTop = style.spacingTop || style.spacing,
-                    spacingBottom = style.spacingBottom || style.spacing,
+                    spacingLeft = style.spacingLeft !== undefined ? style.spacingLeft : style.spacing,
+                    spacingRight = style.spacingRight !== undefined ? style.spacingRight : style.spacing,
+                    spacingTop = style.spacingTop !== undefined ? style.spacingTop : style.spacing,
+                    spacingBottom = style.spacingBottom !== undefined ? style.spacingBottom : style.spacing,
                     x, y;
 
                 left = style.left !== undefined ? Math.round(styleHelper.measureSize(style.left, parentWidth)) : undefined;
