@@ -10,7 +10,7 @@ require(
         'grobo/state-manager',
         'grobo/engine',
         'grobo/canvas',
-        'demos/1/state-factory'
+        'demo/state-factory'
     ],
     function (lib, refStateManager, refEngine, refCanvas, refStateFactory) {
 

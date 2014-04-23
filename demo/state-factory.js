@@ -1,9 +1,9 @@
 define(
     [
         'grobo/lib',
-        'demos/1/states/game',
-        'demos/1/states/menu',
-        'demos/1/states/help'
+        'demo/states/game',
+        'demo/states/menu',
+        'demo/states/help'
     ],
     function (lib, refGameState, refMenuState, refHelpState) {
 

@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>grobo.js: canvas UI and state management</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
             body {
                 margin: 0;
@@ -17,16 +17,16 @@
         </style>
     </head>
     <body>
-        <h1>grobo.js Demo 1</h1>
+        <h1>grobo.js Demo</h1>
         <canvas id="canvas" class="canvas" width="320" height="320">
             Sorry, your browser does not support HTML5 canvas.
         </canvas>
         <ul id="logger"></ul>
         <script>
             var require = {
-                baseUrl: '../../'
+                baseUrl: '../'
             };
         </script>
-        <script data-main="demos/1/main" src="../../libs/requirejs/require.js"></script>
+        <script data-main="demo/main" src="../libs/requirejs/require.js"></script>
     </body>
 </html>
