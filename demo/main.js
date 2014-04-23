@@ -26,15 +26,20 @@ require(
         stateManager.change(stateFactory.getGame());
         engine.start();
 
-        window.addEventListener('resize', function () {
+        var listener = function () {
             var w = window,
                 d = document,
                 e = d.documentElement,
                 g = d.getElementsByTagName('body')[0],
                 width = w.innerWidth || e.clientWidth || g.clientWidth,
-                height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+                height = w.innerHeight || e.clientHeight || g.clientHeight;
 
-            canvas.resize(Math.round(width), Math.round(height / 2));
-        });
+            canvas.resize(Math.round(width), Math.round(innerHeight));
+        };
+
+        window.addEventListener('resize', listener);
+        window.addEventListener('orientationchange', listener);
+
+        listener();
     }
 );

@@ -29,7 +29,7 @@ define(
 
                 var panel = lib.create(refView).init({
                     style: {
-                        spacing: 10,
+                        spacing: 3,
                         background: 'black'
                     }
                 });
@@ -41,32 +41,40 @@ define(
                     col, row,
                     button,
                     buttons = [];
+
+                var makeButton = function (col, row) {
+                    button = lib.create(refSimpleButton).init({
+                        style: {
+                            left: (col * 100 / numCols) + '%',
+                            top: (row * 100 / numRows) + '%',
+                            width: (100 / numCols + '%'),
+                            height: (100 / numRows + '%'),
+                            spacing: 3,
+                            normal: {
+                                background: 'rgb(0, 127, 255)',
+                                text: 'black'
+                            },
+                            active: {
+                                background: 'pink',
+                                text: 'white'
+                            },
+                            hover: {
+                                background: 'white',
+                                text: 'green'
+                            }
+                        },
+                        label: col + 'x' + row
+                    });
+                    button.on('click', function (event) {
+                        logger.info(col + 'x' + row);
+                        event.consume();
+                    });
+                    panel.addChild(button);
+                };
+
                 for (col = 0; col < numCols; col++) {
                     for (row = 0; row < numRows; row++) {
-
-                        button = lib.create(refSimpleButton).init({
-                            style: {
-                                left: (col * 100 / numCols) + '%',
-                                top: (row * 100 / numRows) + '%',
-                                width: (100 / numCols + '%'),
-                                height: (100 / numRows + '%'),
-                                spacing: 4,
-                                normal: {
-                                    background: 'rgb(0, 127, 255)',
-                                    text: 'black'
-                                },
-                                active: {
-                                    background: 'red',
-                                    text: 'white'
-                                },
-                                hover: {
-                                    background: 'blue',
-                                    text: 'green'
-                                }
-                            },
-                            label: 'B ' + col + 'x' + row
-                        });
-                        panel.addChild(button);
+                        makeButton(col, row);
                     }
                 }
 
