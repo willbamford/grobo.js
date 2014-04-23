@@ -29,32 +29,54 @@ define(
 
                 var panel = lib.create(refPanel).init({
                     style: {
-                        width: '80%', height: '80%',
+                        width: '90%', height: '90%',
                         background: 'red'
                     }
                 });
                 
                 var button1 = lib.create(refButton).init({
                     style: {
-                        width: '50%', height: '50%'
+                        top: 0,
+                        left: 0,
+                        width: '50%',
+                        height: '50%',
+                        spacing: 10
                     },
-                    label: 'Button 1'
+                    label: 'Button 1 (TL)'
                 }),
                 button2 = lib.create(refButton).init({
                     style: {
-                        width: 100, height: 80
+                        top: 0,
+                        right: 0,
+                        width: '50%',
+                        height: '50%',
+                        spacing: 10
                     },
-                    label: 'Button 2'
+                    label: 'Button 2 (TR)'
                 }),
                 button3 = lib.create(refButton).init({
                     style: {
-                        width: 100, height: 80
+                        bottom: 0,
+                        left: 0,
+                        width: '50%',
+                        height: '50%',
+                        spacing: 10
                     },
-                    label: 'Button 3'
+                    label: 'Button 3 (BL)'
+                }),
+                button4 = lib.create(refButton).init({
+                    style: {
+                        bottom: 0,
+                        right: 0,
+                        width: '50%',
+                        height: '50%',
+                        spacing: 10
+                    },
+                    label: 'Button 4 (BR)'
                 });
 
                 view.addChild(panel);
-                panel.addChild(button1).addChild(button2).addChild(button3);
+                panel.addChild(button1).addChild(button2).addChild(button3).addChild(button4);
 
                 this.view = view;
 
