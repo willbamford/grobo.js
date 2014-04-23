@@ -14,12 +14,6 @@ define(
             stateManager: null,
             view: null,
 
-            _initState: function (config) {
-                this.canvas = config.canvas || null;
-                this.stateFactory = config.stateFactory || null;
-                this.stateManager = config.stateManager || null;
-            },
-
             init: function (config) {
                 this._initState(config);
                 return this;
@@ -45,7 +39,29 @@ define(
 
             draw: function () {},
 
-            handleInput: function (event) {},
+            handleInput: function (event) {
+                this._handleInputState(event);
+            },
+
+            handleResize: function (event) {
+                this._handleResizeState(event);
+            },
+
+            _initState: function (config) {
+                this.canvas = config.canvas || null;
+                this.stateFactory = config.stateFactory || null;
+                this.stateManager = config.stateManager || null;
+            },
+
+            _handleInputState: function (event) {
+                if (this.view)
+                    this.view.handleInput(event);
+            },
+
+            _handleResizeState: function (event) {
+                if (this.view)
+                    this.view.handleResize(event);
+            },
 
             getName: function () {
                 return this.name || 'unknown';

@@ -15,7 +15,16 @@ define(['grobo/lib'], function (lib) {
             return this;
         },
 
-
+        resize: function (width, height) {
+            var self = this;
+            if (width !== this.width || height !== this.height) {
+                this.width = this.element.width = width;
+                this.height = this.element.height = height;
+                lib.each(this.resizeListeners, function (listener) {
+                    listener(createResizeEvent(self));
+                });
+            }
+        },
 
         getElement: function () {
             return this.element;
@@ -71,25 +80,25 @@ define(['grobo/lib'], function (lib) {
             switch (eventName) {
                 case 'click':
                     element.addEventListener(eventName, function (e) {
-                        fn(generateEvent(self, e, eventName));
+                        fn(createPositionEvent(self, e, eventName));
                     });
                     break;
                 case 'press':
                     sourceEventType = this.isTouchSupported() ? 'touchstart' : 'mousedown';
                     element.addEventListener(sourceEventType, function (e) {
-                        fn(generateEvent(self, e, eventName));
+                        fn(createPositionEvent(self, e, eventName));
                     });
                     break;
                 case 'release':
                     sourceEventType = this.isTouchSupported() ? 'touchend' : 'mouseup';
                     element.addEventListener(sourceEventType, function (e) {
-                        fn(generateEvent(self, e, eventName));
+                        fn(createPositionEvent(self, e, eventName));
                     });
                     break;
                 case 'move':
                     sourceEventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
                         element.addEventListener(sourceEventType, function (e) {
-                        fn(generateEvent(self, e, eventName));
+                        fn(createPositionEvent(self, e, eventName));
                     });
                     break;
                 case 'resize':
@@ -121,7 +130,7 @@ define(['grobo/lib'], function (lib) {
                     element.removeEventListener(sourceEventType, fn);
                     break;
                 case 'resize':
-                    // this.resizeListeners.
+                    lib.remove(this.resizeListeners, fn);
                     break;
             }
         },
@@ -138,6 +147,14 @@ define(['grobo/lib'], function (lib) {
             this.off('press', fn);
             this.off('release', fn);
             this.off('move', fn);
+        },
+
+        onResize: function (fn) {
+            this.on('resize', fn);
+        },
+
+        offResize: function (fn) {
+            this.off('resize', fn);
         },
 
         clear: function () {
@@ -159,7 +176,14 @@ define(['grobo/lib'], function (lib) {
         }
     };
 
-    function generateEvent(canvas, sourceEvent, name) {
+    function createResizeEvent(canvas) {
+        return {
+            name: 'resize',
+            origin: canvas
+        };
+    }
+
+    function createPositionEvent(canvas, sourceEvent, name) {
         var coords = canvas.getCoordsForEvent(sourceEvent);
         return {
             name: name,

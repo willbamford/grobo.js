@@ -11,6 +11,7 @@ define(
 
             init: function (canvas) {
                 canvas.onInput(this.handleInput.bind(this));
+                canvas.onResize(this.handleResize.bind(this));
                 this.stack = [];
                 return this;
             },
@@ -113,7 +114,9 @@ define(
             },
 
             handleResize: function (event) {
-
+                lib.each(this.stack, function (state) {
+                    state.handleResize(event);
+                });
             },
 
             toString: function () {

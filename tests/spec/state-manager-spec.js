@@ -26,9 +26,10 @@ define(
                     exiting: function () {},
                     obscured: function () {},
                     revealed: function () {},
-                    update: function () {},
+                    update: function (delta) {},
                     draw: function () {},
-                    handleInput: function (event) {}
+                    handleInput: function (event) {},
+                    handleResize: function (event) {}
                 };
             }
 
@@ -39,18 +40,19 @@ define(
                 };
             }
 
-            function createMockCanvasEvents() {
+            function createMockCanvas() {
                 return {
-                    onInput: function (fn) {}
+                    onInput: function (fn) {},
+                    onResize: function (fn) {}
                 };
             }
 
             beforeEach(function () {
-                stateManager = lib.create(refStateManager).init(createMockCanvasEvents());
+                stateManager = lib.create(refStateManager).init(createMockCanvas());
             });
 
             it('should return "this" on init', function () {
-                expect(typeof lib.create(refStateManager).init(createMockCanvasEvents())).toEqual('object');
+                expect(typeof lib.create(refStateManager).init(createMockCanvas())).toEqual('object');
             });
 
             it('should contain no active states initially', function () {
@@ -242,6 +244,31 @@ define(
                 });
             });
 
+            describe('resize', function () {
+
+                it('should register for resize events', function () {
+                    var mockCanvas = createMockCanvas();
+                    spyOn(mockCanvas, 'onResize');
+                    stateManager = lib.create(refStateManager).init(mockCanvas);
+                    expect(mockCanvas.onResize).toHaveBeenCalled();
+                });
+
+                it('should call resize handler on all states regardless of whether active or not', function () {
+                    var stateA = createStubExclusiveState(),
+                        stateB = createStubPopupState(),
+                        stateC = createStubExclusiveState(),
+                        event = {name: 'resize', origin: {}};
+                    spyOn(stateA, 'handleResize');
+                    spyOn(stateB, 'handleResize');
+                    spyOn(stateC, 'handleResize');
+                    stateManager.push(stateA).push(stateB).push(stateC);
+                    stateManager.handleResize(event);
+                    expect(stateA.handleResize).toHaveBeenCalledWith(event);
+                    expect(stateB.handleResize).toHaveBeenCalledWith(event);
+                    expect(stateC.handleResize).toHaveBeenCalledWith(event);
+                });
+            });
+
             describe('input', function () {
 
                 var stateA, stateB, stateC, stateD;
@@ -268,11 +295,11 @@ define(
                     stateD.handleInput = function (event) { self.callTrace += '[I-D]'; };
                 });
 
-                it('should register for all events', function () {
-                    var mockInput = createMockCanvasEvents();
-                    spyOn(mockInput, 'onInput');
-                    stateManager = lib.create(refStateManager).init(mockInput);
-                    expect(mockInput.onInput, stateManager.handleInput).toHaveBeenCalled();
+                it('should register for input events', function () {
+                    var mockCanvas = createMockCanvas();
+                    spyOn(mockCanvas, 'onInput');
+                    stateManager = lib.create(refStateManager).init(mockCanvas);
+                    expect(mockCanvas.onInput).toHaveBeenCalled();
                 });
 
                 it('should pass input events through the stack until exclusive state', function () {             

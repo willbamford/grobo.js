@@ -21,8 +21,8 @@ define(
                 var view = lib.create(refPanel).init({
                     canvas: this.canvas,
                     style: {
-                        width: this.canvas.width,
-                        height: this.canvas.height,
+                        width: '100%',
+                        height: '100%',
                         background: 'green'
                     }
                 });
@@ -83,7 +83,7 @@ define(
             },
 
             handleInput: function (event) {
-                this.view.handleInput(event);
+                this._handleInputState(event);
                 if (event.name === 'click' && !event.isConsumed) {
                     event.consume();
                     this.stateManager.push(this.stateFactory.getHelp());

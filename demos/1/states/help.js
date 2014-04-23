@@ -24,6 +24,7 @@ define(
             },
 
             handleInput: function (event) {
+                this._handleInputState(event);
                 if (event.name === 'click') {
                     this.stateManager.pop();
                 }

@@ -56,6 +56,48 @@ define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
             expect(c.getContext()).toEqual(mockElement.getContext('2d'));
         });
 
+        describe('resize', function () {
+
+            it('should be able to resize the canvas', function () {
+                canvas.init(mockElement, mockWindow);
+                expect(canvas.width).toEqual(400);
+                expect(canvas.height).toEqual(300);
+                expect(mockElement.width).toEqual(400);
+                expect(mockElement.height).toEqual(300);
+                canvas.resize(640, 480);
+                expect(canvas.width).toEqual(640);
+                expect(canvas.height).toEqual(480);
+                expect(mockElement.width).toEqual(640);
+                expect(mockElement.height).toEqual(480);
+            });
+
+            it('should trigger resize event on listeners', function () {
+                var event = null,
+                    listener = function (e) {
+                        event = e;
+                    };
+                canvas.init(mockElement, mockWindow);
+                canvas.onResize(listener);
+                canvas.resize(1, 1);
+                expect(event.name).toEqual('resize');
+                expect(event.origin).toEqual(canvas);
+                event = null;
+                canvas.offResize(listener);
+                canvas.resize(2, 2);
+                expect(event).toBeNull();
+            });
+
+            it('should not trigger resize event if dimensions do not change', function () {
+                var event = null;
+                canvas.init(mockElement, mockWindow);
+                canvas.onResize(function (e) {
+                    event = e;
+                });
+                canvas.resize(400, 300);
+                expect(event).toBeNull();
+            });
+        });
+
         describe('get coordinates for event', function () {
 
             beforeEach(function () {
@@ -238,23 +280,23 @@ define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
                     expect(press).toBeFalsy();
                 });
 
-                // it('should be able bind and unbind from "resize" events', function () {
-                //     var resize = false,
-                //         name = null,
-                //         listener = function (e) {
-                //             resize = true;
-                //             name = e.name;
-                //         };
-                //     canvas.on('resize', listener);
-                //     expect(resize).toBeFalsy();
-                //     mockWindow.simulateResize();
-                //     expect(resize).toBeTruthy();
+                it('should be able bind and unbind from "resize" events', function () {
+                    var resize = false,
+                        name = null,
+                        listener = function (e) {
+                            resize = true;
+                            name = e.name;
+                        };
+                    canvas.on('resize', listener);
+                    expect(resize).toBeFalsy();
+                    canvas.resize(100, 100);
+                    expect(resize).toBeTruthy();
 
-                //     resize = false;
-                //     canvas.off('resize', listener);
-                //     mockWindow.simulateResize();
-                //     expect(resize).toBeFalsy();
-                // });
+                    resize = false;
+                    canvas.off('resize', listener);
+                    canvas.resize(200, 100);
+                    expect(resize).toBeFalsy();
+                });
             });
         });
     });

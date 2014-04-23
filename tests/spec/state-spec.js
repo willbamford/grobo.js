@@ -9,8 +9,8 @@ define(['grobo/lib', 'grobo/state'], function (lib, refState) {
         });
 
         it('should return self on initialisation', function () {
-            var state2 = state.init({});
-            expect(state2).toEqual(state);
+            var s = state.init({});
+            expect(s).toEqual(state);
         });
 
         it('should provide default methods for "entered", "exiting", "obscured" and "revealed"', function () {
@@ -40,6 +40,19 @@ define(['grobo/lib', 'grobo/state'], function (lib, refState) {
             expect(state.canvas).toEqual(canvas);
             expect(state.stateFactory).toEqual(stateFactory);
             expect(state.stateManager).toEqual(stateManager);
+        });
+
+        it('should perform layout on the primary view on resize', function () {
+            var event = {},
+                mockView = {
+                    handleResize: function (event) {}
+                };
+            spyOn(mockView, 'handleResize');
+            state.handleResize(event);
+            expect(mockView.handleResize).not.toHaveBeenCalled(); 
+            state.view = mockView;
+            state.handleResize(event);
+            expect(mockView.handleResize).toHaveBeenCalledWith(event);
         });
     });
 });

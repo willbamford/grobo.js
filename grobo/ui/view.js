@@ -185,6 +185,10 @@ define(
                 }
             },
 
+            handleResize: function (event) {
+                this.layout();
+            },
+
             handleInputChildren: function (event) {
                 lib.reverseUntil(this.children, function (child) {
                     child.handleInput(event);
