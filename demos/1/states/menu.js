@@ -29,7 +29,7 @@ define(
 
                 var panel = lib.create(refPanel).init({
                     style: {
-                        width: '90%', height: '90%',
+                        spacing: 10,
                         background: 'red'
                     }
                 });
