@@ -42,7 +42,20 @@ define(['grobo/lib', 'grobo/state'], function (lib, refState) {
             expect(state.stateManager).toEqual(stateManager);
         });
 
-        it('should perform layout on the primary view on resize', function () {
+        it('should send input event to primary view on input', function () {
+            var event = {},
+                mockView = {
+                    handleInput: function (event) {}
+                };
+            spyOn(mockView, 'handleInput');
+            state.handleInput(event);
+            expect(mockView.handleInput).not.toHaveBeenCalled(); 
+            state.view = mockView;
+            state.handleInput(event);
+            expect(mockView.handleInput).toHaveBeenCalledWith(event);
+        });
+
+        it('should send resize event to primary view on resize', function () {
             var event = {},
                 mockView = {
                     handleResize: function (event) {}
