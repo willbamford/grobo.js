@@ -8,37 +8,31 @@ define(
 
         var refButton = lib.create(refView, {
 
-            NORMAL_BACKGROUND_STYLE: 'white',
-            ACTIVE_BACKGROUND_STYLE: 'purple',
-            HOVER_BACKGROUND_STYLE: 'green',
+            currentStyle: null,
 
             init: function (config) {
                 var self = this;
                 this._initView(config);
                 this.label = config.label;
-                this.style.background = this.NORMAL_BACKGROUND_STYLE;
 
-                this.on('click', function (event) {
-                    alert('Button click');
-                    event.consume();
-                });
+                this.currentStyle = this.style.normal;
 
                 this.on('press', function (event) {
-                    self.style.background = self.ACTIVE_BACKGROUND_STYLE;
+                    self.currentStyle = self.style.active;
                     event.consume();
                 });
 
                 this.on('release', function (event) {
-                    self.style.background = self.NORMAL_BACKGROUND_STYLE;
+                    self.currentStyle = self.style.normal;
                     event.consume();
                 });
 
                 this.on('over', function (event) {
-                    self.style.background = self.HOVER_BACKGROUND_STYLE;
+                    self.currentStyle = self.style.hover || self.style.active;
                 });
 
                 this.on('out', function (event) {
-                    self.style.background = self.NORMAL_BACKGROUND_STYLE;
+                    self.currentStyle = self.style.normal;
                 });
 
                 return this;
@@ -47,15 +41,17 @@ define(
             update: function (delta) {},
 
             draw: function () {
-                var x = this.getWorldX(),
-                    y = this.getWorldY(),
+                var x = this.getWorldX(), y = this.getWorldY(),
+                    width = this.width, height = this.height,
                     canvas = this.canvas,
-                    context = canvas.getContext();
-                canvas.fillRect(this.style.background, x, y, this.width, this.height);
+                    context = canvas.getContext(),
+                    style = this.currentStyle;
+
+                canvas.fillRectWithStyle(style.background, x, y, width, height);
                 context.font = 'bold 16px sans-serif';
                 context.textAlign = 'center';
                 context.textBaseline = 'middle';
-                canvas.fillText('black', this.label, x + this.width / 2, y + this.height / 2);
+                canvas.fillTextWithStyle(style.text, this.label, x + width / 2, y + height / 2);
             }
         });
 

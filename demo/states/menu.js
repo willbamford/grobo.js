@@ -2,11 +2,11 @@ define(
     [
         'grobo/lib',
         'grobo/state',
-        'grobo/ui/button',
-        'grobo/ui/panel',
+        'grobo/ui/view',
+        'grobo/ui/simple-button',
         'grobo/logger'
     ],
-    function (lib, refState, refButton, refPanel, logger) {
+    function (lib, refState, refView, refSimpleButton, logger) {
 
         var refMenuState = lib.create(refState, {
 
@@ -18,68 +18,59 @@ define(
                 this.modality = this.EXCLUSIVE;
                 this._initState(config);
 
-                var view = lib.create(refPanel).init({
+                var view = lib.create(refView).init({
                     canvas: this.canvas,
                     style: {
                         width: '100%',
                         height: '100%',
-                        background: 'green'
+                        background: 'black'
                     }
                 });
 
-                var panel = lib.create(refPanel).init({
+                var panel = lib.create(refView).init({
                     style: {
                         spacing: 10,
-                        background: 'red'
+                        background: 'black'
                     }
                 });
                 
-                var button1 = lib.create(refButton).init({
-                    style: {
-                        top: 0,
-                        left: 0,
-                        width: '50%',
-                        height: '50%',
-                        spacing: 10
-                    },
-                    label: 'Button 1 (TL)'
-                }),
-                button2 = lib.create(refButton).init({
-                    style: {
-                        top: 0,
-                        right: 0,
-                        width: '50%',
-                        height: '50%',
-                        spacing: 10
-                    },
-                    label: 'Button 2 (TR)'
-                }),
-                button3 = lib.create(refButton).init({
-                    style: {
-                        bottom: 0,
-                        left: 0,
-                        width: '50%',
-                        height: '50%',
-                        spacing: 10
-                    },
-                    label: 'Button 3 (BL)'
-                }),
-                button4 = lib.create(refButton).init({
-                    style: {
-                        bottom: 0,
-                        right: 0,
-                        width: '50%',
-                        height: '50%',
-                        spacing: 10
-                    },
-                    label: 'Button 4 (BR)'
-                });
-
                 view.addChild(panel);
-                panel.addChild(button1).addChild(button2).addChild(button3).addChild(button4);
+
+                var context = this.canvas.getContext();
+                var numCols = 6, numRows = 4,
+                    col, row,
+                    button,
+                    buttons = [];
+                for (col = 0; col < numCols; col++) {
+                    for (row = 0; row < numRows; row++) {
+
+                        button = lib.create(refSimpleButton).init({
+                            style: {
+                                left: (col * 100 / numCols) + '%',
+                                top: (row * 100 / numRows) + '%',
+                                width: (100 / numCols + '%'),
+                                height: (100 / numRows + '%'),
+                                spacing: 4,
+                                normal: {
+                                    background: 'rgb(0, 127, 255)',
+                                    text: 'black'
+                                },
+                                active: {
+                                    background: 'red',
+                                    text: 'white'
+                                },
+                                hover: {
+                                    background: 'blue',
+                                    text: 'green'
+                                }
+                            },
+                            label: 'B ' + col + 'x' + row
+                        });
+                        panel.addChild(button);
+                    }
+                }
 
                 this.view = view;
-
                 return this;
             },
 

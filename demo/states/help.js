@@ -20,7 +20,7 @@ define(
             update: function (delta) {},
 
             draw: function (delta) {
-                this.canvas.fill('rgba(0, 0, 0, 0.5)');
+                this.canvas.fillWithStyle('rgba(0, 0, 0, 0.5)');
             },
 
             handleInput: function (event) {

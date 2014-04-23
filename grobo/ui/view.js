@@ -15,26 +15,6 @@ define(
             listeners: null,
             wasLastEventInside: false,
 
-            _initView: function (config) {
-                this.canvas             = config.canvas || null;
-                this.style              = config.style || {};
-                this.width              = config.width || 0;
-                this.height             = config.height || 0;
-                this.x                  = config.x || 0;
-                this.y                  = config.y || 0;
-                this.children           = [];
-                this.listeners          = {
-                    'click': [],
-                    'press': [],
-                    'release': [],
-                    'move': [],
-                    'over': [],
-                    'out': []
-                };
-                this.wasLastEventInside = false;
-                this.layout();
-            },
-
             init: function (config) {
                 this._initView(config);
                 return this;
@@ -145,7 +125,7 @@ define(
             },
 
             draw: function () {
-                this.drawChildren();
+                this._drawView();
             },  
 
             drawChildren: function () {
@@ -255,6 +235,40 @@ define(
             triggerIfInside: function (event) {
                 if (this.isEventInside(event))
                     this.trigger(event);
+            },
+
+            _initView: function (config) {
+                this.canvas             = config.canvas || null;
+                this.style              = config.style || {};
+                this.width              = config.width || 0;
+                this.height             = config.height || 0;
+                this.x                  = config.x || 0;
+                this.y                  = config.y || 0;
+                this.children           = [];
+                this.listeners          = {
+                    'click': [],
+                    'press': [],
+                    'release': [],
+                    'move': [],
+                    'over': [],
+                    'out': []
+                };
+                this.wasLastEventInside = false;
+                this.layout();
+            },
+
+            _drawView: function () {
+                var x = this.getWorldX(),
+                    y = this.getWorldY(),
+                    width = this.width,
+                    height = this.height,
+                    canvas = this.canvas,
+                    style = this.style;
+
+                if (style.background)
+                    canvas.fillRectWithStyle(style.background, x, y, width, height);
+
+                this.drawChildren();
             }
         };
 

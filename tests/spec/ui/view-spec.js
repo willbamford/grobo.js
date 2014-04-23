@@ -1,4 +1,4 @@
-define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) { 
+define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, refCanvas) { 
 
     function createMockEvent(x, y, name) {
         return {
@@ -18,6 +18,7 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
 
         beforeEach(function () {
             view = lib.create(refView);
+            canvas = lib.create(refCanvas);
         });
 
         describe('layout', function () {
@@ -25,7 +26,11 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
             var mockCanvas;
 
             beforeEach(function () {
-                mockCanvas = { width: 100, height: 50 };
+                mockCanvas = {
+
+                    width: 100,
+                    height: 50
+                };
                 view.init({ canvas: mockCanvas });
             });
 
@@ -375,6 +380,24 @@ define(['grobo/lib', 'grobo/ui/view'], function (lib, refView) {
                 expect(child1.draw).toHaveBeenCalled();
                 expect(child2.draw).toHaveBeenCalled();
                 expect(child3.draw).toHaveBeenCalled();
+            });
+
+            it('should draw background', function () {
+                var mockElement = {
+                    width: 60,
+                    height: 40,
+                    getContext: function (type) {}
+                };
+                canvas.init(mockElement, {});
+                view.init({
+                    canvas: canvas,
+                    style: {
+                        background: 'red'
+                    }
+                });
+                spyOn(canvas, 'fillRectWithStyle');
+                view.draw();
+                expect(canvas.fillRectWithStyle).toHaveBeenCalledWith('red', 0, 0, 60, 40);
             });
         });
 

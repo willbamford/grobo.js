@@ -161,16 +161,16 @@ define(['grobo/lib'], function (lib) {
             this.context2d.clearRect(0, 0, this.width, this.height);
         },
 
-        fill: function (style) {
-            this.fillRect(style, 0, 0, this.width, this.height);
+        fillWithStyle: function (style) {
+            this.fillRectWithStyle(style, 0, 0, this.width, this.height);
         },
 
-        fillRect: function (style, x, y, width, height) {
+        fillRectWithStyle: function (style, x, y, width, height) {
             this.context2d.fillStyle = style;
             this.context2d.fillRect(x, y, width, height);
         },
 
-        fillText: function (style, text, x, y) {
+        fillTextWithStyle: function (style, text, x, y) {
             this.context2d.fillStyle = style;
             this.context2d.fillText(text, x, y);
         }
