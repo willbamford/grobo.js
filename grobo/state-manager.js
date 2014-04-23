@@ -1,7 +1,7 @@
 define(
     [
         'grobo/lib',
-        'grobo/states/state',
+        'grobo/state',
         'grobo/logger',
         'grobo/polyfills/function-bind'
     ],

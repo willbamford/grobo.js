@@ -22,6 +22,11 @@
             Sorry, your browser does not support HTML5 canvas.
         </canvas>
         <ul id="logger"></ul>
-        <script data-main="main" src="libs/requirejs/require.js"></script>
+        <script>
+            var require = {
+                baseUrl: '../../'
+            };
+        </script>
+        <script data-main="demos/1/main" src="../../libs/requirejs/require.js"></script>
     </body>
 </html>

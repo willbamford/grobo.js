@@ -25,6 +25,11 @@ define([], function () {
             return arr ? (arr.indexOf(el) !== -1) : false;
         },
 
+        remove: function (arr, el) {
+            var i = arr ? arr.indexOf(el) : -1;
+            return i !== -1 ? arr.splice(i, 1)[0] : null;
+        },
+
         last: function (arr) {
             if (arr && arr.length > 0) {
                 return arr[arr.length - 1];

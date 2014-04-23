@@ -7,12 +7,12 @@ require.config({
 require(
     [
         'grobo/lib',
-        'grobo/state-factory',
         'grobo/state-manager',
         'grobo/engine',
-        'grobo/canvas'
+        'grobo/canvas',
+        'demos/1/state-factory'
     ],
-    function (lib, refStateFactory, refStateManager, refEngine, refCanvas) {
+    function (lib, refStateManager, refEngine, refCanvas, refStateFactory) {
 
         var canvas          = lib.create(refCanvas).init('canvas'),
             stateManager    = lib.create(refStateManager).init(canvas),

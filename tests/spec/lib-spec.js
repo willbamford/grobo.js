@@ -52,6 +52,29 @@ define(['grobo/lib'], function (lib) {
             });
         });
 
+        describe('remove', function () {
+
+            it('should remove and element from the array if it exists', function () {
+                var arr = ['cat', 'fat', 'bat'],
+                    removed = lib.remove(arr, 'fat');
+                expect(removed).toEqual('fat');
+                expect(arr).toEqual(['cat', 'bat']);
+            });
+
+            it('should return null if the element does not exist in the array', function () {
+                var arr = ['cat', 'fat', 'bat'],
+                    removed = lib.remove(arr, 'hat');
+                expect(removed).toBeNull();
+                expect(arr).toEqual(['cat', 'fat', 'bat']);
+            });
+
+
+            it('should return null if the array is null', function () {
+                var removed = lib.remove(null, 'hat');
+                expect(removed).toBeNull();
+            });
+        });
+
         describe('last', function () {
 
             it('should return null if the input array is undefined or null', function () {

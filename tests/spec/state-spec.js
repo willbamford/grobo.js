@@ -1,4 +1,4 @@
-define(['grobo/lib', 'grobo/states/state'], function (lib, refState) { 
+define(['grobo/lib', 'grobo/state'], function (lib, refState) { 
 
     var state;
 

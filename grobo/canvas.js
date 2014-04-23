@@ -1,4 +1,4 @@
-define([], function () {
+define(['grobo/lib'], function (lib) {
 
     var refCanvas = {
 
@@ -11,8 +11,11 @@ define([], function () {
             this.width = this.element.width;
             this.height = this.element.height;
             this.window = w || window;
+            this.resizeListeners = [];
             return this;
         },
+
+
 
         getElement: function () {
             return this.element;
@@ -91,9 +94,6 @@ define([], function () {
                     break;
                 case 'resize':
                     this.resizeListeners.push(fn);
-                    // this.window.addEventListener(eventName, function (e) {
-                    //     fn({ name: 'resize' });
-                    // });
                     break;
             }
         },
@@ -121,9 +121,7 @@ define([], function () {
                     element.removeEventListener(sourceEventType, fn);
                     break;
                 case 'resize':
-                
-                    this.resizeListeners
-                    // this.window.removeEventListener(eventName, fn);
+                    // this.resizeListeners.
                     break;
             }
         },
