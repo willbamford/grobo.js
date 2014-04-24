@@ -54,7 +54,9 @@ define(['grobo/lib'], function (lib) {
                 event.type === 'click' ||
                 event.type === 'mousedown' ||
                 event.type === 'mousemove' ||
-                event.type === 'mouseup') {
+                event.type === 'mouseup' ||
+                event.type === 'mouseover' ||
+                event.type === 'mouseout') {
                 clientX = event.clientX;
                 clientY = event.clientY;
             }
@@ -96,10 +98,21 @@ define(['grobo/lib'], function (lib) {
                     });
                     break;
                 case 'move':
-                    sourceEventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
-                        element.addEventListener(sourceEventType, function (e) {
-                        fn(createPositionEvent(self, e, eventName));
-                    });
+                    if (this.isTouchSupported()) {
+                        element.addEventListener('touchmove', function (e) {
+                            fn(createPositionEvent(self, e, eventName));
+                        });
+                    } else {
+                        element.addEventListener('mousemove', function (e) {
+                            fn(createPositionEvent(self, e, eventName));
+                        });
+                        element.addEventListener('mouseover', function (e) {
+                            fn(createPositionEvent(self, e, eventName));
+                        });
+                        element.addEventListener('mouseout', function (e) {
+                            fn(createPositionEvent(self, e, eventName));
+                        });
+                    }
                     break;
                 case 'resize':
                     this.resizeListeners.push(fn);
@@ -126,8 +139,13 @@ define(['grobo/lib'], function (lib) {
                     element.removeEventListener(sourceEventType, fn);
                     break;
                 case 'move':
-                    sourceEventType = this.isTouchSupported() ? 'touchmove' : 'mousemove';
-                    element.removeEventListener(sourceEventType, fn);
+                    if (this.isTouchSupported()) {
+                        element.removeEventListener('touchmove', fn);
+                    } else {
+                        element.removeEventListener('mousemove', fn);
+                        element.removeEventListener('mouseover', fn);
+                        element.removeEventListener('mouseout', fn);
+                    }
                     break;
                 case 'resize':
                     lib.remove(this.resizeListeners, fn);

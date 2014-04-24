@@ -253,12 +253,26 @@ define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
                         },
                         mockEvent = createMockSourceEvent(0, 0);
                     canvas.on('move', listener);
+                    
                     mockElement.simulateEvent('mousemove', mockEvent);
                     expect(move).toBeTruthy();
                     expect(name).toEqual('move');
+                    
+                    move = false;
+                    mockElement.simulateEvent('mouseover', mockEvent);
+                    expect(move).toBeTruthy();
+                    expect(name).toEqual('move');
+
+                    move = false;
+                    mockElement.simulateEvent('mouseout', mockEvent);
+                    expect(move).toBeTruthy();
+                    expect(name).toEqual('move');
+                    
                     move = false;
                     canvas.off('move', listener);
                     mockElement.simulateEvent('mousemove', mockEvent);
+                    mockElement.simulateEvent('mouseover', mockEvent);
+                    mockElement.simulateEvent('mouseout', mockEvent);
                     expect(move).toBeFalsy();
                 });
 
