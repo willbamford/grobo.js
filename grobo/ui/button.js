@@ -1,10 +1,9 @@
 define(
     [
         'grobo/lib',
-        'grobo/ui/view',
-        'grobo/helpers/geom'
+        'grobo/ui/view'
     ],
-    function (lib, refView, geom) {
+    function (lib, refView) {
 
         var refButton = lib.create(refView, {
 

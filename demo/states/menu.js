@@ -3,10 +3,10 @@ define(
         'grobo/lib',
         'grobo/state',
         'grobo/ui/view',
-        'grobo/ui/simple-button',
+        'grobo/ui/button',
         'grobo/logger'
     ],
-    function (lib, refState, refView, refSimpleButton, logger) {
+    function (lib, refState, refView, refButton, logger) {
 
         var refMenuState = lib.create(refState, {
 
@@ -37,13 +37,13 @@ define(
                 view.addChild(panel);
 
                 var context = this.canvas.getContext();
-                var numCols = 6, numRows = 4,
+                var numCols = 4, numRows = 4,
                     col, row,
                     button,
                     buttons = [];
 
                 var makeButton = function (col, row) {
-                    button = lib.create(refSimpleButton).init({
+                    button = lib.create(refButton).init({
                         style: {
                             left: (col * 100 / numCols) + '%',
                             top: (row * 100 / numRows) + '%',

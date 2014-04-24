@@ -37,9 +37,8 @@ require(
             canvas.resize(Math.round(width), Math.round(innerHeight));
         };
 
-        window.addEventListener('resize', listener);
-        window.addEventListener('orientationchange', listener);
-
-        listener();
+        // window.addEventListener('resize', listener);
+        // window.addEventListener('orientationchange', listener);
+        // listener();
     }
 );
