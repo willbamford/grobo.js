@@ -1,5 +1,7 @@
 define(['grobo/lib', 'grobo/helpers/geom'], function (lib, geom) { 
 
+    "use strict";
+
     describe('Geometry helper', function () {
 
         describe('rect contains point', function () {

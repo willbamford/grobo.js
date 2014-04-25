@@ -2,6 +2,8 @@ define(
     ['grobo/lib', 'grobo/helpers/geom', 'grobo/helpers/style'],
     function (lib, geom, styleHelper) {
 
+        "use strict";
+
         var refView = {
 
             canvas: null,
@@ -23,7 +25,7 @@ define(
             layout: function () {
 
                 var style = this.style,
-                    parent = this.parent || this.canvas,
+                    parent = this.parent || this.getCanvas(),
                     styleWidth = style.width || '100%',
                     styleHeight = style.height || '100%',
                     parentWidth = parent ? parent.width : 0,
@@ -100,10 +102,13 @@ define(
                 });
             },
 
+            setParent: function (parent) {
+                this.parent = parent;
+                this.layout();
+            },
+
             addChild: function (view) {
-                view.parent = this;
-                view.canvas = this.canvas;
-                view.layout();
+                view.setParent(this);
                 this.children.push(view);
                 return this;
             },
@@ -122,6 +127,10 @@ define(
 
             getWorldY: function () {
                 return this.parent ? this.parent.getWorldY() + this.y : this.y;
+            },
+
+            getCanvas: function () {
+                return this.canvas || (this.parent ? this.parent.getCanvas() : null);
             },
 
             draw: function () {
@@ -262,7 +271,7 @@ define(
                     y = this.getWorldY(),
                     width = this.width,
                     height = this.height,
-                    canvas = this.canvas,
+                    canvas = this.getCanvas(),
                     style = this.style;
 
                 if (style.background)

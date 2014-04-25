@@ -2,6 +2,8 @@ define(
     ['grobo/lib', 'grobo/state-manager', 'grobo/state'],
     function (lib, refStateManager, refState) { 
 
+        "use strict";
+
         describe('State manager', function () {
             
             var stateManager,

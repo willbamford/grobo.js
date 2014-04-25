@@ -2,6 +2,8 @@ define(
     ['grobo/logger'],
     function (logger) {
 
+        "use strict";
+
         var refState = {
 
             POPUP: 0,

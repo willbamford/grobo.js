@@ -1,5 +1,7 @@
 define(['grobo/helpers/style'], function (style) { 
 
+    "use strict";
+
     describe('Style helper', function () {
 
         describe('measure size', function () {

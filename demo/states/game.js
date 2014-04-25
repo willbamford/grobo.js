@@ -26,7 +26,7 @@ define(
                 });
 
                 var image = lib.create(refImage).init({
-                    url: 'https://www.google.co.uk/images/srpr/logo11w.png',
+                    url: 'http://www.google.co.uk/images/srpr/logo11w.png',
                     style: {
                         left: 0,
                         width: '50%',
@@ -37,7 +37,7 @@ define(
                 this.view.addChild(image);
 
                 var image2 = lib.create(refImage).init({
-                    url: 'https://www.google.co.uk/images/srpr/logo11w.png',
+                    url: 'http://www.google.co.uk/images/srpr/logo11w.png',
                     scaleToFit: false,
                     style: {
                         bottom: 0,

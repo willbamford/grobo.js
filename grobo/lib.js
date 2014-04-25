@@ -1,5 +1,7 @@
 define([], function () {
 
+    "use strict";
+
     var lib = {
 
         each: function (arr, fn) {

@@ -1,5 +1,7 @@
 define(['grobo/lib', 'grobo/state'], function (lib, refState) { 
 
+    "use strict";
+
     var state;
 
     describe('State', function () {

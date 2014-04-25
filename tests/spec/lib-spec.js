@@ -1,5 +1,7 @@
 define(['grobo/lib'], function (lib) { 
 
+    "use strict";
+
     describe('Library', function () {
 
         describe('each', function () {

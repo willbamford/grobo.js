@@ -1,5 +1,7 @@
 define([], function () {
 
+    "use strict";
+
     var fps = {
         init: function (sampleSize, callback) {
             this.time = 0;

@@ -29,7 +29,7 @@ define(
 
                 var panel = lib.create(refView).init({
                     style: {
-                        spacing: 3,
+                        spacing: 4,
                         background: 'black'
                     }
                 });
@@ -37,7 +37,7 @@ define(
                 view.addChild(panel);
 
                 var context = this.canvas.getContext();
-                var numCols = 4, numRows = 4,
+                var numCols = 6, numRows = 4,
                     col, row,
                     button,
                     buttons = [];
@@ -49,9 +49,10 @@ define(
                             top: (row * 100 / numRows) + '%',
                             width: (100 / numCols + '%'),
                             height: (100 / numRows + '%'),
-                            spacing: 3,
+                            spacing: 4,
                             normal: {
                                 background: 'rgb(0, 127, 255)',
+                                imageUrl: 'http://www.google.co.uk/images/srpr/logo11w.png',
                                 text: 'black'
                             },
                             active: {
@@ -70,6 +71,7 @@ define(
                         event.consume();
                     });
                     panel.addChild(button);
+                    // button.initImageViews();
                 };
 
                 for (col = 0; col < numCols; col++) {

@@ -1,5 +1,7 @@
 define([], function () {
 
+    "use strict";
+
     var style = {
         measureSize: function (value, context) {
 

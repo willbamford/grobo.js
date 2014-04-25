@@ -7,20 +7,18 @@ define(
     ],
     function (fps, logger) {
 
+        "use strict";
+
         var refEngine = {
 
             init: function (stateManager) {
-                var self = this;
                 this.stateManager = stateManager;
-                this.tickCount = 0;
                 this.requestId = null;
                 this.isRunning = false;
                 this.lastTime = null;
-
                 fps.init(120, function (framesPerSecond) {
                     // logger.info(framesPerSecond);
                 });
-
                 return this;
             },
 
@@ -41,7 +39,7 @@ define(
             tick: function () {
                 var currentTime = new Date(),
                     delta = 0;
-                this.tickCount += 1;
+
                 if (this.lastTime) {
                     delta = currentTime - this.lastTime;
                 }

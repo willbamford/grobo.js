@@ -2,10 +2,11 @@ define(
     [
         'grobo/lib',
         'grobo/state',
-        'grobo/logger',
         'grobo/polyfills/function-bind'
     ],
-    function (lib, refState, logger) {
+    function (lib, refState) {
+
+        "use strict";
 
         var refStateManager = {
 

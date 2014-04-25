@@ -1,5 +1,7 @@
 define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, refCanvas) { 
 
+    "use strict";
+
     function createMockEvent(x, y, name) {
         return {
             name: (name || 'click'),
@@ -12,7 +14,7 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
         };
     }
 
-    var view;
+    var view, canvas;
 
     describe('View', function () {
 
@@ -27,7 +29,6 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
 
             beforeEach(function () {
                 mockCanvas = {
-
                     width: 100,
                     height: 50
                 };
@@ -281,7 +282,43 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
             expect(view.canvas).toEqual(canvas);
         });
 
-        describe('child view management', function () {
+        it('should be able to get canvas from self or ancestor', function () {
+            var mockCanvas1 = {
+                    width: 100,
+                    height: 50
+                },
+                mockCanvas2 = {
+                    width: 200,
+                    height: 300
+                },
+                grandparent = lib.create(refView).init({ canvas: mockCanvas1 }),
+                parent = lib.create(refView).init({});
+
+            parent.setParent(grandparent);
+            view.setParent(parent);
+            view.init({});
+            expect(view.getCanvas()).toEqual(mockCanvas1);
+
+            view.canvas = mockCanvas2;
+            expect(view.getCanvas()).toEqual(mockCanvas2);
+        });
+
+        describe('parent / child view management', function () {
+
+            it('should be able to set parent of a view', function () {
+                var parent = lib.create(refView).init({canvas: canvas});
+                view.init({});
+                view.setParent(parent);
+                expect(view.parent).toEqual(parent);
+            });
+
+            it('setting view parent should call layout', function () {
+                var parent = lib.create(refView).init({canvas: canvas});
+                view.init({});
+                spyOn(view, 'layout');
+                view.setParent(parent);
+                expect(view.layout).toHaveBeenCalled();
+            });
 
             it('should be able to chain add', function () {
                 view.init({});
@@ -289,13 +326,12 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
                 expect(view.children.length).toEqual(2);
             });
 
-            it('should set the child\'s parent and canvas on add', function () {
+            it('should set the child\'s parent on add', function () {
                 var child = lib.create(refView),
                     mockCanvas = { width: 10, height: 10 };
                 view.init({ canvas: mockCanvas });
                 view.addChild(child);
                 expect(child.parent).toEqual(view);
-                expect(child.canvas).toEqual(mockCanvas);
             });
 
             it('should be able to remove', function () {
@@ -405,7 +441,8 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
 
             describe('child event handling', function () {
 
-                var child1, child2, child3;
+                var child1, child2, child3,
+                    callTrace;
 
                 beforeEach(function () {
                     callTrace = '';

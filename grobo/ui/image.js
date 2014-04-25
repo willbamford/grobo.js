@@ -5,6 +5,8 @@ define(
     ],
     function (lib, refView) {
 
+        "use strict";
+
         var refImage = lib.create(refView, {
 
             image: null,
@@ -39,7 +41,8 @@ define(
             update: function (delta) {},
 
             draw: function () {
-                var context = this.canvas.getContext(),
+                var canvas = this.getCanvas(),
+                    context = canvas.getContext(),
                     x = this.getWorldX(),
                     y = this.getWorldY(),
                     width = this.width,
@@ -62,7 +65,7 @@ define(
                         if (this.clip) {
                             context.restore();
                         }
-                     }
+                    }
                 }
             }
         });

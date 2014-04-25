@@ -1,5 +1,7 @@
 define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
 
+    "use strict";
+
     describe('Canvas', function () {
 
         var canvas,

@@ -26,6 +26,8 @@ require(
         stateManager.change(stateFactory.getGame());
         engine.start();
 
+        window.setTimeout(function () {engine.stop();}, 2000);
+
         var listener = function () {
             var w = window,
                 d = document,
