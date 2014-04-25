@@ -220,10 +220,12 @@ define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
                             name = e.name;
                         },
                         mockEvent = createMockSourceEvent(0, 0);
+                    canvas.isTouchSupported = function () { return false; };
                     canvas.on('press', listener);
                     mockElement.simulateEvent('mousedown', mockEvent);
                     expect(press).toBeTruthy();
                     expect(name).toEqual('press');
+
                     press = false;
                     canvas.off('press', listener);
                     mockElement.simulateEvent('mousedown', mockEvent);
@@ -237,10 +239,12 @@ define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
                             name = e.name;
                         },
                         mockEvent = createMockSourceEvent(0, 0);
+                    canvas.isTouchSupported = function () { return false; };
                     canvas.on('release', listener);
                     mockElement.simulateEvent('mouseup', mockEvent);
                     expect(release).toBeTruthy();
                     expect(name).toEqual('release');
+
                     release = false;
                     canvas.off('release', listener);
                     mockElement.simulateEvent('mouseup', mockEvent);
@@ -254,6 +258,7 @@ define(['grobo/lib', 'grobo/canvas'], function (lib, refCanvas) {
                             name = e.name;
                         },
                         mockEvent = createMockSourceEvent(0, 0);
+                    canvas.isTouchSupported = function () { return false; };
                     canvas.on('move', listener);
                     
                     mockElement.simulateEvent('mousemove', mockEvent);
