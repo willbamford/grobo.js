@@ -21,6 +21,16 @@ define([], function () {
             }
         },
 
+        eachPair: function (obj, fn) {
+            if (obj) {
+                for (var prop in obj) {
+                    if (obj.hasOwnProperty(prop)) {
+                        fn(prop, obj[prop]);
+                    }
+                }
+            }
+        },
+
         contains: function (arr, el) {
             return arr ? (arr.indexOf(el) !== -1) : false;
         },

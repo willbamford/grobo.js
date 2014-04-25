@@ -35,6 +35,28 @@ define(['grobo/lib'], function (lib) {
             });
         });
 
+        describe('each pair', function () {
+
+            it('should iterate over object and pass key, pair to callback function', function () {
+                var obj = {
+                    twinsen: 'Protagonist',
+                    funfrock: 'Bad guy',
+                    zoe: 'Wife'
+                },
+                found = [];
+                lib.eachPair(obj, function (key, value) {
+                    found.push([key, value]);
+                });
+                expect(found.length).toEqual(3);
+                expect(found[0][0]).toEqual('twinsen');
+                expect(found[0][1]).toEqual('Protagonist');
+                expect(found[1][0]).toEqual('funfrock');
+                expect(found[1][1]).toEqual('Bad guy');
+                expect(found[2][0]).toEqual('zoe');
+                expect(found[2][1]).toEqual('Wife');
+            });
+        });
+
         describe('contains', function () {
 
             it('should return false if the input array is undefined or null', function () {
