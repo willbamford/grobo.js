@@ -67,11 +67,10 @@ define(
                         label: col + 'x' + row
                     });
                     button.on('click', function (event) {
-                        logger.info(col + 'x' + row);
+                        alert(col + 'x' + row);
                         event.consume();
                     });
                     panel.addChild(button);
-                    // button.initImageViews();
                 };
 
                 for (col = 0; col < numCols; col++) {
@@ -81,7 +80,6 @@ define(
                 }
 
                 view.layout();
-
                 this.view = view;
                 return this;
             },
@@ -113,14 +111,7 @@ define(
                     event.consume();
                     this.stateManager.push(this.stateFactory.getHelp());
                 }
-            },
-
-            handleResize: function (event) {
-                console.log('Handling resize');
-                this.view.requiresLayout(true);
-                this.view.layout();
-                // this._handleResizeState(event);
-            },
+            }
         });
 
         return refMenuState;

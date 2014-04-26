@@ -52,13 +52,15 @@ define(
                          imageView = lib.create(refImage).init({
                              url: style[name].imageUrl
                          });
-                         imageView.setParent(self);
+                         self.addChild(imageView);
                          self.imageViews[name] = imageView;
                      }
                  });
             },
 
             update: function (delta) {},
+
+            f: false,
 
             draw: function () {
 
