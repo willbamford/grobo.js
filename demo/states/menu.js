@@ -113,7 +113,14 @@ define(
                     event.consume();
                     this.stateManager.push(this.stateFactory.getHelp());
                 }
-            }
+            },
+
+            handleResize: function (event) {
+                console.log('Handling resize');
+                this.view.requiresLayout(true);
+                this.view.layout();
+                // this._handleResizeState(event);
+            },
         });
 
         return refMenuState;

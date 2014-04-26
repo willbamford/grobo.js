@@ -26,7 +26,7 @@ require(
         stateManager.change(stateFactory.getGame());
         engine.start();
 
-        window.setTimeout(function () {engine.stop();}, 2000);
+        // window.setTimeout(function () {engine.stop();}, 2000);
 
         var listener = function () {
             var w = window,
@@ -39,8 +39,8 @@ require(
             canvas.resize(Math.round(width), Math.round(innerHeight));
         };
 
-        // window.addEventListener('resize', listener);
-        // window.addEventListener('orientationchange', listener);
-        // listener();
+        window.addEventListener('resize', listener);
+        window.addEventListener('orientationchange', listener);
+        listener();
     }
 );

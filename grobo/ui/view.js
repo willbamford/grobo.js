@@ -25,9 +25,6 @@ define(
 
             layout: function () {
 
-                if (!this.layoutIsRequired)
-                    return;
-
                 var style = this.style,
                     parent = this.parent || this.getCanvas(),
                     styleWidth = style.width || '100%',

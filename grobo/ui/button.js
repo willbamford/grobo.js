@@ -70,10 +70,8 @@ define(
 
                 canvas.fillRectWithStyle(style.background, x, y, width, height);
 
-                if (this.currentImageView) {
-                    console.log(this.currentImageView);
+                if (this.currentImageView)
                     this.currentImageView.draw();
-                }
 
                 if (this.label) {
                     context.font = 'bold 16px sans-serif';
