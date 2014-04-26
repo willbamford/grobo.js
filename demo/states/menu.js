@@ -80,6 +80,8 @@ define(
                     }
                 }
 
+                view.layout();
+
                 this.view = view;
                 return this;
             },

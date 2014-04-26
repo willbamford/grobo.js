@@ -49,6 +49,7 @@ define(
 
                 this.view.addChild(image2);
                 this.view.addChild(image);
+                this.view.layout();
 
                 return this;
             },

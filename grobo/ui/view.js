@@ -16,6 +16,7 @@ define(
             y: 0,
             listeners: null,
             wasLastEventInside: false,
+            layoutIsRequired: false,
 
             init: function (config) {
                 this._initView(config);
@@ -23,6 +24,9 @@ define(
             },
 
             layout: function () {
+
+                if (!this.layoutIsRequired)
+                    return;
 
                 var style = this.style,
                     parent = this.parent || this.getCanvas(),
@@ -100,11 +104,17 @@ define(
                 lib.each(this.children, function (child) {
                     child.layout();
                 });
+
+                this.requiresLayout(false);
+            },
+
+            requiresLayout: function (required) {
+                this.layoutIsRequired = required;
             },
 
             setParent: function (parent) {
                 this.parent = parent;
-                this.layout();
+                this.requiresLayout(true);
             },
 
             addChild: function (view) {
@@ -175,6 +185,7 @@ define(
             },
 
             handleResize: function (event) {
+                this.requiresLayout(true);
                 this.layout();
             },
 
@@ -263,7 +274,7 @@ define(
                     'out': []
                 };
                 this.wasLastEventInside = false;
-                this.layout();
+                this.requiresLayout(true);
             },
 
             _drawView: function () {

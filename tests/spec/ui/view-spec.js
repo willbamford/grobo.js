@@ -23,263 +23,20 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
             canvas = lib.create(refCanvas);
         });
 
-        describe('layout', function () {
-
-            var mockCanvas;
-
-            beforeEach(function () {
-                mockCanvas = {
-                    width: 100,
-                    height: 50
-                };
-                view.init({ canvas: mockCanvas });
-            });
-
-            it('should default to 100% width and height', function () {
-                var child = lib.create(refView);
-                child.init({
-                    style: {}
-                });
-                view.addChild(child);
-                expect(view.width).toEqual(100);
-                expect(view.height).toEqual(50);
-                expect(child.width).toEqual(100);
-                expect(child.height).toEqual(50);
-            });
-
-            it('should horizontally (vertically) center the view within parent if only width (height) set', function () {
-                var child = lib.create(refView);
-                child.init({
-                    style: {
-                        width: 10,
-                        height: '50%'
-                    }
-                });
-                view.addChild(child);
-                expect(child.width).toEqual(10);
-                expect(child.height).toEqual(25);
-                expect(child.x).toEqual(45);
-                expect(child.y).toEqual(13);
-            });
-
-            it('should be able to provide width (height) as a percentage which is rounded to a pixel value', function () {
-                var child = lib.create(refView);
-                child.init({
-                    style: {
-                        width: '15%',
-                        height: '85%'
-                    }
-                });
-                view.addChild(child);
-                expect(child.width).toEqual(15);
-                expect(child.height).toEqual(43);
-            });
-
-            it('if only given left (top) this should map directly to x (y)', function () {
-                var child = lib.create(refView).init({
-                    style: { 
-                        left: 10,
-                        top: 20
-                    }
-                });
-                view.addChild(child);
-                expect(child.x).toEqual(10);
-                expect(child.y).toEqual(20);
-            });
-        
-            it('if only given left (top), width (height) should default to fill space', function () {
-                var child = lib.create(refView).init({
-                    style: { 
-                        left: 10,
-                        top: 20
-                    }
-                });
-                view.addChild(child);
-                expect(child.x).toEqual(10);
-                expect()
-                expect(child.y).toEqual(20);
-            });
-
-            it('should be able to combine left or right (top or bottom) with width (height)', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        right: 30,
-                        width: 5,
-                        bottom: 11,
-                        height: '10%'
-                    }
-                });
-                view.addChild(child);
-                expect(child.x).toEqual(65);
-                expect(child.width).toEqual(5);
-                expect(child.y).toEqual(34);
-                expect(child.height).toEqual(5);
-            });
-
-            it('if only given positive right and bottom, x and y should be negative right and bottom', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        right: 20,
-                        bottom: 30
-                    }
-                });
-                view.addChild(child);
-                expect(child.width).toEqual(100);
-                expect(child.x).toEqual(-20);
-                expect(child.height).toEqual(50);
-                expect(child.y).toEqual(-30);
-            });
-
-            it('should be able derive width (height) if only given right and left (top and bottom) ', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        left: 8,
-                        right: 16,
-                        top: 5,
-                        bottom: 33
-                    }
-                });
-                view.addChild(child);
-                expect(child.width).toEqual(76);
-                expect(child.height).toEqual(12);
-                expect(child.x).toEqual(8);
-                expect(child.y).toEqual(5);
-            });
-
-            it('should be able to provide percentage left / right / top / bottom', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        left: '10%',
-                        right: '10%',
-                        top: '10%',
-                        bottom: '10%'
-                    }
-                });
-                view.addChild(child);
-                expect(child.x).toEqual(10);
-                expect(child.y).toEqual(5);
-                expect(child.width).toEqual(80);
-                expect(child.height).toEqual(40);
-            });
-
-            it('should be able to provide negative left / right / top / bottom', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        left: '-50%',
-                        right: '-50%',
-                        top: '-50%',
-                        bottom: '-50%'
-                    }
-                });
-                view.addChild(child);
-                expect(child.x).toEqual(-50);
-                expect(child.width).toEqual(200);
-                expect(child.y).toEqual(-25);
-                expect(child.height).toEqual(100);
-            });
-
-            it('should override width (height) if left and right (top and bottom) provided', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        left: 40,
-                        right: 40,
-                        width: 50,
-                        top: 10,
-                        bottom: 10,
-                        height: 50
-                    }
-                });
-                view.addChild(child);
-                expect(child.width).toEqual(20);
-                expect(child.height).toEqual(30);
-            });
-
-            it('width and height should never be negative (minimum zero)', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        left: 80,
-                        right: 80,
-                        top: 40,
-                        bottom: 40
-                    }
-                });
-                view.addChild(child);
-                expect(child.width).toEqual(0);
-                expect(child.height).toEqual(0);
-            });
-
-            it('should be able to set uniform spacing', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        spacing: 10,
-                        left: 0,
-                        right: 0,
-                        top: 0,
-                        bottom: 0
-                    }
-                });
-                view.addChild(child);
-                expect(child.width).toEqual(80);
-                expect(child.height).toEqual(30);
-            });
-
-            it('should be able to set targetted spacing', function () {
-                var child = lib.create(refView).init({
-                    style: {
-                        left: 10,
-                        right: 10,
-                        top: 10,
-                        bottom: 10,
-                        spacing: 10,
-                        spacingLeft: 0,
-                        spacingRight: 8,
-                        spacingTop: 4
-                    }
-                });
-                view.addChild(child);
-                expect(child.x).toEqual(10);
-                expect(child.width).toEqual(72);
-                expect(child.y).toEqual(14);
-                expect(child.height).toEqual(16);
-            });
-
-            it('should be able to set percentage spacing', function () {
-                var child = lib.create(refView).init({
-                    style: { spacing: '4%' }
-                });
-                view.addChild(child);
-                expect(child.x).toEqual(4);
-                expect(child.width).toEqual(92);
-                expect(child.y).toEqual(2);
-                expect(child.height).toEqual(46);
-            });
-
-            it('should layout children when performing layout', function () {
-                view.init({});
-                var child1 = lib.create(refView),
-                    child2 = lib.create(refView);
-                view.addChild(child1).addChild(child2);
-                spyOn(child1, 'layout');
-                spyOn(child2, 'layout');
-                view.layout();
-                expect(child1.layout).toHaveBeenCalled();
-                expect(child2.layout).toHaveBeenCalled();
-
-            });
-        });
-
         it('should return "this" on init', function () {
             var view2 = view.init({});
             expect(view2).toEqual(view);
         });
 
         it('should be able to initialise with the canvas', function () {
-            var parent = lib.create(refView),
-                canvas = {};
-            view.init({
-                canvas: canvas
-            });
+            view.init({ canvas: canvas });
             expect(view.canvas).toEqual(canvas);
+        });
+
+        it('should require layout after initialisation', function () {
+            expect(view.layoutIsRequired).toEqual(false);
+            view.init({});
+            expect(view.layoutIsRequired).toEqual(true);
         });
 
         it('should be able to get canvas from self or ancestor', function () {
@@ -306,18 +63,19 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
         describe('parent / child view management', function () {
 
             it('should be able to set parent of a view', function () {
-                var parent = lib.create(refView).init({canvas: canvas});
+                var parent = lib.create(refView).init({ canvas: canvas });
                 view.init({});
                 view.setParent(parent);
                 expect(view.parent).toEqual(parent);
             });
 
-            it('setting view parent should call layout', function () {
+            it('should need layout after setting parent view', function () {
                 var parent = lib.create(refView).init({canvas: canvas});
                 view.init({});
                 spyOn(view, 'layout');
                 view.setParent(parent);
-                expect(view.layout).toHaveBeenCalled();
+                expect(view.layoutIsRequired).toEqual(true);
+
             });
 
             it('should be able to chain add', function () {
@@ -387,11 +145,270 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
 
                 parentView.addChild(view);
                 grandparentView.addChild(parentView);
-
+                grandparentView.layout();
                 expect(view.getWorldX()).toEqual(900);
                 expect(view.getWorldY()).toEqual(1200);
             });
 
+        });
+
+        describe('layout', function () {
+
+            var mockCanvas;
+
+            beforeEach(function () {
+                mockCanvas = {
+                    width: 100,
+                    height: 50
+                };
+                view.init({ canvas: mockCanvas });
+            });
+
+            it('should default to 100% width and height', function () {
+                var child = lib.create(refView);
+                child.init({
+                    style: {}
+                });
+                view.addChild(child);
+                view.layout();
+                expect(view.width).toEqual(100);
+                expect(view.height).toEqual(50);
+                expect(child.width).toEqual(100);
+                expect(child.height).toEqual(50);
+            });
+
+            it('should horizontally (vertically) center the view within parent if only width (height) set', function () {
+                var child = lib.create(refView);
+                child.init({
+                    style: {
+                        width: 10,
+                        height: '50%'
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.width).toEqual(10);
+                expect(child.height).toEqual(25);
+                expect(child.x).toEqual(45);
+                expect(child.y).toEqual(13);
+            });
+
+            it('should be able to provide width (height) as a percentage which is rounded to a pixel value', function () {
+                var child = lib.create(refView);
+                child.init({
+                    style: {
+                        width: '15%',
+                        height: '85%'
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.width).toEqual(15);
+                expect(child.height).toEqual(43);
+            });
+
+            it('if only given left (top) this should map directly to x (y)', function () {
+                var child = lib.create(refView).init({
+                    style: { 
+                        left: 10,
+                        top: 20
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.x).toEqual(10);
+                expect(child.y).toEqual(20);
+            });
+        
+            it('if only given left (top), width (height) should default to fill space', function () {
+                var child = lib.create(refView).init({
+                    style: { 
+                        left: 10,
+                        top: 20
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.x).toEqual(10);
+                expect(child.y).toEqual(20);
+            });
+
+            it('should be able to combine left or right (top or bottom) with width (height)', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        right: 30,
+                        width: 5,
+                        bottom: 11,
+                        height: '10%'
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.x).toEqual(65);
+                expect(child.width).toEqual(5);
+                expect(child.y).toEqual(34);
+                expect(child.height).toEqual(5);
+            });
+
+            it('if only given positive right and bottom, x and y should be negative right and bottom', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        right: 20,
+                        bottom: 30
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.width).toEqual(100);
+                expect(child.x).toEqual(-20);
+                expect(child.height).toEqual(50);
+                expect(child.y).toEqual(-30);
+            });
+
+            it('should be able derive width (height) if only given right and left (top and bottom) ', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 8,
+                        right: 16,
+                        top: 5,
+                        bottom: 33
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.width).toEqual(76);
+                expect(child.height).toEqual(12);
+                expect(child.x).toEqual(8);
+                expect(child.y).toEqual(5);
+            });
+
+            it('should be able to provide percentage left / right / top / bottom', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: '10%',
+                        right: '10%',
+                        top: '10%',
+                        bottom: '10%'
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.x).toEqual(10);
+                expect(child.y).toEqual(5);
+                expect(child.width).toEqual(80);
+                expect(child.height).toEqual(40);
+            });
+
+            it('should be able to provide negative left / right / top / bottom', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: '-50%',
+                        right: '-50%',
+                        top: '-50%',
+                        bottom: '-50%'
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.x).toEqual(-50);
+                expect(child.width).toEqual(200);
+                expect(child.y).toEqual(-25);
+                expect(child.height).toEqual(100);
+            });
+
+            it('should override width (height) if left and right (top and bottom) provided', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 40,
+                        right: 40,
+                        width: 50,
+                        top: 10,
+                        bottom: 10,
+                        height: 50
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.width).toEqual(20);
+                expect(child.height).toEqual(30);
+            });
+
+            it('width and height should never be negative (minimum zero)', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 80,
+                        right: 80,
+                        top: 40,
+                        bottom: 40
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.width).toEqual(0);
+                expect(child.height).toEqual(0);
+            });
+
+            it('should be able to set uniform spacing', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        spacing: 10,
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.width).toEqual(80);
+                expect(child.height).toEqual(30);
+            });
+
+            it('should be able to set targetted spacing', function () {
+                var child = lib.create(refView).init({
+                    style: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10,
+                        spacing: 10,
+                        spacingLeft: 0,
+                        spacingRight: 8,
+                        spacingTop: 4
+                    }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.x).toEqual(10);
+                expect(child.width).toEqual(72);
+                expect(child.y).toEqual(14);
+                expect(child.height).toEqual(16);
+            });
+
+            it('should be able to set percentage spacing', function () {
+                var child = lib.create(refView).init({
+                    style: { spacing: '4%' }
+                });
+                view.addChild(child);
+                view.layout();
+                expect(child.x).toEqual(4);
+                expect(child.width).toEqual(92);
+                expect(child.y).toEqual(2);
+                expect(child.height).toEqual(46);
+            });
+
+            it('should layout children when performing layout', function () {
+                view.init({});
+                var child1 = lib.create(refView),
+                    child2 = lib.create(refView);
+                view.addChild(child1).addChild(child2);
+                spyOn(child1, 'layout');
+                spyOn(child2, 'layout');
+                view.layout();
+                expect(child1.layout).toHaveBeenCalled();
+                expect(child2.layout).toHaveBeenCalled();
+
+            });
         });
 
         describe('draw', function () {
@@ -431,6 +448,7 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
                         background: 'red'
                     }
                 });
+                view.layout();
                 spyOn(canvas, 'fillRectWithStyle');
                 view.draw();
                 expect(canvas.fillRectWithStyle).toHaveBeenCalledWith('red', 0, 0, 60, 40);
@@ -476,7 +494,6 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
             describe('should dispatch unconsumed events to listeners', function () {
 
                 var callTrace;
-
                 beforeEach(function () {
                     callTrace = '';
                     view.init({
@@ -485,6 +502,7 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
                             width: 100, height: 100
                         }
                     });
+                    view.layout();
                 });
 
                 it('bound to "click" and event is inside the view', function () {
@@ -539,6 +557,7 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
                             width: 10, height: 10
                         }
                     });
+                    view.layout();
                     spyOn(view, 'handleOver');
                     view.handleMove(moveFromEvent);
                     expect(view.handleOver).not.toHaveBeenCalledWith(moveToEvent);
@@ -555,6 +574,7 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
                             width: 10, height: 10
                         }
                     });
+                    view.layout();
                     spyOn(view, 'handleOut');
                     view.handleMove(moveFromEvent);
                     expect(view.handleOut).not.toHaveBeenCalledWith(moveToEvent);
@@ -600,6 +620,7 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
                         width: 100, height: 100
                     }
                 });
+                view.layout();
                 view.on('click', callback1);
                 view.on('click', callback2);
                 view.on('click', callback3);
@@ -608,6 +629,15 @@ define(['grobo/lib', 'grobo/ui/view', 'grobo/canvas'], function (lib, refView, r
                 expect(hasClicked1).toBeTruthy();
                 expect(hasClicked2).toBeFalsy();
                 expect(hasClicked3).toBeTruthy();
+            });
+
+            it('should perform layout on handle resize', function () {
+                var mockEvent = {};
+                view.init({});
+                spyOn(view, 'layout');
+                view.handleResize(mockEvent);
+                expect(view.layoutIsRequired).toBeTruthy();
+                expect(view.layout).toHaveBeenCalled();
             });
 
         });
