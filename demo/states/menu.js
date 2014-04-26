@@ -23,14 +23,14 @@ define(
                     style: {
                         width: '100%',
                         height: '100%',
-                        background: 'black'
+                        background: 'white'
                     }
                 });
 
                 var panel = lib.create(refView).init({
                     style: {
-                        spacing: 4,
-                        background: 'black'
+                        spacing: 8,
+                        background: 'white'
                     }
                 });
                 
@@ -52,15 +52,17 @@ define(
                             spacing: 4,
                             normal: {
                                 background: 'rgb(0, 127, 255)',
-                                imageUrl: 'http://www.google.co.uk/images/srpr/logo11w.png',
+                                imageUrl: './images/button1.png',
                                 text: 'black'
                             },
                             active: {
                                 background: 'pink',
+                                imageUrl: './images/button2.png',
                                 text: 'white'
                             },
                             hover: {
                                 background: 'white',
+                                imageUrl: './images/button3.png',
                                 text: 'green'
                             }
                         },
